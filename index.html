@@ -2,78 +2,75 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>通过拖放实现添加和删除</title>
-    <style type="text/css">
-        div>div{
-            display: inline-block;
-            padding: 10px;
-            background-color: #aaa;
-            margin: 3px;
-        }
-    </style>
+    <title>Title</title>
 </head>
 <body>
-    <div style="width: 600px;border: 1px solid black;">
-        <h2>可将项目拖进收藏夹</h2>
-        <!--开始拖动时触发start事件-->
-        <div draggable="true" ondragstart="dsHandler(event);">邵</div>
-        <div draggable="true" ondragstart="dsHandler(event);">俊</div>
-        <div draggable="true" ondragstart="dsHandler(event);">颖</div>
-        <div draggable="true" ondragstart="dsHandler(event);">邵俊颖</div>
-    </div>
-    <div id="dest"
-         style="width: 400px;height: 400px;
-        border: 1px solid black; float: left;">
-        <h2 ondragleave="return false;">收藏夹</h2>
-    </div>
-    <img id="gb" draggable="false" src="垃圾桶.jpg" alt="垃圾桶" style="float: left">
+    <h2>雪花飘飘</h2>
+    <canvas id="mc" width="420" height="280"
+            style="border: 1px solid black"></canvas>
     <script type="text/javascript">
-        var dest = document.getElementById("dest");
-        //开始拖动事件的事件监视器
-        var dsHandler = function (evt) {
-            //将被拖动元素的innerHTML属性值设置为被拖动的数据
-            evt.dataTransfer.setData("text/plain","<item>"+evt.target.innerHTML)
-        };
-        dest.ondrop = function (ev) {
-            var text = ev.dataTransfer.getData("text/plain");
-            //如果该text以<item>开头
-            if (text.indexOf("<item>") === 0){
-                //创建新的div元素
-                var newEle = document.createElement("div");
-                //以当前事件微该元素生成一个唯一的id
-                newEle.id = new Date().getUTCMilliseconds();
-                //以该元素内容为拖过来的数据
-                newEle.innerHTML = text.substring(6);
-                //设置该元素允许拖动
-                newEle.draggable=true;
-                //为该元素的开始拖动事件设置监听器
-                newEle.ondragstart = function (ev2) {
-                    //将被拖动的元素的id属性值设置为被拖动的数据
-                    ev2.dataTransfer.setData("text/plain"
-                    ,"<remove>"+newEle.id)
-                };
-                dest.appendChild(newEle);
+        function createFlower(context, n, dx, dy, size, length) {
+            //开始创建路径
+            context.beginPath();
+            context.moveTo(dx,dy+size);
+            var dig = 2*Math.PI/n;
+            for (var i = 1;i<n+1;i++)
+            {
+                //计算控制点的坐标
+                var ctrlX = Math.sin((i-0.5)*dig)*length +dx;
+                var ctrlY = Math.cos((i-0.5)*dig)*length +dy;
+                //计算结束点坐标
+                var x = Math.sin(i*dig)*size + dx;
+                var y = Math.cos(i*dig)*size + dy;
+                //绘制二次曲线
+                context.quadraticCurveTo(ctrlX,ctrlY,x,y);
             }
-        };
-        //当吧被拖动元素"放"到垃圾桶上时触发该方法
-        document.getElementById("gb").ondrop = function (ev) {
-            var id = ev.dataTransfer.getData("text/plain");
-            //如果该text以<remove>开头
-            if (id.indexOf("<remove>") === 0){
-                //根据拖过来的数据,获取被拖动的元素
-                var target = document.getElementById(id.substring(8));
-                //删除被拖动的元素
-                dest.removeChild(target);
-            }
-        };
-        document.ondragover = function (ev) {
-            //取消事件的默认行为
-            return false;
-        };
-        document.ondrop = function (ev) {
-            //取消事件的默认行为
-            return false;
+            context.closePath();
         }
+        //定义每个雪花的初始位置
+        snowPos = [
+            {x:20,y:4},
+            {x:60,y:4},
+            {x:100,y:4},
+            {x:140,y:4},
+            {x:180,y:4},
+            {x:220,y:4},
+            {x:260,y:4},
+            {x:300,y:4},
+            {x:340,y:4},
+            {x:380,y:4}
+        ];
+        function fall(context) {
+            //设置黑色为填充色
+            context.fillStyle = "#000";
+            //填充矩形
+            context.fillRect(0,0,420,280);
+            //设置白色为填充色
+            context.fillStyle = "#fff";
+            for (var i = 0,len = snowPos.length ; i<len;i++)
+            {
+                //保存当前绘图状态
+                context.save();
+                //平移坐标系统
+                context.translate(snowPos[i].x,snowPos[i].y);
+                //旋转坐标系统
+                context.rotate((Math.random() * 6 - 3)*Math.PI/10);
+                //控制雪花下落
+                snowPos[i].y +=Math.random() * 8;
+                if (snowPos[i].y>280)
+                {
+                    snowPos[i].y = 4;
+                }
+                //创建并绘制雪花
+                createFlower(context,6,0,0,5,8);
+                context.fill();
+                //回复绘图状态
+                context.restore();
+            }
+        }
+        var canvas = document.getElementById("mc");
+        var ctx = canvas.getContext("2d");
+        setInterval("fall(ctx)",200);
     </script>
 </body>
 </html>
