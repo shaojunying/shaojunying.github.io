@@ -3,6 +3,10 @@ var card = $('#card');
 
 trigger.on('click',
     function(){
-        card.load('card.html');
-        card.toggle();
+        if (card.is(':visible')) {
+            card.slideUp();
+        }else {
+            card.load('card.html');
+            card.slideDown();
+        }
     })
