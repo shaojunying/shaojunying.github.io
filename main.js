@@ -1,5 +1,6 @@
 var trigger = $('#trigger');
 var card = $('#card');
+var loaded = false;
 
 trigger.on('mouseenter',
     function(){
