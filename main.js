@@ -1,12 +1,15 @@
 var trigger = $('#trigger');
 var card = $('#card');
 
-trigger.on('click',
+trigger.on('mouseenter',
     function(){
-        if (card.is(':visible')) {
-            card.slideUp();
-        }else {
+        if (!loaded) {
             card.load('card.html');
-            card.slideDown();
+            loaded = true;
         }
+        card.slideDown(100);
     })
+trigger.on('mouseleave',
+function() {
+        card.slideUp(100);
+})
