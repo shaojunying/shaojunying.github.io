@@ -105,5 +105,6 @@ deploy:
 
 backup:
     type: git
+    theme: next
     repository:
        github: https://github.com/shaojunying/shaojunying.github.io.git,backup
