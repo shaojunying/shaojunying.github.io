@@ -13,7 +13,7 @@ timezone: ''
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://yoursite.com
+url: https://shaojunying.github.io/
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
@@ -92,9 +92,12 @@ ignore:
 
 # Extensions
 ## Plugins: https://hexo.io/plugins/
+plugins:
+    hexo-generator-feed
+    hexo-wordcount
 ## Themes: https://hexo.io/themes/
 # theme: landscape
-theme: yilia
+theme: pure
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
@@ -106,6 +109,12 @@ deploy:
 
 backup:
     type: git
-    theme: next
+    theme: pure
     repository:
        github: https://github.com/shaojunying/shaojunying.github.io.git,backup
+
+feed:
+    type: atom
+    path: atom.xml
+    limit: 0
+    hub:
