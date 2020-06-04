@@ -301,7 +301,7 @@ font:
   enable: true
 
   # Uri of fonts host. E.g. //fonts.googleapis.com (Default).
-  host: '' # fonts.lug.ustc.edu.cn是中科大的源。
+  host:  
 
   # Font options:
   # `external: true` will load this font family from `host` above.
@@ -310,7 +310,7 @@ font:
 
   # Global font settings used on <body> element.
   global:
-    external: true
+    external: false
     family: Lato
     size:
 
