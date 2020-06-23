@@ -102,10 +102,12 @@ theme: pure
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
-  type: git
-  repo: https://github.com/shaojunying/shaojunying.github.io.git
-  branch: master
-
+  - type: git
+    repo: https://github.com/shaojunying/shaojunying.github.io.git
+    branch: master
+  - type: git
+    repo: https://gitee.com/shaojunying/shaojunying.gitee.io.git
+    branch: master
 
 backup:
     type: git
