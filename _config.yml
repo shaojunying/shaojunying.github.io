@@ -106,7 +106,7 @@ deploy:
     repo: https://github.com/shaojunying/shaojunying.github.io.git
     branch: master
   - type: git
-    repo: https://gitee.com/shaojunying/shaojunying.gitee.io.git
+    repo: https://gitee.com/shaojunying/shaojunying.git
     branch: master
 
 backup:
