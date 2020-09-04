@@ -2,6 +2,10 @@
 title: HashMap和HashTable的区别
 categories: 
 - Java
+
+
+tags:
+- Java
 ---
 
 ## 线程安全
