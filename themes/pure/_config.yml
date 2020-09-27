@@ -2,12 +2,12 @@
 menu:
   Home: .
   Archives: archives  # 归档
-  Categories: categories  # 分类
+  # Categories: categories  # 分类
   Tags: tags  # 标签
-  Repository: repository  # github repositories
-  Books: books  # 豆瓣书单
+  # Repository: repository  # github repositories
+  # Books: books  # 豆瓣书单
   # Links: links  # 友链
-  About: about  # 关于
+  # About: about  # 关于
 
 # Enable/Disable menu icons
 menu_icons:
@@ -27,7 +27,7 @@ rss: /atom.xml
 # Site
 site:
   logo:
-    enabled: true
+    enabled: false
     width: 40
     height: 40
     url: ../images/logo.png
@@ -49,19 +49,19 @@ config:
 pagination:
   number: false
   prev: 
-    alwayShow: true
+    alwayShow: false
   next:
-    alwayShow: true
+    alwayShow: false
 
 # Sidebar
 sidebar: right
 widgets:
-  - board  
-  - category
+  # - board  
+  # - category
   - tag
-  - tagcloud
+  # - tagcloud
   - archive
-  - recent_posts
+  # - recent_posts
 
 # display widgets at the bottom of index pages (pagination == 2)
 index_widgets:
@@ -74,7 +74,7 @@ archive_type: 'monthly'
 show_count: true
 
 # Fancybox
-fancybox: false
+fancybox: true
 
 # Search
 search:
@@ -96,7 +96,7 @@ donate:
 # Share
 # weibo,qq,qzone,wechat,tencent,douban,diandian,facebook,twitter,google,linkedin
 share:
-  enable: true  # 是否启用分享
+  enable: false  # 是否启用分享
   sites: weibo,qq,wechat,facebook,twitter  # PC端显示的分享图标
   mobile_sites: weibo,qq,qzone  # 移动端显示的分享图标
 
@@ -108,10 +108,10 @@ github:
 # Gitment
 # Introduction: https://imsun.net/posts/gitment-introduction/
 comment:
-  type: valine  # 启用哪种评论系统
+  type:   # 启用哪种评论系统
   disqus:  # enter disqus shortname here
   youyan: 
-    uid: MTAyMC81MDM2My8yNjg1Mw== # enter youyan uid 
+    uid: # enter youyan uid 
   livere:
     uid: # enter youyan uid 
   gitment:
@@ -127,8 +127,8 @@ comment:
     ClientID:  #必须. GitHub Application Client ID.
     ClientSecret:  #必须. GitHub Application Client Secret.
   valine: # Valine. https://valine.js.org
-    appid: vGFiXIumSPwfokjJBlm4lsG4-gzGzoHsz # your leancloud application appid
-    appkey: 2YYvHLWHv08oSav4pPC0S1WV # your leancloud application appkey
+    appid: # your leancloud application appid
+    appkey: # your leancloud application appkey
     notify: true # mail notifier , https://github.com/xCss/Valine/wiki
     verify: false # Verification code
     placeholder: 请输入评论 # comment box placeholder
@@ -157,7 +157,7 @@ douban:
 # PV
 pv:
   busuanzi:
-    enable: true  # 不蒜子统计
+    enable: false  # 不蒜子统计
   leancloud:
     enable: false  # leancloud统计
     app_id: # leancloud <AppID>
@@ -165,7 +165,7 @@ pv:
         
 # wordcount
 postCount:
-  enable: true
+  enable: false
   wordcount: true  # 文章字数统计
   min2read: true  # 阅读时长预计 
 
@@ -184,7 +184,7 @@ fb_app_id:
   
 # profile
 profile:
-  enabled: true # Whether to show profile bar
+  enabled: false # Whether to show profile bar
   avatar: images/avatar.png
   gravatar: # Gravatar email address, if you enable Gravatar, your avatar config will be overriden
   author: 邵俊颖

@@ -94,7 +94,7 @@ ignore:
 ## Plugins: https://hexo.io/plugins/
 plugins:
     hexo-generator-feed
-    hexo-wordcount
+#     hexo-wordcount
 ## Themes: https://hexo.io/themes/
 # theme: landscape
 theme: pure
