@@ -113,7 +113,7 @@ backup:
     type: git
     theme: pure
     repository:
-       github: https://github.com/shaojunying/shaojunying.github.io.git,backup
+       github: git@github.com:shaojunying/shaojunying.github.io.git,backup
 
 feed:
     type: atom
