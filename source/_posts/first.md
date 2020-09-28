@@ -1,6 +1,6 @@
 ---
 title: 我的第一篇博客
-categories: 
+tags: 
 - web前端
 - 测试
 ---

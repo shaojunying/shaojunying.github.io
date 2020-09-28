@@ -1,9 +1,5 @@
 ---
 title: CPU管理
-categories: 
-- 计算机基础
-- 操作系统
-
 
 tags:
 - 计算机基础

@@ -1,8 +1,5 @@
 ---
 title: Hexo配置categories和tags
-categories: 
-- 博客搭建
-- Hexo
 tags:
 - 博客搭建
 - Hexo
