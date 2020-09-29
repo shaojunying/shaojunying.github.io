@@ -20,13 +20,13 @@ tags:
 
 MVC三层集体解决表现层的问题。
 
-![](Spring-MVC的学习/MVC.png)
+![](MVC.png)
 
 ## 核心组件
 
 前端控制器: `DispatcherServlet`
 
 过程: 
-![](Spring-MVC的学习/MVC原理.png)
+![](MVC原理.png)
 
 如图，前端控制器会收到浏览器发来的请求，之后匹配相应的Controller，Controller会处理该请求并返回model给前端控制器，前端控制器会再将model传给View Template，View Template会生成一个HTML并返回给前端控制器，之后前端控制器将网页作为response返回给浏览器。
