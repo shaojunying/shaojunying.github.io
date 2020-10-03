@@ -1,5 +1,6 @@
 ---
 title: Hexo配置categories和tags
+date: 2020-06-04
 tags:
 - 博客搭建
 - Hexo

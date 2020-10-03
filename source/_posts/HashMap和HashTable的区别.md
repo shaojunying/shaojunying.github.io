@@ -1,5 +1,6 @@
 ---
 title: HashMap和HashTable的区别
+date: 2020-07-17
 tags:
 - Java
 ---
