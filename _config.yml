@@ -97,7 +97,7 @@ plugins:
 #     hexo-wordcount
 ## Themes: https://hexo.io/themes/
 # theme: landscape
-theme: pure
+theme: next
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
