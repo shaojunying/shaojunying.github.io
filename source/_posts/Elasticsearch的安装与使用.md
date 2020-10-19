@@ -7,19 +7,19 @@ tags:
 
 ## 下载与安装
 
-可以通过[此链接](https://www.elastic.co/downloads/past-releases/elasticsearch-6-4-3)下载到Elasticsearch6.4.3.
+可以通过[此链接](https://www.elastic.co/start)下载到最新版Elasticsearch.
 
-下载之后将其解压在一个文件夹中即可,这里解压的目录是`C:\elasticsearch-6.4.3`
+下载之后将其解压在一个文件夹中即可,这里解压的目录是`C:\elasticsearch-x.x.x`
 
 ## 修改设置
 
-配置`elasticsearch-6.4.3\config`目录下的`elasticsearch.yml`文件
+配置`elasticsearch-x.x.x\config`目录下的`elasticsearch.yml`文件
 - 修改`cluster.name`,这里设置为`cluster.name: community`
 - 修改`path.data`和`path.logs`,这里分别设置为`path.data: C:\Users\shao\elasticSearch\data`和`path.logs: C:\Users\shao\elasticSearch\logs`
 
 ## 使用
 
-双击`elasticsearch-6.4.3\bin`下的`elasticsearch.bat`即可启动服务.
+双击`elasticsearch-x.x.x\bin`下的`elasticsearch.bat`即可启动服务.
 
 ### 获取健康信息
 
@@ -227,3 +227,82 @@ body中json格式的数据如下
 ```
 
 如上,将返回标题或内容包含岗位的数据
+
+### 中文查询
+
+#### 为索引指定分词器
+
+POST `http://localhost:9200/discusspost/_mapping`
+
+data:
+```json
+{
+        "properties": {
+            "content": {
+                "type": "text",
+                "analyzer": "ik_max_word",
+                "search_analyzer": "ik_smart"
+            }
+        }
+
+}
+```
+
+如上命令为content字段指定中文分词器
+
+#### 查询索引的分词器
+
+GET `http://localhost:9200/discusspost/_mapping`
+
+如果返回结果中content字段为
+
+```json
+"content": {
+    "type": "text",
+    "fields": {
+        "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+        }
+    }
+}
+```
+则说明没有为该字段中文分词器,成功后的结果应该如下图所示
+```json
+"content": {
+    "type": "text",
+    "analyzer": "ik_max_word",
+    "search_analyzer": "ik_smart"
+},
+```
+*注意:如果要修改当前分词器,可能会提示冲突,可以删除索引之后重新创建,之后再指定分词器*
+
+#### 中文搜索
+
+POST `http://localhost:9200/discusspost/_search`
+
+data:
+
+```json
+{
+    "query" : { "match" : { "content" : "就业形势" }},
+    "highlight" : {
+        "pre_tags" : ["<tag1>", "<tag2>"],
+        "post_tags" : ["</tag1>", "</tag2>"],
+        "fields" : {
+            "content" : {}
+        }
+    }
+}
+```
+*其中tags可以不指定,默认为<em>*
+
+之后搜索结果包含highlight字段,如下所示
+
+```json
+"highlight": {
+    "content": [
+        "大家的“哀嚎”与“悲惨遭遇”牵动了每日潜伏于讨论区的牛客<tag1>小哥哥</tag1>小姐姐们的心，于是牛客决定：是时候为大家做点什么了！"
+    ]
+}
+```
