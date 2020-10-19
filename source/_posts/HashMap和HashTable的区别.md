@@ -10,6 +10,9 @@ tags:
 - HashTable为所有方法添加了synchronize关键字,保证了每个方法的线程安全性,但是降低了效率
 - HashMap不保证线程安全性,但是效率相对较高
 
+
+<!-- more -->
+
 ## 继承的类不同
 
 - HashTable继承的是Dictionary类

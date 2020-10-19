@@ -9,6 +9,9 @@ tags:
 
 可以通过[此链接](https://www.elastic.co/start)下载到最新版Elasticsearch.
 
+
+<!-- more -->
+
 下载之后将其解压在一个文件夹中即可,这里解压的目录是`C:\elasticsearch-x.x.x`
 
 ## 修改设置

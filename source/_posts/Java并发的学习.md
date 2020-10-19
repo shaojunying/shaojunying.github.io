@@ -7,3 +7,6 @@ tags:
 ## synchronized关键字
 
 一个实例中的synchronized方法每次只能由一个线程运行
+
+
+<!-- more -->

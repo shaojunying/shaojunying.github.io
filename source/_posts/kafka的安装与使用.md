@@ -11,6 +11,9 @@ tags:
 
 从[此链接](https://kafka.apache.org/downloads)中下载最新的binary版本即可
 
+
+<!-- more -->
+
 ## 安装
 
 将tgz压缩包解压,最好放在根目录,比如`C:\kafka_2.13-2.6.0`这样.否则可能会报错命令行过长

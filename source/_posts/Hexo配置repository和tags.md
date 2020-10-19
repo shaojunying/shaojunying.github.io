@@ -12,6 +12,9 @@ tags:
 
 基于Hexo搭建页面之后categories和tags无法显示
 
+
+<!-- more -->
+
 ## 解决方案(以categories为例)
 
 首先使用如下命令创建一个categories文件夹,在文件夹内创建一个index.md

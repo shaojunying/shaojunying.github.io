@@ -8,6 +8,8 @@ tags:
 
 > 看本篇文章之前请先看上一篇[Elasticsearch的安装与使用](https://shaojunying.github.io/2020/10/18/Elasticsearch%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/)
 
+<!-- more -->
+
 ## Spring整合Elasticsearch
 
 ### 引入

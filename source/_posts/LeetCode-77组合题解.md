@@ -9,6 +9,9 @@ tags:
 
 ## 实现
 
+<!-- more -->
+
+
 ```java
 import java.util.ArrayList;
 import java.util.LinkedList;

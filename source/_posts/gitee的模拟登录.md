@@ -7,6 +7,9 @@ tags:
 
 看了[自动部署Gitee Pages脚本](https://github.com/yanglbme/gitee-pages-action),分析并模拟Gitee Pages登录
 
+
+<!-- more -->
+
 ## 分析POST请求
 
 ```
