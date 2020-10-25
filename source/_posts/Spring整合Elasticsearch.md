@@ -1,9 +1,8 @@
----
 title: Spring整合Elasticsearch
-date: 2020-10-19 15:29:30
 tags:
-- Elasticsearch
-- Spring
+  - Elasticsearch
+  - Spring
+date: 2020-10-19 15:29:30
 ---
 
 > 看本篇文章之前请先看上一篇[Elasticsearch的安装与使用](https://shaojunying.github.io/2020/10/18/Elasticsearch%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/)
