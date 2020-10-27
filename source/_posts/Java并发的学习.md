@@ -31,3 +31,13 @@ void fun(){
 synchronized静态方法使用的锁是xxx.class,而非静态方法锁的是类的实例(this).两者都是只能同时由一个线程执行.
 
 <!-- more -->
+
+### 几个关键字
+
+如果执行wait、notify、notifyAll方法的线程不持有锁，将会抛出异常IllegalMonitorStateException。
+
+应该尽可能使用notifyAll，使用notify可能出发一些问题。
+
+调用Sleep不会进入等待队列
+
+Sleep的调用线程会睡眠，而不是调用实例
