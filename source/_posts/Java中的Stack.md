@@ -27,7 +27,7 @@ public class Vector<E> // xxx
     }
     // ...
 }
-````
+```
 
 通过阅读源码可知,Vector有一个函数`void add(int index, E element)`,该函数可以在数组的任意位置添加一个元素,而Stack是继承Vector的,所以Stack也可以调用`void add(int index, E element)`在栈中任意位置添加元素.而这个操作显然不合理.
 
