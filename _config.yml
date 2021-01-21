@@ -103,10 +103,10 @@ theme: next
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   - type: git
-    repo: https://github.com/shaojunying/shaojunying.github.io.git
+    repo: git@github.com:shaojunying/shaojunying.github.io.git
     branch: master
   - type: git
-    repo: https://gitee.com/shaojunying/shaojunying.git
+    repo: git@gitee.com:shaojunying/shaojunying.git
     branch: master
 
 backup:
