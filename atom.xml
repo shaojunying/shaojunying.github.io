@@ -6,7 +6,7 @@
   <link href="https://shaojunying.github.io/atom.xml" rel="self"/>
   
   <link href="https://shaojunying.github.io/"/>
-  <updated>2021-04-04T06:07:31.049Z</updated>
+  <updated>2021-04-04T06:09:56.131Z</updated>
   <id>https://shaojunying.github.io/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Spring解决循环依赖</title>
+    <link href="https://shaojunying.github.io/2021/04/04/Spring%E8%A7%A3%E5%86%B3%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96/"/>
+    <id>https://shaojunying.github.io/2021/04/04/Spring%E8%A7%A3%E5%86%B3%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96/</id>
+    <published>2021-04-04T06:09:29.000Z</published>
+    <updated>2021-04-04T06:09:56.131Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p><a href="https://www.javazhiyin.com/70070.html">跳出源码地狱，Spring巧用三级缓存解决循环依赖-原理篇-Java知音</a></p></blockquote><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>使用两级缓存即可解决循环依赖问题，但是Spring还需要支持AOP，对象被AOP之后会生成一个新的对象，如果在将实例注入之后再进行AOP，那么两个地方的对象将不一致。因此使用三级缓存，将对象的AOP提前到实例化进行。</p><h2 id="三级缓存的过程"><a href="#三级缓存的过程" class="headerlink" title="三级缓存的过程"></a>三级缓存的过程</h2><ol><li>尝试获取一个bean，发现bean不存在，于是实例化该bean，并放入三级缓存。</li><li>第二次尝试获取该bean，从三级缓存中找到bean，对该实例执行AOP，放入二级缓存并返回。</li><li>在初始化工作彻底完成之后，Spring将bean放入一级缓存，并从二三级缓存中删除。</li></ol>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.javazhiyin.com/70070.html&quot;&gt;跳出源码地狱，Spring巧用三级缓存解决循环依赖-原理篇-Java知音&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;概述&quot;&gt;&lt;a hr</summary>
+      
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>《计算机网络》学习笔记</title>
