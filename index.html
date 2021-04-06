@@ -123,7 +123,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">54</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">55</span></a>
 
   </li>
         <li class="menu-item menu-item-sitemap">
@@ -184,6 +184,72 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shaojunying.github.io/2021/04/06/AOP%E4%BB%A3%E7%90%86%E5%A4%B1%E6%95%88%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%83%85%E5%86%B5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="邵俊颖">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shaojunying's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/06/AOP%E4%BB%A3%E7%90%86%E5%A4%B1%E6%95%88%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%83%85%E5%86%B5/" class="post-title-link" itemprop="url">AOP代理失效的两种情况</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-04-06 19:58:34 / 修改时间：19:58:40" itemprop="dateCreated datePublished" datetime="2021-04-06T19:58:34+08:00">2021-04-06</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="被代理对象的private方法不能被代理"><a href="#被代理对象的private方法不能被代理" class="headerlink" title="被代理对象的private方法不能被代理"></a>被代理对象的private方法不能被代理</h2><ul>
+<li>cdlib技术使用子类来代理父类，子类看不到父类的private，也就无法代理private方法。</li>
+<li>JDK动态代理是基于接口来实现的，而接口不允许有private方法，也就不会有出现这个问题。</li>
+</ul>
+<h2 id="调用类内其他方法"><a href="#调用类内其他方法" class="headerlink" title="调用类内其他方法"></a>调用类内其他方法</h2><ul>
+<li>如果方法a()调用处于同一个类内的方法b()，那么相当于this.b()，这里的this代表没有被代理的方法。</li>
+</ul>
+<p>为了解决这个问题，可以使用Autowired引入被代理之后的类，进而使用（被代理后的对象）调用类内方法。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -963,87 +1029,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shaojunying.github.io/2021/01/21/%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="邵俊颖">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shaojunying's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/01/21/%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/" class="post-title-link" itemprop="url">进程通信的几种方式</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-01-21 14:08:05" itemprop="dateCreated datePublished" datetime="2021-01-21T14:08:05+08:00">2021-01-21</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-04-04 13:42:02" itemprop="dateModified" datetime="2021-04-04T13:42:02+08:00">2021-04-04</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="低级方式"><a href="#低级方式" class="headerlink" title="低级方式"></a>低级方式</h2><ul>
-<li>PV操作：用来解决互斥和同步问题</li>
-</ul>
-<h2 id="高级方式"><a href="#高级方式" class="headerlink" title="高级方式"></a>高级方式</h2><ul>
-<li>共享存储：两个进程共享同一片内存区域，都可以读写这篇内存，需要使用进行互斥控制</li>
-<li>消息传递：包含直接通信和间接通信两种方式<ul>
-<li>直接通信：发送方直接将消息发送到接收者的缓冲消息队列中</li>
-<li>间接通信：发送方将消息发送到一个中介中，类似于信箱，接收者从信箱中获取最新消息</li>
-</ul>
-</li>
-<li>管道通信：（消息传递的特殊形式，也是共享内存的优化和发展）<ul>
-<li>管道长度固定，满了之后写操作被阻塞，空了之后读操作被阻塞</li>
-<li>半双工通信，所以要想实现两方随意传输消息需要使用两个管道</li>
-<li>接收者取出数据之后数据即被抛弃，不可再次获取</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1113,7 +1098,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">54</span>
+          <span class="site-state-item-count">55</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

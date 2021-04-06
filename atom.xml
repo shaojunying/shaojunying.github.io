@@ -6,7 +6,7 @@
   <link href="https://shaojunying.github.io/atom.xml" rel="self"/>
   
   <link href="https://shaojunying.github.io/"/>
-  <updated>2021-04-04T06:09:56.131Z</updated>
+  <updated>2021-04-06T11:58:40.437Z</updated>
   <id>https://shaojunying.github.io/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>AOP代理失效的两种情况</title>
+    <link href="https://shaojunying.github.io/2021/04/06/AOP%E4%BB%A3%E7%90%86%E5%A4%B1%E6%95%88%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%83%85%E5%86%B5/"/>
+    <id>https://shaojunying.github.io/2021/04/06/AOP%E4%BB%A3%E7%90%86%E5%A4%B1%E6%95%88%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%83%85%E5%86%B5/</id>
+    <published>2021-04-06T11:58:34.000Z</published>
+    <updated>2021-04-06T11:58:40.437Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="被代理对象的private方法不能被代理"><a href="#被代理对象的private方法不能被代理" class="headerlink" title="被代理对象的private方法不能被代理"></a>被代理对象的private方法不能被代理</h2><ul><li>cdlib技术使用子类来代理父类，子类看不到父类的private，也就无法代理private方法。</li><li>JDK动态代理是基于接口来实现的，而接口不允许有private方法，也就不会有出现这个问题。</li></ul><h2 id="调用类内其他方法"><a href="#调用类内其他方法" class="headerlink" title="调用类内其他方法"></a>调用类内其他方法</h2><ul><li>如果方法a()调用处于同一个类内的方法b()，那么相当于this.b()，这里的this代表没有被代理的方法。</li></ul><p>为了解决这个问题，可以使用Autowired引入被代理之后的类，进而使用（被代理后的对象）调用类内方法。</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;被代理对象的private方法不能被代理&quot;&gt;&lt;a href=&quot;#被代理对象的private方法不能被代理&quot; class=&quot;headerlink&quot; title=&quot;被代理对象的private方法不能被代理&quot;&gt;&lt;/a&gt;被代理对象的private方法不能被代理&lt;/h2&gt;&lt;</summary>
+      
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>Spring解决循环依赖</title>
