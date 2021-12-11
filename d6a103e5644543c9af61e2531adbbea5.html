@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Chrome, Firefox OS and Opera Status Bar Color -->
+<meta name="theme-color" content="#FFFFFF">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css">
+<link rel="stylesheet" type="text/css"
+  href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.19.0/themes/prism.min.css">
+<link rel="stylesheet" type="text/css" href="css/SourceSansPro.css">
+<link rel="stylesheet" type="text/css" href="css/theme.css">
+<link rel="stylesheet" type="text/css" href="css/notablog.css">
+<!-- Favicon -->
+
+  <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;📖&lt;/text&gt;&lt;/svg&gt;">
+
+<style>
+  :root {
+    font-size: 20px;
+  }
+</style>
+  <title>Copy of ,Java中的i++与++i&nbsp;|&nbsp;Notablog</title>
+  <meta property="og:type" content="blog">
+  <meta property="og:title" content="Copy of ,Java中的i++与++i">
+  
+  
+    <meta property="og:image" content="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;💍&lt;/text&gt;&lt;/svg&gt;">
+  
+  <style>
+    .DateTagBar {
+      margin-top: 1.0rem;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="Navbar">
+  <a href="index.html">
+    <div class="Navbar__Btn">
+      
+        <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;📖&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+      
+      <span>Home</span>
+    </div>
+  </a>
+  
+    
+  
+    
+  
+    
+      <span class="Navbar__Delim">&centerdot;</span>
+      <a href="about.html">
+        <div class="Navbar__Btn">
+          
+            <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;😀&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+          
+          <span>About</span>
+        </div>
+      </a>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+</nav>
+  <header class="Header">
+    
+    <div class="Header__Spacer Header__Spacer--NoCover">
+    </div>
+    
+      <div class="Header__Icon">
+        <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;💍&lt;/text&gt;&lt;/svg&gt;"></span>
+      </div>
+    
+    <h1 class="Header__Title">Copy of ,Java中的i++与++i</h1>
+    
+  </header>
+  <article id="https://www.notion.so/d6a103e5644543c9af61e2531adbbea5" class="PageRoot"><div id="https://www.notion.so/04bf2b308d564bbba963470f31970837" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">对于如下两个命令</span></span></p></div><pre id="https://www.notion.so/5bdf7b1930ea467181f5123433c6c2a5" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+i <span class="token operator">=</span> i <span class="token operator">++</span><span class="token punctuation">;</span></span></span></span></code></pre><div id="https://www.notion.so/6c0a6e7e27f24f1fbb13fd49730d2700" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">和</span></span></p></div><pre id="https://www.notion.so/f5788af17b70451c915954208be07da4" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+i <span class="token operator">=</span> <span class="token operator">++</span>i<span class="token punctuation">;</span></span></span></span></code></pre><div id="https://www.notion.so/e5005d24ec3644638b84f137f1a3afc4" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">i = i ++</code></span><span class="SemanticString">对应的字节码为</span></span></p></div><pre id="https://www.notion.so/b098cdc04a464e01950e06ddc6a3c435" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span>iload_1 将局部变量表中下标为<span class="token number">1</span>的元素压入栈顶
+iinc1_1 将局部变量表中下标为<span class="token number">1</span>的元素加一
+istore_1 将栈顶元素存入局部变量表中下标为<span class="token number">1</span>的位置</span></span></span></code></pre><div id="https://www.notion.so/20ccb751186942fea22e03514213b09e" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">可以看到，上面局部变量表中的值加一之后将被覆盖掉，最后</span><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">i</code></span><span class="SemanticString">的值还是</span><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">1</code></span></span></p></div><div id="https://www.notion.so/8c21d64511c845ac824eeed225835ed2" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">i = ++i对应的字节码为</span></span></p></div><pre id="https://www.notion.so/1fa8c1cf6735455eb99da106be2be2bd" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span>iinc_1
+iload_1
+istore_1</span></span></span></code></pre><div id="https://www.notion.so/7575c194239f4b79a20bfe67dcb1c036" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">最终</span><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">i</code></span><span class="SemanticString">的值被加一，最后</span><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">i</code></span><span class="SemanticString">的值为</span><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">2</code></span></span></p></div><div id="https://www.notion.so/5d224781510943e4921abf478189e845" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"></span></p></div></article>
+  <footer class="Footer">
+  <div>&copy; Notablog 2019-2021</div>
+  <div>&centerdot;</div>
+  <div>Powered by <a href="https://github.com/dragonman225/notablog" target="_blank"
+      rel="noopener noreferrer">Notablog</a>.
+  </div>
+</footer>
+</body>
+
+</html>
