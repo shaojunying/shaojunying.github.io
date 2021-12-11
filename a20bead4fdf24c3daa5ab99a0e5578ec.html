@@ -17,14 +17,14 @@
 <link rel="stylesheet" type="text/css" href="css/notablog.css">
 <!-- Favicon -->
 
-  <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;🧨&lt;/text&gt;&lt;/svg&gt;">
+  <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;📖&lt;/text&gt;&lt;/svg&gt;">
 
 <style>
   :root {
     font-size: 20px;
   }
 </style>
-  <title>最多能创建多少TCP连接&nbsp;|&nbsp;学习笔记(列表)</title>
+  <title>最多能创建多少TCP连接&nbsp;|&nbsp;Junying Shao&#39;s Blog</title>
   <meta property="og:type" content="blog">
   <meta property="og:title" content="最多能创建多少TCP连接">
   
@@ -43,7 +43,7 @@
   <a href="index.html">
     <div class="Navbar__Btn">
       
-        <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;🧨&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+        <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;📖&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
       
       <span>Home</span>
     </div>
@@ -195,7 +195,7 @@
   </header>
   <article id="https://www.notion.so/a20bead4fdf24c3daa5ab99a0e5578ec" class="PageRoot"><ol class="NumberedListWrapper"><li id="https://www.notion.so/56bb350312d047328b541fb27366ac81" class="NumberedList" value="1"><span class="SemanticStringArray"><span class="SemanticString">系统是根据 [ 源IP、源</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">端口</strong></span><span class="SemanticString">、目的IP、目的端口 ] 这样的</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">四元组</strong></span><span class="SemanticString">来区分不同的TCP连接的。如果只是与同一个目的IP和端口建立连接，那么最多只能创建六万多个连接。但是如果可以和不同的目的IP和端口建立连接，那么在不考虑其他因素的情况下，可建立的连接数是没有上限的。</span></span></li><li id="https://www.notion.so/b236c56f5c294686ae0293e134d500be" class="NumberedList" value="2"><span class="SemanticStringArray"><span class="SemanticString">由于每个TCP连接都需要与</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">文件描述符</strong></span><span class="SemanticString">绑定，因此文件描述符的最大数量也会限制可以建立的TCP连接数量。</span></span></li><li id="https://www.notion.so/d6033326856940d6a38d281e47535a1d" class="NumberedList" value="3"><span class="SemanticStringArray"><span class="SemanticString">如果为每个TCP连接分配一个线程的话，那么在TCP连接过多时，CPU将需要频繁进行上下文的切换。因此</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">CPU的性能</strong></span><span class="SemanticString">也会成为建立TCP连接的瓶颈。此时应该使用IO多路复用来监听事件描述符。</span></span></li><li id="https://www.notion.so/755b8aeaebbd4ec5b361fb59d0cd36f6" class="NumberedList" value="4"><span class="SemanticStringArray"><span class="SemanticString">由于每个TCP都需要一定的内存区域用于缓存数据，过多的TCP连接可能会耗尽系统的</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">内存资源</strong></span><span class="SemanticString">。</span></span></li></ol><div id="https://www.notion.so/f451ba6902d44efc870c75188bdb2347" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"></span></p></div></article>
   <footer class="Footer">
-  <div>&copy; 学习笔记(列表) 2019-2021</div>
+  <div>&copy; Junying Shao&#39;s Blog 2019-2021</div>
   <div>&centerdot;</div>
   <div>Powered by <a href="https://github.com/dragonman225/notablog" target="_blank"
       rel="noopener noreferrer">Notablog</a>.
