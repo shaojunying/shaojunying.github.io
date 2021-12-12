@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Chrome, Firefox OS and Opera Status Bar Color -->
+<meta name="theme-color" content="#FFFFFF">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css">
+<link rel="stylesheet" type="text/css"
+  href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.19.0/themes/prism.min.css">
+<link rel="stylesheet" type="text/css" href="css/SourceSansPro.css">
+<link rel="stylesheet" type="text/css" href="css/theme.css">
+<link rel="stylesheet" type="text/css" href="css/notablog.css">
+<!-- Favicon -->
+
+  <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;📖&lt;/text&gt;&lt;/svg&gt;">
+
+<style>
+  :root {
+    font-size: 20px;
+  }
+</style>
+  <title>Redis技术调研总结&nbsp;|&nbsp;Junying Shao&#39;s Blog</title>
+  <meta property="og:type" content="blog">
+  <meta property="og:title" content="Redis技术调研总结">
+  
+  
+    <meta property="og:image" content="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;🕋&lt;/text&gt;&lt;/svg&gt;">
+  
+  <style>
+    .DateTagBar {
+      margin-top: 1.0rem;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="Navbar">
+  <a href="index.html">
+    <div class="Navbar__Btn">
+      
+        <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;📖&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+      
+      <span>Home</span>
+    </div>
+  </a>
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <span class="Navbar__Delim">&centerdot;</span>
+      <a href="about.html">
+        <div class="Navbar__Btn">
+          
+            <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;😀&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+          
+          <span>About</span>
+        </div>
+      </a>
+    
+  
+</nav>
+  <header class="Header">
+    
+      <div class="Header__Cover">
+        <img src="https://www.notion.so/images/page-cover/gradients_5.png">
+      </div>
+    
+    <div class="Header__Spacer ">
+    </div>
+    
+      <div class="Header__Icon">
+        <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;🕋&lt;/text&gt;&lt;/svg&gt;"></span>
+      </div>
+    
+    <h1 class="Header__Title">Redis技术调研总结</h1>
+    
+      <div class="DateTagBar">
+        
+        
+          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--pink">
+            <a href="tag/redis.html">redis</a>
+          </span>
+        
+          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--gray">
+            <a href="tag/架构设计.html">架构设计</a>
+          </span>
+        
+          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--pink">
+            <a href="tag/实践.html">实践</a>
+          </span>
+        
+      </div>
+    
+  </header>
+  <article id="https://www.notion.so/bd4527178ac849c2b9044cc388cc8ff8" class="PageRoot"><h1 id="https://www.notion.so/8a76de70aaa64990832f65713381d602" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/8a76de70aaa64990832f65713381d602"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">缓存的两个主要用途</span></span></h1><ol class="NumberedListWrapper"><li id="https://www.notion.so/b97f68baee5741748cfb37af3a741384" class="NumberedList" value="1"><span class="SemanticStringArray"><span class="SemanticString">高性能：如果一条查询耗时600ms，那么我们可以将查询结果放入缓存，之后的查询都直接走缓存，之后的查询效率将显著提升。</span></span></li><li id="https://www.notion.so/56132ce1ce6340d9ad2cbd86992cb2e9" class="NumberedList" value="2"><span class="SemanticStringArray"><span class="SemanticString">高并发：单机MySQL只支持几千的并发，但是Redis可以支持一秒几万十几万的并发。（因为内存天然支持高并发、key_value结构简单，查询起来更快。）</span></span></li></ol><h1 id="https://www.notion.so/df71551eff0b4f9581c899e81e5c3956" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/df71551eff0b4f9581c899e81e5c3956"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">只用Redis、不用MySQL的一种设计</span></span></h1><h2 id="https://www.notion.so/35d5a9de6a0a44cfaeb514b502bbe0a9" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/35d5a9de6a0a44cfaeb514b502bbe0a9"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">数据结构的选型</span></span></h2><div id="https://www.notion.so/56a91b4d4e4045a6919a667935e85de8" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">用户表</strong></span></span></p></div><ul class="BulletedListWrapper"><li id="https://www.notion.so/d0047bda4961456da97c83d5a39681f0" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">key: user_${user_id}</span></span></li><li id="https://www.notion.so/c363e332134b48a5a1fe09c5a66e7436" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">value: 是否抢到大红包</span></span></li></ul><div id="https://www.notion.so/1d5a998a1e444fafbde6cb5f20ca1087" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">钱包表</strong></span></span></p></div><ul class="BulletedListWrapper"><li id="https://www.notion.so/3a81a49d3965489bb6cc2f04b1afb033" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">Key: wallet_${user_id}</span></span></li><li id="https://www.notion.so/3ce23e548f13432ca10d8c1a8b029119" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">Value: 类型为Map。Map的key为红包id，value存储以下信息的序列化后的结果：</span></span><ul class="BulletedListWrapper"><li id="https://www.notion.so/cfade44d93b14410b08281dab1bb0377" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">&lt;是否已拆开、金额、时间&gt;</span></span></li></ul></li></ul><div id="https://www.notion.so/3a8d7dbf73e94836bbff436c47af0278" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">一个示例</strong></span></span></p></div><div id="https://www.notion.so/dfe31ef4009a4c06ba94e952342330ce" class="Image Image--PageWidth"><figure><a href="#"><img src="#" style="width:100%"/></a><figcaption><span class="SemanticStringArray"></span></figcaption></figure></div><div id="https://www.notion.so/9c98d5b9d5234e58b6533b582ecc3538" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">为什么不使用其他数据结构。</strong></span></span></p></div><ul class="BulletedListWrapper"><li id="https://www.notion.so/4eb5a8ce31af43be85ab00996e25e7b4" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">Redis有字符串、列表、哈希、集合、有序集合。由于拆红包需要通过用户id、红包id查询红包，所以这里选择了哈希。</span></span></li><li id="https://www.notion.so/6a1cc7730ffc4dbea6f6b4756ecfcd7a" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">因为每个用户可以抢到的红包个数有限，所以我们可以在应用侧对红包排序。</span></span></li></ul><h2 id="https://www.notion.so/733e2a4c360d46d79c151d276b3bd976" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/733e2a4c360d46d79c151d276b3bd976"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">各个接口的流程拆解</span></span></h2><div id="https://www.notion.so/c46d8e633ed94e79bdd31e6821200017" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">抢红包</strong></span></span></p></div><div id="https://www.notion.so/98aba29a3a46481aa9599c1b242dbaab" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">hsetnx key field value。只有字段field不存在时，才设置value的值。</span></span></p></div><div id="https://www.notion.so/e5d6f710ac4e44d1ae1d63f7591da29f" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">使用hsetnx函数可以保证一个红包只能被抢一次。</span></span></p></div><div id="https://www.notion.so/7879e51d6e534e63a602fea403cbb369" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">问题</strong></span></span></p></div><div id="https://www.notion.so/ec064e23cf954c5896de6220edc6c416" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">如何保证一个用户最多只能抢N个红包？</span></span></p></div><div id="https://www.notion.so/cf332efb086d46b8a821a7b834712d43" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">一个猜想：在redis中存储 </span><span class="SemanticString"><mark class="SemanticString__Fragment SemanticString__Fragment--HighlightedBg SemanticString__Fragment--BgOrange">用户和已抢红包个数的对应关系</mark></span><span class="SemanticString">，每次执行抢红包请求之前，先</span><span class="SemanticString"><mark class="SemanticString__Fragment SemanticString__Fragment--HighlightedBg SemanticString__Fragment--BgGray">递增该用户对应的已抢红包个数</mark></span><span class="SemanticString">。</span></span></p></div><div id="https://www.notion.so/a288f824b08b4021becdc8ef473c81b6" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">拆红包</strong></span></span></p></div><div id="https://www.notion.so/1db8246dcefe4bc1937b2c22b95b32e4" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">流程</strong></span></span></p></div><ol class="NumberedListWrapper"><li id="https://www.notion.so/83c0731a9bac464182e964e277612261" class="NumberedList" value="1"><span class="SemanticStringArray"><span class="SemanticString">通过user_id查询到对应的map</span></span></li><li id="https://www.notion.so/8084f1ceec8d4467ac9cb99e53612686" class="NumberedList" value="2"><span class="SemanticStringArray"><span class="SemanticString">在map中找到红包id对应的红包信息。</span></span></li><li id="https://www.notion.so/b2be3949419f42b5bd8fd8666602715a" class="NumberedList" value="3"><span class="SemanticStringArray"><span class="SemanticString">更新是否拆开、红包金额等信息。</span></span></li></ol><div id="https://www.notion.so/9f3e00f75c45494b8f428a935df4e62c" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">问题</strong></span></span></p></div><div id="https://www.notion.so/e361b7ee2fb148488535c593a5cbf0d1" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">如何保证一个红包不会被拆多次？</span></span></p></div><ol class="NumberedListWrapper"><li id="https://www.notion.so/3dc3573523a44508b803b49cffb23698" class="NumberedList" value="1"><span class="SemanticStringArray"><span class="SemanticString">在红包被抢完之后就计算红包金额，但是设置是否拆开为false，不向前端返回金额的数值。</span></span></li><li id="https://www.notion.so/8ff08d8b2c91482980d8a714001f51d1" class="NumberedList" value="2"><span class="SemanticStringArray"><span class="SemanticString">使用锁或者CAS保证 判断红包是否已拆开、拆红包 执行的原子性。</span></span></li></ol><div id="https://www.notion.so/bf6e5cccdcd246c8a4daac2d3d2d729c" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">如何在拆红包时更新总金额？</span></span></p></div><ul class="BulletedListWrapper"><li id="https://www.notion.so/4e5bb3f31e8444dab710e89057dbdd92" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">一个方案是按照天韵同学说的，预先分配好红包并放入消息队列。最后再计算总的红包数。</span></span></li><li id="https://www.notion.so/534ac0cdd3b6482e814a9ee7ae267532" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">使用锁或者CAS保证 拆红包、更新余额 两步的原子性。</span></span></li></ul><div id="https://www.notion.so/2e115e83724a4b03976bb71c447296a9" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">如何处理过期红包？</span></span></p></div><ul class="BulletedListWrapper"><li id="https://www.notion.so/8bdc9ac4efc44747bc0d9c663d56f603" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">在到达过期时间遍历所有红包，找到所有未拆开的红包。</span></span></li></ul><div id="https://www.notion.so/130230484ba54c07a65be1af67397c79" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">获取钱包信息</strong></span></span></p></div><div id="https://www.notion.so/b176bfd7e80d461bbe0a44ab46a11585" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">获取用户对应的map信息，按照创建时间排序并返回。</span></span></p></div><h2 id="https://www.notion.so/a5672e4564e344b697e3d6033ef7d542" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/a5672e4564e344b697e3d6033ef7d542"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">一个问题</span></span></h2><div id="https://www.notion.so/ea353da1c8184deb99e50f5ffd18cef0" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">如何保证宕机时缓存数据（本地缓存、Redis未持久化部分）不丢失？</span></span></p></div><div id="https://www.notion.so/d7509fecb3924fba8dd44f9d0f0eda3d" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">Redis服务进程的事件循环：</span></span></p></div><div id="https://www.notion.so/0cd4a607f2c6461e925fe016cf0b62a4" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"></span><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">while True:
+</code></span><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">    ProcessFileEvents(); // 处理IO事件
+</code></span><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">    ProcessTimeEvents(); // 时间事件
+</code></span><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">    FlushAppendOnlyFile(); // 是否持久化数据</code></span></span></p></div><div id="https://www.notion.so/53762fb58b0d4cc58b38730133a7af29" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">如上所示，Redis的持久化并不能保证完全不丢失数据。即使将AOF持久化的频率设置为always，也可能丢失一个事件循环的数据。</span></span></p></div></article>
+  <footer class="Footer">
+  <div>&copy; Junying Shao&#39;s Blog 2019-2021</div>
+  <div>&centerdot;</div>
+  <div>Powered by <a href="https://github.com/dragonman225/notablog" target="_blank"
+      rel="noopener noreferrer">Notablog</a>.
+  </div>
+</footer>
+</body>
+
+</html>
