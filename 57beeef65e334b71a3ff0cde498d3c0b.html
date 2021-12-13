@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Chrome, Firefox OS and Opera Status Bar Color -->
+<meta name="theme-color" content="#FFFFFF">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css">
+<link rel="stylesheet" type="text/css"
+  href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.19.0/themes/prism.min.css">
+<link rel="stylesheet" type="text/css" href="css/SourceSansPro.css">
+<link rel="stylesheet" type="text/css" href="css/theme.css">
+<link rel="stylesheet" type="text/css" href="css/notablog.css">
+<!-- Favicon -->
+
+  <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;📖&lt;/text&gt;&lt;/svg&gt;">
+
+<style>
+  :root {
+    font-size: 20px;
+  }
+</style>
+  <title>Java中的ThreadLocal&nbsp;|&nbsp;Junying Shao&#39;s Blog</title>
+  <meta property="og:type" content="blog">
+  <meta property="og:title" content="Java中的ThreadLocal">
+  
+  
+    <meta property="og:image" content="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;🥈&lt;/text&gt;&lt;/svg&gt;">
+  
+  <style>
+    .DateTagBar {
+      margin-top: 1.0rem;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="Navbar">
+  <a href="index.html">
+    <div class="Navbar__Btn">
+      
+        <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;📖&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+      
+      <span>Home</span>
+    </div>
+  </a>
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <span class="Navbar__Delim">&centerdot;</span>
+      <a href="about.html">
+        <div class="Navbar__Btn">
+          
+            <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;😀&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+          
+          <span>About</span>
+        </div>
+      </a>
+    
+  
+</nav>
+  <header class="Header">
+    
+    <div class="Header__Spacer Header__Spacer--NoCover">
+    </div>
+    
+      <div class="Header__Icon">
+        <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;🥈&lt;/text&gt;&lt;/svg&gt;"></span>
+      </div>
+    
+    <h1 class="Header__Title">Java中的ThreadLocal</h1>
+    
+      <div class="DateTagBar">
+        
+        
+          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--blue">
+            <a href="tag/Java.html">Java</a>
+          </span>
+        
+          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--purple">
+            <a href="tag/多线程.html">多线程</a>
+          </span>
+        
+      </div>
+    
+  </header>
+  <article id="https://www.notion.so/57beeef65e334b71a3ff0cde498d3c0b" class="PageRoot"><h2 id="https://www.notion.so/fb2416d9ec5549b1917662e0451a29b5" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/fb2416d9ec5549b1917662e0451a29b5"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">为什么需要ThreadLocal</span></span></h2><div id="https://www.notion.so/e58101beac1c45149e2e982121940941" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">在开发中，我们可能需要保存一些线程私有的数据，例如当前登录用户的账号信息等。但是Spring的bean大部分是单例的、无状态的。</span></span></p></div><ul class="BulletedListWrapper"><li id="https://www.notion.so/ac493aa5239749c2916d89bcb4719c41" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">直接在bean中创建</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">局部变量</strong></span><span class="SemanticString">。由于局部变量的引用存储在栈中，所以可以保证变量不会被多个线程共享。但是我们在每层函数时都需要传递该局部变量，代价较高。</span></span></li><li id="https://www.notion.so/8d94f3014ec74f7aae58a853810af7ee" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">直接在bean中创建</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">全局变量</strong></span><span class="SemanticString">。由于bean是单例的，所以所有线程都持有该对象的引用并操作该对象。不符合线程私有的要求。</span></span></li></ul><div id="https://www.notion.so/36ceffa7e7f04218bef05cc30bb6d43c" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">因此这里引入了ThreadLocal。讲ThreadLocal声明为static，每个线程调用</span><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">threadLocal.set(val);</code></span><span class="SemanticString"> 都会将val与调用者的线程绑定。</span></span></p></div><h2 id="https://www.notion.so/3c85d41a1db541d9b6f346c3ace21876" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/3c85d41a1db541d9b6f346c3ace21876"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">ThreadLocal的实现</span></span></h2><div id="https://www.notion.so/8f14eefd0cd64c75a235bc5c5e825e0d" class="Image Image--Normal"><figure><a href="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F07beb7e2-73ae-40f8-be01-9e891774e0da%2FUntitled.png?width=912&amp;table=block&amp;id=8f14eefd-0cd6-4c75-a235-bc5c5e825e0d"><img src="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F07beb7e2-73ae-40f8-be01-9e891774e0da%2FUntitled.png?width=912&amp;table=block&amp;id=8f14eefd-0cd6-4c75-a235-bc5c5e825e0d" style="width:912px"/></a><figcaption><span class="SemanticStringArray"></span></figcaption></figure></div><div id="https://www.notion.so/e53b787a144a4ea88599c37723ff9b21" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">如上图所示，每个线程持有一个ThreadLocal.ThreadLocalMap对象，该对象是一个Map，每个Entry的key是ThreadLocal对象，val是调用set方法设置的值。</span></span></p></div><div id="https://www.notion.so/44b9e7cded91483887802d373b6853d9" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">ThreadLocal通过将线程要访问的对象引用存储在线程自身避免了多线程的竞争。</strong></span></span></p></div><div id="https://www.notion.so/38cfc76a07664519a150b500cf5f02be" class="Image Image--Normal"><figure><a href="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F3cedf5f9-49d7-4f16-9d7d-0c755596bb20%2FUntitled.png?width=768&amp;table=block&amp;id=38cfc76a-0766-4519-a150-b500cf5f02be"><img src="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F3cedf5f9-49d7-4f16-9d7d-0c755596bb20%2FUntitled.png?width=768&amp;table=block&amp;id=38cfc76a-0766-4519-a150-b500cf5f02be" style="width:768px"/></a><figcaption><span class="SemanticStringArray"></span></figcaption></figure></div><div id="https://www.notion.so/812051dc665948ae953b05af803e2d36" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">ThreadLocalMap中的Entry继承了WeakReference。（如果某个对象仅仅被弱引用，那么下次垃圾回收时一定会回收该对象。）</span></span></p></div><div id="https://www.notion.so/163baedef45e4d978c96973f0bd3be38" class="Image Image--Normal"><figure><a href="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F29e47ebf-d63a-45c5-8a75-d66ecc622277%2FUntitled.png?width=816&amp;table=block&amp;id=163baede-f45e-4d97-8c96-973f0bd3be38"><img src="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F29e47ebf-d63a-45c5-8a75-d66ecc622277%2FUntitled.png?width=816&amp;table=block&amp;id=163baede-f45e-4d97-8c96-973f0bd3be38" style="width:816px"/></a><figcaption><span class="SemanticStringArray"></span></figcaption></figure></div><div id="https://www.notion.so/2042d4c27f9f4212a91b4ce733279605" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">如上所示，如果当前线程不再使用ThreadLocal对象，直接将</span></span></p></div></article>
+  <footer class="Footer">
+  <div>&copy; Junying Shao&#39;s Blog 2019-2021</div>
+  <div>&centerdot;</div>
+  <div>Powered by <a href="https://github.com/dragonman225/notablog" target="_blank"
+      rel="noopener noreferrer">Notablog</a>.
+  </div>
+</footer>
+</body>
+
+</html>
