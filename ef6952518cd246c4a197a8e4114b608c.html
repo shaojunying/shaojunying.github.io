@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Chrome, Firefox OS and Opera Status Bar Color -->
+<meta name="theme-color" content="#FFFFFF">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css">
+<link rel="stylesheet" type="text/css"
+  href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.19.0/themes/prism.min.css">
+<link rel="stylesheet" type="text/css" href="css/SourceSansPro.css">
+<link rel="stylesheet" type="text/css" href="css/theme.css">
+<link rel="stylesheet" type="text/css" href="css/notablog.css">
+<!-- Favicon -->
+
+  <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;📖&lt;/text&gt;&lt;/svg&gt;">
+
+<style>
+  :root {
+    font-size: 20px;
+  }
+</style>
+  <title>Spring Boot MyBatis项目的单元测试与集成测试&nbsp;|&nbsp;Junying Shao&#39;s Blog</title>
+  <meta property="og:type" content="blog">
+  <meta property="og:title" content="Spring Boot MyBatis项目的单元测试与集成测试">
+  
+  
+    <meta property="og:image" content="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;🚊&lt;/text&gt;&lt;/svg&gt;">
+  
+  <style>
+    .DateTagBar {
+      margin-top: 1.0rem;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="Navbar">
+  <a href="index.html">
+    <div class="Navbar__Btn">
+      
+        <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;📖&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+      
+      <span>Home</span>
+    </div>
+  </a>
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <span class="Navbar__Delim">&centerdot;</span>
+      <a href="about.html">
+        <div class="Navbar__Btn">
+          
+            <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;😀&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+          
+          <span>About</span>
+        </div>
+      </a>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+</nav>
+  <header class="Header">
+    
+      <div class="Header__Cover">
+        <img src="https://www.notion.so/images/page-cover/woodcuts_14.jpg">
+      </div>
+    
+    <div class="Header__Spacer ">
+    </div>
+    
+      <div class="Header__Icon">
+        <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;🚊&lt;/text&gt;&lt;/svg&gt;"></span>
+      </div>
+    
+    <h1 class="Header__Title">Spring Boot MyBatis项目的单元测试与集成测试</h1>
+    
+      <div class="DateTagBar">
+        
+          <span class="DateTagBar__Item DateTagBar__Date">Posted on Thu, Dec 16, 2021</span>
+        
+        
+          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--brown">
+            <a href="tag/Spring MVC.html">Spring MVC</a>
+          </span>
+        
+          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--pink">
+            <a href="tag/Spring Boot.html">Spring Boot</a>
+          </span>
+        
+          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--green">
+            <a href="tag/MyBatis.html">MyBatis</a>
+          </span>
+        
+          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--purple">
+            <a href="tag/单元测试.html">单元测试</a>
+          </span>
+        
+      </div>
+    
+  </header>
+  <article id="https://www.notion.so/ef6952518cd246c4a197a8e4114b608c" class="PageRoot"><div id="https://www.notion.so/e27d30ee7e774dedb4789d032e1e2270" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">MyBatis的基本使用请参考前一篇文章</span></span></p></div><div id="https://www.notion.so/f411ff4e9ca04762b8992825d51f178c" class="Bookmark"><a href="https://shaojunying.github.io/74a24116df544e3a9bad3add2627a55b.html"><p class="Bookmark__Link">https://shaojunying.github.io/74a24116df544e3a9bad3add2627a55b.html</p></a></div><div id="https://www.notion.so/08bee9f0774c4191b1ec1d71d9bdc7d6" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">参考链接</span></span></p></div><div id="https://www.notion.so/be785004a1ff4c92a28654b23d1be217" class="Bookmark"><a href="https://github.com/amigoscode/spring-boot-fullstack-professional/blob/13-testing/src/test/java/com/example/demo/student/StudentRepositoryTest.java"><h5 class="Bookmark__Title">spring-boot-fullstack-professional/StudentRepositoryTest.java at 13-testing · amigoscode/spring-boot-fullstack-professional</h5><p class="Bookmark__Desc">This file contains bidirectional Unicode text that may be interpreted or compiled differently than what appears below. To review, open the file in an editor that reveals hidden Unicode characters. Learn more about bidirectional Unicode characters You can&#x27;t perform that action at this time. You signed in with another tab or window.</p><p class="Bookmark__Link">https://github.com/amigoscode/spring-boot-fullstack-professional/blob/13-testing/src/test/java/com/example/demo/student/StudentRepositoryTest.java</p></a></div><h1 id="https://www.notion.so/b675c1b828874f06936a2d4e4296a0d8" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/b675c1b828874f06936a2d4e4296a0d8"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">引入MyBatis Test和内存数据库H2</span></span></h1><h2 id="https://www.notion.so/ba6e0e7d7cdd4ffdbbe876e73f7fa83a" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/ba6e0e7d7cdd4ffdbbe876e73f7fa83a"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">引入pom依赖</span></span></h2><pre id="https://www.notion.so/ab2e05484ac84556aad4418bf79b1571" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token generics"><span class="token punctuation">&lt;</span>dependency<span class="token punctuation">></span></span>
+    <span class="token generics"><span class="token punctuation">&lt;</span>groupId<span class="token punctuation">></span></span>com<span class="token punctuation">.</span>h2database<span class="token operator">&lt;</span><span class="token operator">/</span>groupId<span class="token operator">></span>
+    <span class="token generics"><span class="token punctuation">&lt;</span>artifactId<span class="token punctuation">></span></span>h2<span class="token operator">&lt;</span><span class="token operator">/</span>artifactId<span class="token operator">></span>
+    <span class="token generics"><span class="token punctuation">&lt;</span>scope<span class="token punctuation">></span></span>runtime<span class="token operator">&lt;</span><span class="token operator">/</span>scope<span class="token operator">></span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>dependency<span class="token operator">></span>
+
+<span class="token generics"><span class="token punctuation">&lt;</span>dependency<span class="token punctuation">></span></span>
+    <span class="token generics"><span class="token punctuation">&lt;</span>groupId<span class="token punctuation">></span></span>org<span class="token punctuation">.</span>mybatis<span class="token punctuation">.</span>spring<span class="token punctuation">.</span>boot<span class="token operator">&lt;</span><span class="token operator">/</span>groupId<span class="token operator">></span>
+    <span class="token generics"><span class="token punctuation">&lt;</span>artifactId<span class="token punctuation">></span></span>mybatis<span class="token operator">-</span>spring<span class="token operator">-</span>boot<span class="token operator">-</span>starter<span class="token operator">-</span>test<span class="token operator">&lt;</span><span class="token operator">/</span>artifactId<span class="token operator">></span>
+    <span class="token generics"><span class="token punctuation">&lt;</span>version<span class="token punctuation">></span></span><span class="token number">2.2</span><span class="token number">.0</span><span class="token operator">&lt;</span><span class="token operator">/</span>version<span class="token operator">></span>
+    <span class="token generics"><span class="token punctuation">&lt;</span>scope<span class="token punctuation">></span></span>test<span class="token operator">&lt;</span><span class="token operator">/</span>scope<span class="token operator">></span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>dependency<span class="token operator">></span></span></span></span></code></pre><h2 id="https://www.notion.so/858349bca8ab453c80c1e9675682e310" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/858349bca8ab453c80c1e9675682e310"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">在test目录下创建resource目录</span></span></h2><div id="https://www.notion.so/9fcc8cf9830c433494b17751e0ffb1aa" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">之后还需要在resource目录下创建application.properties、schema.sql、data.sql文件，创建之后，文件目录如下：</span></span></p></div><pre id="https://www.notion.so/04d1bf67351a4f7f87cdaa1004cf4748" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token punctuation">.</span>
+├── <span class="token class-name">MyBatisLearningDemo</span><span class="token punctuation">.</span>iml
+├── README<span class="token punctuation">.</span>md
+├── pom<span class="token punctuation">.</span>xml
+└── src
+    ├── main
+    │   ├── java
+    │   │   └── com
+    │   │       └── shao
+    │   │           └── mybatislearningdemo
+    │   │               ├── <span class="token class-name">MyBatisLearningDemoApplication</span><span class="token punctuation">.</span>java
+    │   │               └── article
+    │   │                   ├── <span class="token class-name">Article</span><span class="token punctuation">.</span>java
+    │   │                   ├── <span class="token class-name">ArticleController</span><span class="token punctuation">.</span>java
+    │   │                   ├── <span class="token class-name">ArticleMapper</span><span class="token punctuation">.</span>java
+    │   │                   └── <span class="token class-name">ArticleService</span><span class="token punctuation">.</span>java
+    │   └── resources
+    │       └── application<span class="token punctuation">.</span>properties
+    └── test
+        ├── java
+        │   └── com
+        │       └── shao
+        │           └── mybatislearningdemo
+        │               ├── <span class="token class-name">MyBatisLearningDemoApplicationTests</span><span class="token punctuation">.</span>java
+        └── resources <span class="token comment">// 新创建的</span>
+            ├── application<span class="token punctuation">.</span>properties
+            ├── data<span class="token punctuation">.</span>sql
+            └── schema<span class="token punctuation">.</span>sql
+
+<span class="token number">15</span> directories<span class="token punctuation">,</span> <span class="token number">14</span> files</span></span></span></code></pre><h3 id="https://www.notion.so/b65edd6cf00e42e1abf2bbbdcfcdab6b" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/b65edd6cf00e42e1abf2bbbdcfcdab6b"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">在application.properties中配置H2数据库的连接信息</span></span></h3><pre id="https://www.notion.so/2a56ca15f6e64f6ba827e1b8b469e826" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span>spring<span class="token punctuation">.</span>datasource<span class="token punctuation">.</span>url<span class="token operator">=</span>jdbc<span class="token operator">:</span>h2<span class="token operator">:</span>mem<span class="token operator">:</span>testdb
+spring<span class="token punctuation">.</span>datasource<span class="token punctuation">.</span>username<span class="token operator">=</span>sa
+spring<span class="token punctuation">.</span>datasource<span class="token punctuation">.</span>password<span class="token operator">=</span>
+spring<span class="token punctuation">.</span>datasource<span class="token punctuation">.</span>driver<span class="token operator">-</span><span class="token keyword">class</span><span class="token operator">-</span>name<span class="token operator">=</span><span class="token class-name"><span class="token namespace">org<span class="token punctuation">.</span>h2<span class="token punctuation">.</span></span>Driver</span></span></span></span></code></pre><h3 id="https://www.notion.so/a4ae0e2ae4e24e4ebdc865976ffaa1c7" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/a4ae0e2ae4e24e4ebdc865976ffaa1c7"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">数据库初始化文件</span></span></h3><pre id="https://www.notion.so/9325f33f9d194edc9fd9e713df9b158d" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token comment">// schema.sql</span>
+<span class="token keyword">create</span> <span class="token keyword">table</span> article
+<span class="token punctuation">(</span>
+    id      <span class="token keyword">int</span> <span class="token keyword">auto_increment</span>  <span class="token keyword">primary</span> <span class="token keyword">key</span><span class="token punctuation">,</span>
+    title   <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">255</span><span class="token punctuation">)</span> <span class="token operator">not</span> <span class="token boolean">null</span><span class="token punctuation">,</span>
+    content <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">255</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span></span></span></span></code></pre><pre id="https://www.notion.so/e243225c86dc41e0b3a2be338b5daf03" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token comment">// data.sql</span>
+<span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> article <span class="token punctuation">(</span>title<span class="token punctuation">,</span> content<span class="token punctuation">)</span>
+<span class="token keyword">VALUES</span> <span class="token punctuation">(</span><span class="token string">'My First Article'</span><span class="token punctuation">,</span> <span class="token string">'Hello World!!!'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span></span></span></code></pre><h2 id="https://www.notion.so/a2d814ba330445aebb01ede4a189650f" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/a2d814ba330445aebb01ede4a189650f"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">编写单元测试文件，测试方法</span></span></h2><div id="https://www.notion.so/b2cc9acf421148d1880d8b1863cef048" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">创建ArticleMapperTest.java，路径如下</span></span></p></div><pre id="https://www.notion.so/c0bbfeb9966345beb9efe02ed77cda6c" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token punctuation">.</span>
+├── MyBatisLearningDemo<span class="token punctuation">.</span>iml
+├── README<span class="token punctuation">.</span>md
+├── pom<span class="token punctuation">.</span>xml
+└── src
+    ├── main
+    │   ├── java
+    │   │   └── com
+    │   │       └── shao
+    │   │           └── mybatislearningdemo
+    │   │               ├── MyBatisLearningDemoApplication<span class="token punctuation">.</span>java
+    │   │               └── article
+    │   │                   ├── Article<span class="token punctuation">.</span>java
+    │   │                   ├── ArticleController<span class="token punctuation">.</span>java
+    │   │                   ├── ArticleMapper<span class="token punctuation">.</span>java
+    │   │                   └── ArticleService<span class="token punctuation">.</span>java
+    │   └── resources
+    │       └── application<span class="token punctuation">.</span>properties
+    └── test
+        ├── java
+        │   └── com
+        │       └── shao
+        │           └── mybatislearningdemo
+        │               ├── MyBatisLearningDemoApplicationTests<span class="token punctuation">.</span>java
+        │               └── article
+        │                   └── ArticleMapperTest<span class="token punctuation">.</span>java <span class="token comment">// 新创建的测试文件</span>
+        └── resources
+            ├── application<span class="token punctuation">.</span>properties
+            ├── <span class="token keyword">data</span><span class="token punctuation">.</span><span class="token keyword">sql</span>
+            └── <span class="token keyword">schema</span><span class="token punctuation">.</span><span class="token keyword">sql</span>
+
+<span class="token number">15</span> directories<span class="token punctuation">,</span> <span class="token number">14</span> files</span></span></span></code></pre><div id="https://www.notion.so/d68503ae65a24af2957eb225a0bb13f1" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">文件内容如下</span></span></p></div><pre id="https://www.notion.so/378bdfadea1b46dab05b62861ba8a3c6" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>shao<span class="token punctuation">.</span>mybatislearningdemo<span class="token punctuation">.</span>article</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>junit<span class="token punctuation">.</span>jupiter<span class="token punctuation">.</span>api<span class="token punctuation">.</span></span><span class="token class-name">Test</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>mybatis<span class="token punctuation">.</span>spring<span class="token punctuation">.</span>boot<span class="token punctuation">.</span>test<span class="token punctuation">.</span>autoconfigure<span class="token punctuation">.</span></span><span class="token class-name">MybatisTest</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>beans<span class="token punctuation">.</span>factory<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">Autowired</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">List</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token keyword">static</span> <span class="token namespace">org<span class="token punctuation">.</span>junit<span class="token punctuation">.</span>jupiter<span class="token punctuation">.</span>api<span class="token punctuation">.</span></span><span class="token class-name">Assertions</span><span class="token punctuation">.</span>*<span class="token punctuation">;</span>
+
+<span class="token annotation punctuation">@MybatisTest</span>
+<span class="token keyword">class</span> <span class="token class-name">ArticleMapperTest</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Autowired</span>
+    <span class="token keyword">private</span> <span class="token class-name">ArticleMapper</span> articleMapper<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">void</span> <span class="token function">saveArticle</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// given</span>
+        <span class="token class-name">Article</span> article <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Article</span><span class="token punctuation">(</span>
+                <span class="token string">"My Test Article"</span><span class="token punctuation">,</span>
+                <span class="token string">"This is a test article"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// when</span>
+        <span class="token keyword">int</span> lines <span class="token operator">=</span> articleMapper<span class="token punctuation">.</span><span class="token function">saveArticle</span><span class="token punctuation">(</span>article<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// then</span>
+        <span class="token function">assertEquals</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> lines<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">assertNotNull</span><span class="token punctuation">(</span>article<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">void</span> <span class="token function">getArticleByIdWhenExists</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// given</span>
+        <span class="token class-name">Article</span> article <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Article</span><span class="token punctuation">(</span>
+                <span class="token string">"My Another Test Article"</span><span class="token punctuation">,</span>
+                <span class="token string">"This is a test article"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        articleMapper<span class="token punctuation">.</span><span class="token function">saveArticle</span><span class="token punctuation">(</span>article<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// when</span>
+        <span class="token class-name">Article</span> queriedArticle <span class="token operator">=</span> articleMapper<span class="token punctuation">.</span><span class="token function">getArticleById</span><span class="token punctuation">(</span>article<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// then</span>
+        <span class="token function">assertEquals</span><span class="token punctuation">(</span>article<span class="token punctuation">.</span><span class="token function">getTitle</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> queriedArticle<span class="token punctuation">.</span><span class="token function">getTitle</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">void</span> <span class="token function">getArticleByIdWhenNotExists</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// given</span>
+        <span class="token comment">// when</span>
+        <span class="token class-name">Article</span> queriedArticle <span class="token operator">=</span> articleMapper<span class="token punctuation">.</span><span class="token function">getArticleById</span><span class="token punctuation">(</span><span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// then</span>
+        <span class="token function">assertNull</span><span class="token punctuation">(</span>queriedArticle<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">void</span> <span class="token function">getAllArticles</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// given</span>
+
+        <span class="token comment">// when</span>
+        <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Article</span><span class="token punctuation">></span></span> articles <span class="token operator">=</span> articleMapper<span class="token punctuation">.</span><span class="token function">getAllArticles</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// then</span>
+        <span class="token function">assertTrue</span><span class="token punctuation">(</span>articles<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">void</span> <span class="token function">deleteArticleById</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// given</span>
+        <span class="token class-name">Article</span> article <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Article</span><span class="token punctuation">(</span>
+                <span class="token string">"My Another Test Article"</span><span class="token punctuation">,</span>
+                <span class="token string">"This is a test article"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        articleMapper<span class="token punctuation">.</span><span class="token function">saveArticle</span><span class="token punctuation">(</span>article<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// when</span>
+        <span class="token keyword">int</span> lines <span class="token operator">=</span> articleMapper<span class="token punctuation">.</span><span class="token function">deleteArticleById</span><span class="token punctuation">(</span>article<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// then</span>
+        <span class="token function">assertEquals</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> lines<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">void</span> <span class="token function">updateArticle</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// given</span>
+        <span class="token class-name">Article</span> article <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Article</span><span class="token punctuation">(</span>
+                <span class="token string">"My Another Test Article"</span><span class="token punctuation">,</span>
+                <span class="token string">"This is a test article"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        articleMapper<span class="token punctuation">.</span><span class="token function">saveArticle</span><span class="token punctuation">(</span>article<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// when</span>
+        article<span class="token punctuation">.</span><span class="token function">setTitle</span><span class="token punctuation">(</span><span class="token string">"My Updated Test Article"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        article<span class="token punctuation">.</span><span class="token function">setContent</span><span class="token punctuation">(</span><span class="token string">"This is a updated test article"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> lines <span class="token operator">=</span> articleMapper<span class="token punctuation">.</span><span class="token function">updateArticle</span><span class="token punctuation">(</span>article<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// then</span>
+        <span class="token function">assertEquals</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> lines<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></span></span></span></code></pre><h1 id="https://www.notion.so/cbff541c264a484f9b0ab6c298645856" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/cbff541c264a484f9b0ab6c298645856"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">引入Mock依赖</span></span></h1><h2 id="https://www.notion.so/95e453588efc442fa2262a5c565c19f0" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/95e453588efc442fa2262a5c565c19f0"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">测试Service</span></span></h2><pre id="https://www.notion.so/250f2d4a93864dbab4a9e3b9e67e6dc0" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>shao<span class="token punctuation">.</span>mybatislearningdemo<span class="token punctuation">.</span>article</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>junit<span class="token punctuation">.</span>jupiter<span class="token punctuation">.</span>api<span class="token punctuation">.</span></span><span class="token class-name">BeforeEach</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>junit<span class="token punctuation">.</span>jupiter<span class="token punctuation">.</span>api<span class="token punctuation">.</span></span><span class="token class-name">Test</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>junit<span class="token punctuation">.</span>jupiter<span class="token punctuation">.</span>api<span class="token punctuation">.</span>extension<span class="token punctuation">.</span></span><span class="token class-name">ExtendWith</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>mockito<span class="token punctuation">.</span></span><span class="token class-name">Mock</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>mockito<span class="token punctuation">.</span>junit<span class="token punctuation">.</span>jupiter<span class="token punctuation">.</span></span><span class="token class-name">MockitoExtension</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token keyword">static</span> <span class="token namespace">org<span class="token punctuation">.</span>mockito<span class="token punctuation">.</span></span><span class="token class-name">ArgumentMatchers</span><span class="token punctuation">.</span>any<span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token keyword">static</span> <span class="token namespace">org<span class="token punctuation">.</span>mockito<span class="token punctuation">.</span></span><span class="token class-name">Mockito</span><span class="token punctuation">.</span>verify<span class="token punctuation">;</span>
+
+<span class="token annotation punctuation">@ExtendWith</span><span class="token punctuation">(</span><span class="token class-name">MockitoExtension</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">ArticleServiceTest</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Mock</span> <span class="token class-name">ArticleMapper</span> articleMapper<span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token class-name">ArticleService</span> articleService<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@BeforeEach</span>
+    <span class="token keyword">void</span> <span class="token function">setUp</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        articleService <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArticleService</span><span class="token punctuation">(</span>articleMapper<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">void</span> <span class="token function">saveArticle</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">Article</span> article <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Article</span><span class="token punctuation">(</span><span class="token string">"title"</span><span class="token punctuation">,</span> <span class="token string">"content"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        articleService<span class="token punctuation">.</span><span class="token function">saveArticle</span><span class="token punctuation">(</span>article<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">verify</span><span class="token punctuation">(</span>articleMapper<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">saveArticle</span><span class="token punctuation">(</span><span class="token function">any</span><span class="token punctuation">(</span><span class="token class-name">Article</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">void</span> <span class="token function">findArticleById</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        articleService<span class="token punctuation">.</span><span class="token function">findArticleById</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">verify</span><span class="token punctuation">(</span>articleMapper<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getArticleById</span><span class="token punctuation">(</span><span class="token function">any</span><span class="token punctuation">(</span><span class="token class-name">Integer</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">void</span> <span class="token function">findAllArticle</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        articleService<span class="token punctuation">.</span><span class="token function">findAllArticle</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">verify</span><span class="token punctuation">(</span>articleMapper<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getAllArticles</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">void</span> <span class="token function">deleteArticle</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        articleService<span class="token punctuation">.</span><span class="token function">deleteArticle</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">verify</span><span class="token punctuation">(</span>articleMapper<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">deleteArticleById</span><span class="token punctuation">(</span><span class="token function">any</span><span class="token punctuation">(</span><span class="token class-name">Integer</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">void</span> <span class="token function">updateArticle</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">Article</span> article <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Article</span><span class="token punctuation">(</span><span class="token string">"title"</span><span class="token punctuation">,</span> <span class="token string">"content"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        articleService<span class="token punctuation">.</span><span class="token function">updateArticle</span><span class="token punctuation">(</span>article<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">verify</span><span class="token punctuation">(</span>articleMapper<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">updateArticle</span><span class="token punctuation">(</span><span class="token function">any</span><span class="token punctuation">(</span><span class="token class-name">Article</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></span></span></span></code></pre><h2 id="https://www.notion.so/deae43bb65a6421e8117dd7f1a025dbc" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/deae43bb65a6421e8117dd7f1a025dbc"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">测试Controller</span></span></h2><pre id="https://www.notion.so/fb01945d54c14f44a4b7be15a4b026ec" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>shao<span class="token punctuation">.</span>mybatislearningdemo<span class="token punctuation">.</span>article</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>junit<span class="token punctuation">.</span>jupiter<span class="token punctuation">.</span>api<span class="token punctuation">.</span></span><span class="token class-name">BeforeEach</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>junit<span class="token punctuation">.</span>jupiter<span class="token punctuation">.</span>api<span class="token punctuation">.</span></span><span class="token class-name">Test</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>junit<span class="token punctuation">.</span>jupiter<span class="token punctuation">.</span>api<span class="token punctuation">.</span>extension<span class="token punctuation">.</span></span><span class="token class-name">ExtendWith</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>mockito<span class="token punctuation">.</span></span><span class="token class-name">Mock</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>mockito<span class="token punctuation">.</span>junit<span class="token punctuation">.</span>jupiter<span class="token punctuation">.</span></span><span class="token class-name">MockitoExtension</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token keyword">static</span> <span class="token namespace">org<span class="token punctuation">.</span>junit<span class="token punctuation">.</span>jupiter<span class="token punctuation">.</span>api<span class="token punctuation">.</span></span><span class="token class-name">Assertions</span><span class="token punctuation">.</span>*<span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token keyword">static</span> <span class="token namespace">org<span class="token punctuation">.</span>mockito<span class="token punctuation">.</span></span><span class="token class-name">Mockito</span><span class="token punctuation">.</span>verify<span class="token punctuation">;</span>
+
+<span class="token annotation punctuation">@ExtendWith</span><span class="token punctuation">(</span><span class="token class-name">MockitoExtension</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">ArticleControllerTest</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Mock</span> <span class="token class-name">ArticleService</span> articleService<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token class-name">ArticleController</span> articleController<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@BeforeEach</span>
+    <span class="token keyword">void</span> <span class="token function">setUp</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        articleController <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArticleController</span><span class="token punctuation">(</span>articleService<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">void</span> <span class="token function">save</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">Article</span> article <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Article</span><span class="token punctuation">(</span><span class="token string">"title"</span><span class="token punctuation">,</span> <span class="token string">"content"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        articleController<span class="token punctuation">.</span><span class="token function">save</span><span class="token punctuation">(</span>article<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">verify</span><span class="token punctuation">(</span>articleService<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">saveArticle</span><span class="token punctuation">(</span>article<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">void</span> <span class="token function">findById</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        articleController<span class="token punctuation">.</span><span class="token function">findById</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">verify</span><span class="token punctuation">(</span>articleService<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">findArticleById</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">void</span> <span class="token function">findAll</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        articleController<span class="token punctuation">.</span><span class="token function">findAll</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">verify</span><span class="token punctuation">(</span>articleService<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">findAllArticle</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">void</span> <span class="token function">delete</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        articleController<span class="token punctuation">.</span><span class="token function">delete</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">verify</span><span class="token punctuation">(</span>articleService<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">deleteArticle</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">void</span> <span class="token function">update</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">Article</span> article <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Article</span><span class="token punctuation">(</span><span class="token string">"title"</span><span class="token punctuation">,</span> <span class="token string">"content"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        articleController<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span>article<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">verify</span><span class="token punctuation">(</span>articleService<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">updateArticle</span><span class="token punctuation">(</span>article<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></span></span></span></code></pre><h1 id="https://www.notion.so/f730af00555c476c8dd0ea97c1272097" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/f730af00555c476c8dd0ea97c1272097"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">测试的结果</span></span></h1><div id="https://www.notion.so/8b91492a6e9640029a203acc955d9a7b" class="Image Image--Normal"><figure><a href="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fde707dc0-72b2-4353-bb3a-df139a6a02f5%2FUntitled.png?width=864&amp;table=block&amp;id=8b91492a-6e96-4002-9a20-3acc955d9a7b"><img src="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fde707dc0-72b2-4353-bb3a-df139a6a02f5%2FUntitled.png?width=864&amp;table=block&amp;id=8b91492a-6e96-4002-9a20-3acc955d9a7b" style="width:864px"/></a><figcaption><span class="SemanticStringArray"></span></figcaption></figure></div><h1 id="https://www.notion.so/d432bc318a694dd1a3596ea474047112" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/d432bc318a694dd1a3596ea474047112"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">集成测试</span></span></h1><div id="https://www.notion.so/eac80ed05723493b8ce673ebd8df3ff5" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">参考下面的项目，集成测试的一种实现是生成随机数据，并将数据存入开发数据库中。通过插入随机数据避免本次集成测试影响下次测试的运行。</span></span></p></div><div id="https://www.notion.so/d0f587bb5b3045738f7517c23de3d065" class="Bookmark"><a href="https://github.com/amigoscode/spring-boot-fullstack-professional/blob/13-testing/src/test/java/com/example/demo/integration/StudentIT.java"><h5 class="Bookmark__Title">spring-boot-fullstack-professional/StudentIT.java at 13-testing · amigoscode/spring-boot-fullstack-professional</h5><p class="Bookmark__Desc">This file contains bidirectional Unicode text that may be interpreted or compiled differently than what appears below. To review, open the file in an editor that reveals hidden Unicode characters. Learn more about bidirectional Unicode characters You can&#x27;t perform that action at this time. You signed in with another tab or window.</p><p class="Bookmark__Link">https://github.com/amigoscode/spring-boot-fullstack-professional/blob/13-testing/src/test/java/com/example/demo/integration/StudentIT.java</p></a></div><div id="https://www.notion.so/53dbdc98bd3648d4a73161f51d0df710" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">集成测试也可以考虑使用内存数据库，但是这样就没有办法测试与MySQL的集成是否有问题。</span></span></p></div></article>
+  <footer class="Footer">
+  <div>&copy; Junying Shao&#39;s Blog 2019-2021</div>
+  <div>&centerdot;</div>
+  <div>Powered by <a href="https://github.com/dragonman225/notablog" target="_blank"
+      rel="noopener noreferrer">Notablog</a>.
+  </div>
+</footer>
+</body>
+
+</html>

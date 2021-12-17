@@ -278,9 +278,9 @@
 <span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>shao<span class="token punctuation">.</span>mybatislearningdemo<span class="token punctuation">.</span>article</span><span class="token punctuation">;</span>
 
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Article</span> <span class="token punctuation">{</span>
-    <span class="token keyword">private</span> <span class="token keyword">int</span> id<span class="token punctuation">;</span>
-    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">String</span> title<span class="token punctuation">;</span>
-    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">String</span> content<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token class-name">Integer</span> id<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token class-name">String</span> title<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token class-name">String</span> content<span class="token punctuation">;</span>
 
     <span class="token keyword">public</span> <span class="token class-name">Article</span><span class="token punctuation">(</span><span class="token class-name">String</span> title<span class="token punctuation">,</span> <span class="token class-name">String</span> content<span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token keyword">this</span><span class="token punctuation">.</span>title <span class="token operator">=</span> title<span class="token punctuation">;</span>
@@ -295,7 +295,15 @@
         <span class="token keyword">return</span> content<span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 
-    <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setTitle</span><span class="token punctuation">(</span><span class="token class-name">String</span> title<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>title <span class="token operator">=</span> title<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setContent</span><span class="token punctuation">(</span><span class="token class-name">String</span> content<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>content <span class="token operator">=</span> content<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">Integer</span> <span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token keyword">return</span> id<span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 
@@ -442,6 +450,7 @@ spring<span class="token punctuation">.</span>datasource<span class="token punct
 <span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">ArticleMapper</span> <span class="token punctuation">{</span>
 
     <span class="token annotation punctuation">@Insert</span><span class="token punctuation">(</span><span class="token string">"insert into article(title, content) values(#{title}, #{content})"</span><span class="token punctuation">)</span>
+    <span class="token annotation punctuation">@Options</span><span class="token punctuation">(</span>useGeneratedKeys<span class="token operator">=</span><span class="token boolean">true</span><span class="token punctuation">,</span> keyProperty<span class="token operator">=</span><span class="token string">"id"</span><span class="token punctuation">)</span>
     <span class="token keyword">int</span> <span class="token function">saveArticle</span><span class="token punctuation">(</span><span class="token class-name">Article</span> article<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
     <span class="token annotation punctuation">@Select</span><span class="token punctuation">(</span><span class="token string">"select * from article where id = #{id}"</span><span class="token punctuation">)</span>
