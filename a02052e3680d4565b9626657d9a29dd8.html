@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Chrome, Firefox OS and Opera Status Bar Color -->
+<meta name="theme-color" content="#FFFFFF">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css">
+<link rel="stylesheet" type="text/css"
+  href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.19.0/themes/prism.min.css">
+<link rel="stylesheet" type="text/css" href="css/SourceSansPro.css">
+<link rel="stylesheet" type="text/css" href="css/theme.css">
+<link rel="stylesheet" type="text/css" href="css/notablog.css">
+<!-- Favicon -->
+
+  <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;📖&lt;/text&gt;&lt;/svg&gt;">
+
+<style>
+  :root {
+    font-size: 20px;
+  }
+</style>
+  <title>JVM学习&nbsp;|&nbsp;Junying Shao&#39;s Blog</title>
+  <meta property="og:type" content="blog">
+  <meta property="og:title" content="JVM学习">
+  
+  
+    <meta property="og:image" content="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;🌞&lt;/text&gt;&lt;/svg&gt;">
+  
+  <style>
+    .DateTagBar {
+      margin-top: 1.0rem;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="Navbar">
+  <a href="index.html">
+    <div class="Navbar__Btn">
+      
+        <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;📖&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+      
+      <span>Home</span>
+    </div>
+  </a>
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <span class="Navbar__Delim">&centerdot;</span>
+      <a href="about.html">
+        <div class="Navbar__Btn">
+          
+            <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;😀&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+          
+          <span>About</span>
+        </div>
+      </a>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+</nav>
+  <header class="Header">
+    
+      <div class="Header__Cover">
+        <img src="https://www.notion.so/images/page-cover/met_william_morris_1878.jpg">
+      </div>
+    
+    <div class="Header__Spacer ">
+    </div>
+    
+      <div class="Header__Icon">
+        <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;🌞&lt;/text&gt;&lt;/svg&gt;"></span>
+      </div>
+    
+    <h1 class="Header__Title">JVM学习</h1>
+    
+      <div class="DateTagBar">
+        
+          <span class="DateTagBar__Item DateTagBar__Date">Posted on Fri, Dec 17, 2021</span>
+        
+        
+      </div>
+    
+  </header>
+  <article id="https://www.notion.so/a02052e3680d4565b9626657d9a29dd8" class="PageRoot"><ul id="https://www.notion.so/0f08e75e25204e2598e5b6244899b3c0" class="ColorfulBlock ColorfulBlock--ColorGray TableOfContents"><li class="TableOfContents__Item"><a href="#https://www.notion.so/6b2597536fc04a619af50b6aed347084"><div style="margin-left:0px"><span class="SemanticStringArray"><span class="SemanticString">JVM的整体结构</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/1d9c2f23e0c6430abe793c1fb094bc86"><div style="margin-left:0px"><span class="SemanticStringArray"><span class="SemanticString">类的加载过程</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/d180cf6c862f4a3ab961613b45eaf52e"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">类的加载过程</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/0bce3d9cf5e94b1cab629914ff342d6a"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">加载</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/37ed67bf412e47aa8ff3db044a8473fd"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">验证</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/f1ed7abda18b4c19b49aaa9ea3640e74"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">准备</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/88a9a50c3a974176b61e0063b6dd8e26"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">解析</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/736950977dcc4a509fb68fc32cf6da61"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">初始化</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/723b7db0be544a29ab4dd1e8e8bb9f8c"><div style="margin-left:0px"><span class="SemanticStringArray"><span class="SemanticString">类加载器</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/f615003543fd45f4b654f3a41dc9e8bf"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">类加载器的层级结构</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/4c2a11d2e18b4888989ceb4ff1d89737"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">BootstrapClassLoader</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/b3789781eb5a4726ab8ab6e9c4363dd4"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">ExtClassLoader</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/4c682c35db524978af7909a4477ec557"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">AppClassLoader</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/b94822139f7546ccbd08c116c26a08ed"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">UserDefinedClassLoader</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/3cea61839ff245faa1aabe0af31748e5"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">双亲委派机制</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/3fc9971dd1cb415fbbb1c9c9e5bd1ed1"><div style="margin-left:48px"><span class="SemanticStringArray"><span class="SemanticString">过程</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/122de8ff5de049c4868b96920e0196ef"><div style="margin-left:48px"><span class="SemanticStringArray"><span class="SemanticString">优势</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/7bb6e143f7c848fcb92bc3b58263b38d"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">沙箱安全机制</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/a825489cc5cc47008760aafe380c46b1"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">判断两个Class对象是否为同一个类的2个必要条件</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/70930136bbe74cc8b674e7d45e8c916e"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">类的主动使用和被动使用</span></span></div></a></li></ul><div id="https://www.notion.so/f5e634d66acc472d987f06ab4e6e29dd" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><span class="SemanticString__Fragment SemanticString__Fragment--Resource"><a href=""><span class="SemanticStringArray"><span class="SemanticString">Unknown Page</span></span></a></span></span><span class="SemanticString"> </span></span></p></div><h1 id="https://www.notion.so/6b2597536fc04a619af50b6aed347084" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/6b2597536fc04a619af50b6aed347084"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">JVM的整体结构</span></span></h1><div id="https://www.notion.so/49bf45e3b8ee4d63b6d0aebdffee6ad7" class="Image Image--PageWidth"><figure><a href="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Ff7d480de-59d0-465b-84ac-2130dc28f41e%2FUntitled.png?width=3905&amp;table=block&amp;id=49bf45e3-b8ee-4d63-b6d0-aebdffee6ad7"><img src="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Ff7d480de-59d0-465b-84ac-2130dc28f41e%2FUntitled.png?width=3905&amp;table=block&amp;id=49bf45e3-b8ee-4d63-b6d0-aebdffee6ad7" style="width:100%"/></a><figcaption><span class="SemanticStringArray"></span></figcaption></figure></div><h1 id="https://www.notion.so/1d9c2f23e0c6430abe793c1fb094bc86" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/1d9c2f23e0c6430abe793c1fb094bc86"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">类的加载过程</span></span></h1><h2 id="https://www.notion.so/d180cf6c862f4a3ab961613b45eaf52e" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/d180cf6c862f4a3ab961613b45eaf52e"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">类的加载过程</span></span></h2><div id="https://www.notion.so/8848212d7e844e23b77c4461229d26f2" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">类的加载过程可以分为如下几个阶段：</span></span></p></div><ul class="BulletedListWrapper"><li id="https://www.notion.so/054c2d8f1e224587b22ad2d51101aff5" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">加载。读取Class文件</span></span></li><li id="https://www.notion.so/e13e2c36971f40559d1af6d987b46a90" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">链接</span></span><ul class="BulletedListWrapper"><li id="https://www.notion.so/70b56f89eb084dda8e34db868ecf504e" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">验证。验证类信息的合法性</span></span></li><li id="https://www.notion.so/40480d7c85894eeb9ef7e5cd546b042f" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">准备。为类变量划分内存，并赋上初始0值</span></span></li><li id="https://www.notion.so/e580775bf5f64af58c2707b83b6e39d4" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">解析。将符号引用转化为直接引用。</span></span></li></ul></li><li id="https://www.notion.so/d3903a8a717b47ae8b3248d9b6d0583c" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">初始化。为类的静态变量赋上初始值。</span></span></li><li id="https://www.notion.so/866080c844294be3874d1ee58bf54525" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">使用。</span></span></li><li id="https://www.notion.so/8ac4eeb01f594124a60e3624e4f2765e" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">卸载。</span></span></li></ul><h2 id="https://www.notion.so/0bce3d9cf5e94b1cab629914ff342d6a" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/0bce3d9cf5e94b1cab629914ff342d6a"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">加载</span></span></h2><ul class="BulletedListWrapper"><li id="https://www.notion.so/b788b73f599d4bcdad18a93fbd27db68" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">获取定义此类的二进制字节流。</span></span></li><li id="https://www.notion.so/21938757eb934136b238c8f1fdd98ca9" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">将字节流所代表的字节流转化为方法区的运行时数据结构。</span></span></li><li id="https://www.notion.so/83f0f737b94b4adfabeba379896c46d2" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">在内存中生成一个代表这个类的java.lang.Class对象，作为方法区中这个类的各种数据的访问入口。</span></span></li></ul><h2 id="https://www.notion.so/37ed67bf412e47aa8ff3db044a8473fd" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/37ed67bf412e47aa8ff3db044a8473fd"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">验证</span></span></h2><ul class="BulletedListWrapper"><li id="https://www.notion.so/dff0617f63c646b194f945c8ddbb7620" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">验证class文件字节流中包含的信息是否合法。</span></span></li></ul><h2 id="https://www.notion.so/f1ed7abda18b4c19b49aaa9ea3640e74" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/f1ed7abda18b4c19b49aaa9ea3640e74"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">准备</span></span></h2><ul class="BulletedListWrapper"><li id="https://www.notion.so/00526733743c4cee9ee1216e4188e960" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">为类变量分配内存并赋初始值（零值）。</span></span></li><li id="https://www.notion.so/25787e5fc2434bc59c3c347b402e774d" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">被final修饰的类变量为类常量。类常量在编译阶段已经被分配内存。这时（准备阶段）类常量会被显式初始化。</span></span></li><li id="https://www.notion.so/e88a0f1ef43d46bf81b94b4ae994ada8" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">这里不会为实例变量分配内存和初始化。因为类变量被分配在方法区中；但是实例变量会随对象一起被分配到堆内存中。</span></span></li></ul><h2 id="https://www.notion.so/88a9a50c3a974176b61e0063b6dd8e26" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/88a9a50c3a974176b61e0063b6dd8e26"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">解析</span></span></h2><ul class="BulletedListWrapper"><li id="https://www.notion.so/8be9d448a7a045cca75c9ac37a5ac569" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">将常量池中的符号引用转化为直接引用。（符号引用：使用一组符号描述所要引用的目标。直接引用：直接指向目标的指针。）</span></span></li><li id="https://www.notion.so/665fdd8b211c4cd68417b42315e830d0" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">事实上，解析操作一般在JVM执行完初始化之后再执行。</span></span></li></ul><h2 id="https://www.notion.so/736950977dcc4a509fb68fc32cf6da61" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/736950977dcc4a509fb68fc32cf6da61"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">初始化</span></span></h2><ul class="BulletedListWrapper"><li id="https://www.notion.so/8997b7e0ac4f4cdc8f4bf20ce3823f7c" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">初始化阶段就是执行类构造器方法&lt;clinit&gt;()的过程。</span></span></li><li id="https://www.notion.so/c7b952b249f64bceb815cd1feba1821d" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">此方法不用定义。javac会自动收集类中的所有类变量的赋值操作和静态代码块中的语句合并而来。</span></span></li><li id="https://www.notion.so/cda2daba5f6b48d5a6d0bc7ce75263c2" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">类构造器方法会按照语句在源文件中出现的顺序执行。</span></span></li><li id="https://www.notion.so/697ff87aa4b144a7b0be7efba7bb06ea" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">&lt;clinit&gt;()不同于类的构造器。类的构造器是&lt;init&gt;()</span></span></li><li id="https://www.notion.so/f622d3df08ab4b3daa10be802e68e5e9" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">若该类具有父类，JVM会保证子类&lt;clinit&gt;()执行前，父类的&lt;clint&gt;()已经执行完毕。</span></span></li><li id="https://www.notion.so/da9dcaa01420442eac6f1af762f34e37" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">虚拟机必须保证一个类的&lt;clinit&gt;方法在多线程下被同步加锁。</span></span></li></ul><h1 id="https://www.notion.so/723b7db0be544a29ab4dd1e8e8bb9f8c" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/723b7db0be544a29ab4dd1e8e8bb9f8c"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">类加载器</span></span></h1><h2 id="https://www.notion.so/f615003543fd45f4b654f3a41dc9e8bf" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/f615003543fd45f4b654f3a41dc9e8bf"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">类加载器的层级结构</span></span></h2><div id="https://www.notion.so/fcbffe548c3742b883d8970abe3fe895" class="Image Image--Normal"><figure><a href="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F115c62df-4d7d-407a-bf4f-7d0bea022162%2FUntitled.png?width=432&amp;table=block&amp;id=fcbffe54-8c37-42b8-83d8-970abe3fe895"><img src="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F115c62df-4d7d-407a-bf4f-7d0bea022162%2FUntitled.png?width=432&amp;table=block&amp;id=fcbffe54-8c37-42b8-83d8-970abe3fe895" style="width:432px"/></a><figcaption><span class="SemanticStringArray"></span></figcaption></figure></div><ul class="BulletedListWrapper"><li id="https://www.notion.so/b76c69fba9e640499e76b6344096b302" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">这四种ClassLoader不是父类和子类的继承关系。只是下层ClassLoader的parent属性会指向上层ClassLoader，在加载类时下层ClassLoader也会首先委托上层类加载器加载。</span></span></li></ul><h2 id="https://www.notion.so/4c2a11d2e18b4888989ceb4ff1d89737" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/4c2a11d2e18b4888989ceb4ff1d89737"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">BootstrapClassLoader</span></span></h2><ul class="BulletedListWrapper"><li id="https://www.notion.so/151c89c7cba747448c55d552b094c854" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">使用C/C++实现</span></span></li><li id="https://www.notion.so/f5217df2ba1e4c0da12b686062e3972b" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">用于加载Java的核心类库。（String类就是使用该ClassLoader加载的。）</span></span></li><li id="https://www.notion.so/16af956c46b84ff58ada3b06a4a6dfdb" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">会加载ExtClassLoader和AppClassLoader，并设置他们的parent属性。</span></span></li></ul><h2 id="https://www.notion.so/b3789781eb5a4726ab8ab6e9c4363dd4" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/b3789781eb5a4726ab8ab6e9c4363dd4"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">ExtClassLoader</span></span></h2><ul class="BulletedListWrapper"><li id="https://www.notion.so/81fe577654f647bd85c042d203fdd4c8" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">派生于ClassLoader类</span></span></li><li id="https://www.notion.so/68015be19a0142ab90f0c60123a8299e" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">加载</span><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">jre/lib/ext</code></span><span class="SemanticString"> 目录下的jar文件。用户创建的jar文件如果放置在该目录下，那么也将会被该ClassLoader加载。</span></span></li></ul><h2 id="https://www.notion.so/4c682c35db524978af7909a4477ec557" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/4c682c35db524978af7909a4477ec557"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">AppClassLoader</span></span></h2><ul class="BulletedListWrapper"><li id="https://www.notion.so/4de98e879ff94dd2ab3738b28c88558d" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">派生于ClassLoader类</span></span></li><li id="https://www.notion.so/c81b8535d6a64ad483d10b0893ee3bcf" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">加载classpath指定的路径下的类库</span></span></li><li id="https://www.notion.so/d0ea0c21d2654ffcb46f1b12351ed75c" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">是Java程序的默认类加载库，用户自定义的类将使用该ClassLoader加载。</span></span></li></ul><h2 id="https://www.notion.so/b94822139f7546ccbd08c116c26a08ed" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/b94822139f7546ccbd08c116c26a08ed"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">UserDefinedClassLoader</span></span></h2><ul class="BulletedListWrapper"><li id="https://www.notion.so/6ec967c559fe440a8e778300b3c1248b" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">用户自己实现，可以从数据库、网络中加载Clas，也可以加密、加密Class文件。</span></span></li></ul><h2 id="https://www.notion.so/3cea61839ff245faa1aabe0af31748e5" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/3cea61839ff245faa1aabe0af31748e5"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">双亲委派机制</span></span></h2><h3 id="https://www.notion.so/3fc9971dd1cb415fbbb1c9c9e5bd1ed1" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/3fc9971dd1cb415fbbb1c9c9e5bd1ed1"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">过程</span></span></h3><div id="https://www.notion.so/306e7099f2ec4247aeec702bea85620e" class="Image Image--Normal"><figure><a href="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F8149ac13-2b19-4a64-b8fe-9f283ec0d1c6%2FUntitled.png?width=624&amp;table=block&amp;id=306e7099-f2ec-4247-aeec-702bea85620e"><img src="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F8149ac13-2b19-4a64-b8fe-9f283ec0d1c6%2FUntitled.png?width=624&amp;table=block&amp;id=306e7099-f2ec-4247-aeec-702bea85620e" style="width:624px"/></a><figcaption><span class="SemanticStringArray"></span></figcaption></figure></div><h3 id="https://www.notion.so/122de8ff5de049c4868b96920e0196ef" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/122de8ff5de049c4868b96920e0196ef"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">优势</span></span></h3><ol class="NumberedListWrapper"><li id="https://www.notion.so/04a2db70cd094b2c9d2ff3a7a970c4be" class="NumberedList" value="1"><span class="SemanticStringArray"><span class="SemanticString">避免类的重复加载。（如果没有双亲委派机制，那么不同类加载器可能会同时加载同一个类，进而可能导致冲突。）</span></span></li><li id="https://www.notion.so/ff4c292658de41cc95b9b6a1449f3460" class="NumberedList" value="2"><span class="SemanticStringArray"><span class="SemanticString">保证程序安全，防止核心类被篡改。</span></span></li></ol><h2 id="https://www.notion.so/7bb6e143f7c848fcb92bc3b58263b38d" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/7bb6e143f7c848fcb92bc3b58263b38d"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">沙箱安全机制</span></span></h2><div id="https://www.notion.so/8bf19882577046dbac1f99dd3de8878f" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">开发者不能用自己实现的类覆盖Java中的核心类，从而保证了JVM核心类的沙箱安全。</span></span></p></div><h2 id="https://www.notion.so/a825489cc5cc47008760aafe380c46b1" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/a825489cc5cc47008760aafe380c46b1"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">判断两个Class对象是否为同一个类的2个必要条件</span></span></h2><ol class="NumberedListWrapper"><li id="https://www.notion.so/f4a17349d8fd42e981b12dd3086967bb" class="NumberedList" value="1"><span class="SemanticStringArray"><span class="SemanticString">类的完整类名是否相同，包含包名。</span></span></li><li id="https://www.notion.so/cf90f028174a498a95655a19dae7dede" class="NumberedList" value="2"><span class="SemanticStringArray"><span class="SemanticString">加载该类的ClassLoader是否相同。（JVM会判断一个类是由BootstrapClassLoader加载还是由用户类加载器加载，如果是由用户类加载器加载，那么JVM会讲这个ClassLoader作为类型信息的一部分保存在方法区中。）</span></span></li></ol><h2 id="https://www.notion.so/70930136bbe74cc8b674e7d45e8c916e" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/70930136bbe74cc8b674e7d45e8c916e"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">类的主动使用和被动使用</span></span></h2><div id="https://www.notion.so/23aeaf747e5041ac890b59ccaf33e800" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">主动使用会执行类的初始化，而被动使用不会。</span></span></p></div><div id="https://www.notion.so/b316175437fc433eb199e22d2c377646" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"></span></p></div></article>
+  <footer class="Footer">
+  <div>&copy; Junying Shao&#39;s Blog 2019-2021</div>
+  <div>&centerdot;</div>
+  <div>Powered by <a href="https://github.com/dragonman225/notablog" target="_blank"
+      rel="noopener noreferrer">Notablog</a>.
+  </div>
+</footer>
+</body>
+
+</html>
