@@ -70,6 +70,8 @@
     
   
     
+  
+    
       <span class="Navbar__Delim">&centerdot;</span>
       <a href="about.html">
         <div class="Navbar__Btn">
@@ -229,6 +231,14 @@ SENTINEL resolve<span class="token operator">-</span>hostnames yes</span></span>
 </strong></span><span class="SemanticString">重写redis.conf文件，修改下面一行。</span></span></p></div><pre id="https://www.notion.so/d7a9221940c24caea4d1ba4f51dc68e9" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span>// 让redis以集群的方式运行
 cluster-enabled yes</span></span></span></code></pre><div id="https://www.notion.so/1cf2a22ac9df4168acfcb52595b0cd2d" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">之后运行新构建的镜像即可。</span></span></p></div><div id="https://www.notion.so/d4cfe0326fab45ba9995f82c96464cc4" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">执行cluster meet时不能解析docker的container名为主机名</strong></span></span></p></div><div id="https://www.notion.so/61e99439f4224009b4b5a5e7e549aa1e" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">可以将多个node运行在同一个container中</span></span></p></div><div id="https://www.notion.so/31530ec8d17e45c4a56bc33b7d3154c6" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">给node分配槽</strong></span></span></p></div><div id="https://www.notion.so/b276ddcddb0049d4b687d4005a4ccdd1" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">可以使用如下命令为node分配槽</span></span></p></div><pre id="https://www.notion.so/65395327f19749f2905e1d6addadad33" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span>// 这里的区间为<span class="token punctuation">[</span>start, end<span class="token punctuation">]</span>
 redis-cli -p <span class="token operator">&lt;</span>端口<span class="token operator">></span> -c cluster addslots <span class="token variable"><span class="token variable">$(</span><span class="token function">seq</span> start end<span class="token variable">)</span></span> </span></span></span></code></pre><div id="https://www.notion.so/5efdb0a28ad048a6aee9d089236c7350" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">将所有节点分配完毕就可以执行写入操作了。</span></span></p></div><div id="https://www.notion.so/cbab041088714b55801f1fcc5b404705" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">迁移slot</strong></span></span></p></div><pre id="https://www.notion.so/addaa1f921b242578c89545f01f4c53a" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span>redis-cli -c CLUSTER SETSLOT <span class="token operator">&lt;</span>slots_to_be_migrated<span class="token operator">></span> IMPORTING <span class="token operator">&lt;</span>src_node_id<span class="token operator">></span></span></span></span></code></pre><div id="https://www.notion.so/5db5d7798e4844239cb3a4c56caf7582" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"></span></p></div></article>
+  <script src="https://utteranc.es/client.js"
+    repo="shaojunying/shaojunying.github.io"
+    issue-term="title"
+    label="Comment"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+  </script>
   <footer class="Footer">
   <div>&copy; Junying Shao&#39;s Blog 2019-2021</div>
   <div>&centerdot;</div>

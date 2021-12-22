@@ -24,12 +24,12 @@
     font-size: 20px;
   }
 </style>
-  <title>一个Spring MVC请求被处理的过程&nbsp;|&nbsp;Junying Shao&#39;s Blog</title>
+  <title>Java的运行时数据区&nbsp;|&nbsp;Junying Shao&#39;s Blog</title>
   <meta property="og:type" content="blog">
-  <meta property="og:title" content="一个Spring MVC请求被处理的过程">
+  <meta property="og:title" content="Java的运行时数据区">
   
   
-    <meta property="og:image" content="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;🕡&lt;/text&gt;&lt;/svg&gt;">
+    <meta property="og:image" content="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;♥️&lt;/text&gt;&lt;/svg&gt;">
   
   <style>
     .DateTagBar {
@@ -200,30 +200,36 @@
 </nav>
   <header class="Header">
     
-    <div class="Header__Spacer Header__Spacer--NoCover">
+      <div class="Header__Cover">
+        <img src="https://www.notion.so/images/page-cover/met_william_morris_1878.jpg">
+      </div>
+    
+    <div class="Header__Spacer ">
     </div>
     
       <div class="Header__Icon">
-        <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;🕡&lt;/text&gt;&lt;/svg&gt;"></span>
+        <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;♥️&lt;/text&gt;&lt;/svg&gt;"></span>
       </div>
     
-    <h1 class="Header__Title">一个Spring MVC请求被处理的过程</h1>
+    <h1 class="Header__Title">Java的运行时数据区</h1>
     
       <div class="DateTagBar">
         
+          <span class="DateTagBar__Item DateTagBar__Date">Posted on Wed, Dec 22, 2021</span>
         
-          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--green">
-            <a href="tag/Spring.html">Spring</a>
+        
+          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--blue">
+            <a href="tag/Java.html">Java</a>
           </span>
         
-          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--brown">
-            <a href="tag/Spring MVC.html">Spring MVC</a>
+          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--default">
+            <a href="tag/JVM.html">JVM</a>
           </span>
         
       </div>
     
   </header>
-  <article id="https://www.notion.so/11cfe01a0537486ab64c543184a33968" class="PageRoot"><div id="https://www.notion.so/07b4915a75d3456b991ed3eebc93e0c0" class="Image Image--PageWidth"><figure><a href="#"><img src="#" style="width:100%"/></a><figcaption><span class="SemanticStringArray"></span></figcaption></figure></div><div id="https://www.notion.so/2be6c9c4dc764941a829259345a792a3" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">一个Spring MVC请求的处理过程</strong></span><span class="SemanticString">如上图所示：</span></span></p></div><ol class="NumberedListWrapper"><li id="https://www.notion.so/8508887c9e7a459498827ee56320b550" class="NumberedList" value="1"><span class="SemanticStringArray"><span class="SemanticString">请求首先到达DispatchServlet</span></span></li><li id="https://www.notion.so/a98236597dd44c86bcbde500c51ea9ae" class="NumberedList" value="2"><span class="SemanticStringArray"><span class="SemanticString">DispatchServlet通过调用HandlerMapping，将映射到对应的Controller。</span></span></li><li id="https://www.notion.so/c1939d66945b44aab2f37bb279aa0452" class="NumberedList" value="3"><span class="SemanticStringArray"><span class="SemanticString">DispatchServlet调用Controller中相应的方法处理请求，并得到一个ModelAndView对象。</span></span></li><li id="https://www.notion.so/63fc77d9dd6c4f9fb44ef72a39604b4d" class="NumberedList" value="4"><span class="SemanticStringArray"><span class="SemanticString">DispatchServlet通过调用ViewResolver，获取ViewName对应的View。</span></span></li><li id="https://www.notion.so/5854d6326bb44433becb917ed3cbbdd5" class="NumberedList" value="5"><span class="SemanticStringArray"><span class="SemanticString">DispatchServlet将Model数据传递给View视图，渲染出页面并返回。</span></span></li></ol></article>
+  <article id="https://www.notion.so/5ca91de478654802aad6c931949cf0d8" class="PageRoot"><h1 id="https://www.notion.so/2fb7913b1ec4474b9acdba8e7142ef61" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/2fb7913b1ec4474b9acdba8e7142ef61"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">运行时数据区图示</span></span></h1><div id="https://www.notion.so/0c67d46e63bb465da75e586e793f0bf6" class="Image Image--PageWidth"><figure><a href="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F82524bfe-9a08-4ed0-935d-ed58da31080d%2FUntitled.png?width=3210&amp;table=block&amp;id=0c67d46e-63bb-465d-a75e-586e793f0bf6"><img src="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F82524bfe-9a08-4ed0-935d-ed58da31080d%2FUntitled.png?width=3210&amp;table=block&amp;id=0c67d46e-63bb-465d-a75e-586e793f0bf6" style="width:100%"/></a><figcaption><span class="SemanticStringArray"></span></figcaption></figure></div><div id="https://www.notion.so/7941d9b01e374ff8a8592e93c67e05d1" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"></span></p></div></article>
   <script src="https://utteranc.es/client.js"
     repo="shaojunying/shaojunying.github.io"
     issue-term="title"
