@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Chrome, Firefox OS and Opera Status Bar Color -->
+<meta name="theme-color" content="#FFFFFF">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css">
+<link rel="stylesheet" type="text/css"
+  href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.19.0/themes/prism.min.css">
+<link rel="stylesheet" type="text/css" href="css/SourceSansPro.css">
+<link rel="stylesheet" type="text/css" href="css/theme.css">
+<link rel="stylesheet" type="text/css" href="css/notablog.css">
+<!-- Favicon -->
+
+  <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;📖&lt;/text&gt;&lt;/svg&gt;">
+
+<style>
+  :root {
+    font-size: 20px;
+  }
+</style>
+  <title>数据库的规范化&nbsp;|&nbsp;Junying Shao&#39;s Blog</title>
+  <meta property="og:type" content="blog">
+  <meta property="og:title" content="数据库的规范化">
+  
+  
+    <meta property="og:image" content="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;🚎&lt;/text&gt;&lt;/svg&gt;">
+  
+  <style>
+    .DateTagBar {
+      margin-top: 1.0rem;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="Navbar">
+  <a href="index.html">
+    <div class="Navbar__Btn">
+      
+        <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;📖&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+      
+      <span>Home</span>
+    </div>
+  </a>
+  
+    
+      <span class="Navbar__Delim">&centerdot;</span>
+      <a href="a02052e3680d4565b9626657d9a29dd8.html">
+        <div class="Navbar__Btn">
+          
+            <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;🌞&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+          
+          <span>JVM学习</span>
+        </div>
+      </a>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <span class="Navbar__Delim">&centerdot;</span>
+      <a href="about.html">
+        <div class="Navbar__Btn">
+          
+            <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;😀&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+          
+          <span>About</span>
+        </div>
+      </a>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+</nav>
+  <header class="Header">
+    
+      <div class="Header__Cover">
+        <img src="https://www.notion.so/images/page-cover/met_henry_lerolle_1885.jpg">
+      </div>
+    
+    <div class="Header__Spacer ">
+    </div>
+    
+      <div class="Header__Icon">
+        <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;🚎&lt;/text&gt;&lt;/svg&gt;"></span>
+      </div>
+    
+    <h1 class="Header__Title">数据库的规范化</h1>
+    
+      <div class="DateTagBar">
+        
+          <span class="DateTagBar__Item DateTagBar__Date">Posted on Thu, Mar 3, 2022</span>
+        
+        
+          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--default">
+            <a href="tag/MySQL.html">MySQL</a>
+          </span>
+        
+          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--red">
+            <a href="tag/数据库.html">数据库</a>
+          </span>
+        
+      </div>
+    
+  </header>
+  <article id="https://www.notion.so/e419876eb3164f35aa70105e5df6f7e2" class="PageRoot"><div id="https://www.notion.so/69cf39a636e84ff2b423b0fefce47d71" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">数据库的规范化是数据库设计的一系列原理和技术，为了</span><span class="SemanticString"><mark class="SemanticString__Fragment SemanticString__Fragment--HighlightedBg SemanticString__Fragment--BgRed"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">解决数据库中的数据冗余，增进数据的一致性。</strong></mark></span></span></p></div><div id="https://www.notion.so/61e7b30ef0434fc5b464024e8c8a6e80" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">数据库的规范化包含一级范式、二级范式、三级范式、BC范式（三级范式的改进版）。除此之外还有四五六级范式，但现在数据库设计最多满足三级范式。更高的范式虽然</span><span class="SemanticString"><mark class="SemanticString__Fragment SemanticString__Fragment--HighlightedBg SemanticString__Fragment--BgRed">对数据库表有更好的约束性</mark></span><span class="SemanticString">，但是也会</span><span class="SemanticString"><mark class="SemanticString__Fragment SemanticString__Fragment--HighlightedBg SemanticString__Fragment--BgRed">导致数据库表的增加，进而令数据库IO更易繁忙</mark></span><span class="SemanticString">。因此我们一般最高使用第三范式，更高的关系约束在应用中完成。</span></span></p></div><h1 id="https://www.notion.so/4cf53d163fd5454c8a538eb19ff3f9ee" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/4cf53d163fd5454c8a538eb19ff3f9ee"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">第一范式（1NF）</span></span></h1><div id="https://www.notion.so/7b556855968b4ca7b5eb72c947b31870" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">1NF的定义为：符合1NF的关系中的每个属性都不可再分。下图中的关系1NF：</span></span></p></div><div id="https://www.notion.so/8d8152570e114f5ab5c2b94072426f7d" class="Image Image--PageWidth"><figure><a href="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F2a4d766a-945d-46b3-9795-703e079bc483%2FUntitled.png?width=743&amp;table=block&amp;id=8d815257-0e11-4f5a-b5c2-b94072426f7d"><img src="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F2a4d766a-945d-46b3-9795-703e079bc483%2FUntitled.png?width=743&amp;table=block&amp;id=8d815257-0e11-4f5a-b5c2-b94072426f7d" style="width:100%"/></a><figcaption><span class="SemanticStringArray"></span></figcaption></figure></div><div id="https://www.notion.so/a102cdbdd181415c8c06a5170c0599d0" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">1NF是关系型数据库最基本的要求，在数据库中已存在的表都符合第一范式。为了满足第一范式，我们可以将上图重新设计如下：</span></span></p></div><div id="https://www.notion.so/824f8b0bf478439b8f7b6565f20db610" class="Image Image--PageWidth"><figure><a href="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fd0985dd3-c2a5-48a4-b3c4-c0f7ef3574d3%2FUntitled.png?width=881&amp;table=block&amp;id=824f8b0b-f478-439b-8f7b-6565f20db610"><img src="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fd0985dd3-c2a5-48a4-b3c4-c0f7ef3574d3%2FUntitled.png?width=881&amp;table=block&amp;id=824f8b0b-f478-439b-8f7b-6565f20db610" style="width:100%"/></a><figcaption><span class="SemanticStringArray"></span></figcaption></figure></div><h2 id="https://www.notion.so/69333805a78941ae82f7e4f5d874c3e8" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/69333805a78941ae82f7e4f5d874c3e8"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">1NF的缺点</span></span></h2><div id="https://www.notion.so/8e64cceed6a2462db7d3de947e9813a6" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">如下关系为符合1NF的一个实例：</span></span></p></div><div id="https://www.notion.so/672743d67b6243dc8da2f5bae3f9d567" class="Image Image--Normal"><figure><a href="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F6510a560-d3a4-4704-ad8c-ae75622da18b%2FUntitled.png?width=661&amp;table=block&amp;id=672743d6-7b62-43dc-8da2-f5bae3f9d567"><img src="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F6510a560-d3a4-4704-ad8c-ae75622da18b%2FUntitled.png?width=661&amp;table=block&amp;id=672743d6-7b62-43dc-8da2-f5bae3f9d567" style="width:661px"/></a><figcaption><span class="SemanticStringArray"></span></figcaption></figure></div><div id="https://www.notion.so/1a2b24682ceb45d5b84aebff1ace43c8" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">上表存在以下问题：</span></span></p></div><ul class="BulletedListWrapper"><li id="https://www.notion.so/a8955deac8584898a7f85b4b40ac2b3c" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString"><mark class="SemanticString__Fragment SemanticString__Fragment--HighlightedBg SemanticString__Fragment--BgRed">数据冗余</mark></span><span class="SemanticString">。每个学生的姓名、系名、系主任信息大量重复。</span></span></li><li id="https://www.notion.so/7a80fd7378e54c35b6a423c5b43d5449" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString"><mark class="SemanticString__Fragment SemanticString__Fragment--HighlightedBg SemanticString__Fragment--BgRed">插入异常</mark></span><span class="SemanticString">。如果此时我们想建立新的院系：计算机系。由于该系还没有学生，所以此时无法将其插入数据库中。</span></span></li><li id="https://www.notion.so/7fc3bab77ef4498c96933b6bff380d5c" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString"><mark class="SemanticString__Fragment SemanticString__Fragment--HighlightedBg SemanticString__Fragment--BgRed">删除异常</mark></span><span class="SemanticString">。假如将某个系中所有学生相关的记录都删除，那么所有系与系主任的数据也就随之消失了。</span></span></li><li id="https://www.notion.so/ae7a900754164e51b21e578ab012c660" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString"><mark class="SemanticString__Fragment SemanticString__Fragment--HighlightedBg SemanticString__Fragment--BgRed">修改异常</mark></span><span class="SemanticString">。假如李小明转系到法律系，我们需要修改三条记录中的系名和系主任的数据。</span></span></li></ul><h1 id="https://www.notion.so/1da1413dad764e2ab66358bd42fa4d2e" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/1da1413dad764e2ab66358bd42fa4d2e"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">二级范式（2NF）</span></span></h1><div id="https://www.notion.so/9d6949ccde8843c9b01b6e6c498d353a" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">2NF在1NF的基础上，消除了</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">非主属性</strong></span><span class="SemanticString">对于</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">码</strong></span><span class="SemanticString">的</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">部分函数依赖</strong></span><span class="SemanticString">。</span></span></p></div><ul class="BulletedListWrapper"><li id="https://www.notion.so/c778f196dce64389bb642722e11903f7" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">函数依赖。</strong></span><span class="SemanticString">若在一张表中，在属性（或属性组）X的值确定的情况下，必定能确定属性Y的值，那么就可以说Y函数依赖于X，写作 X → Y。</span></span></li><li id="https://www.notion.so/314b695af4bc430cb32b934c181761af" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">完全函数依赖</strong></span><span class="SemanticString">。在一张表中，若 X → Y，且对于 X 的任何一个</span><span class="SemanticString"><a class="SemanticString__Fragment SemanticString__Fragment--Link" href="https://www.zhihu.com/search?q=%E7%9C%9F%E5%AD%90%E9%9B%86&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A29189700%7D">真子集</a></span><span class="SemanticString">（假如属性组 X 包含超过一个属性的话），X &#x27; → Y 不成立，那么我们称 Y 对于 X 完全函数依赖</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">。</strong></span></span></li><li id="https://www.notion.so/4a868ebb7f1240e18345770ba4401a20" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">部分函数依赖。</strong></span><span class="SemanticString">假如 Y 函数依赖于 X，但同时 Y 并不完全函数依赖于 X，那么我们就称 Y 部分函数依赖于 X。</span></span></li><li id="https://www.notion.so/89f992f57e6d47be9e6e82bd7fcff907" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">传递函数依赖。</strong></span><span class="SemanticString">假如 Z 函数依赖于 Y，且 Y 函数依赖于 X ，那么我们就称 Z 传递函数依赖于 X。</span></span></li><li id="https://www.notion.so/208e91cfaf8e462ea34e0f687cf1b109" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">码。</strong></span><span class="SemanticString">设 K 为某表中的一个属性或属性组，若除 K 之外的所有属性都</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">完全</strong></span><span class="SemanticString">函数依赖于 K，那么我们称 K 为</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">候选码</strong></span><span class="SemanticString">，简称为码。</span></span></li></ul><div id="https://www.notion.so/d5738de7942c49568e83f2dcf0d7ce87" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"></span></p></div><div id="https://www.notion.so/546894a5fd564a7eb0c23214d1cb11c4" class="Image Image--Normal"><figure><a href="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F6eafca99-f652-43b0-8003-0750189fcc34%2FUntitled.png?width=541&amp;table=block&amp;id=546894a5-fd56-4a7e-b0c2-3214d1cb11c4"><img src="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F6eafca99-f652-43b0-8003-0750189fcc34%2FUntitled.png?width=541&amp;table=block&amp;id=546894a5-fd56-4a7e-b0c2-3214d1cb11c4" style="width:541px"/></a><figcaption><span class="SemanticStringArray"></span></figcaption></figure></div><div id="https://www.notion.so/dffdda80ddf64c45974a81055d44934b" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">如上图所示，码为（学号、课名），其中 学号→ 姓名，所以姓名部分函数依赖（学号，课名），不符合2NF。为了满足2NF，可以将其修改为下图：其中分为两张表：</span></span></p></div><div id="https://www.notion.so/5ba60c159de84f818a46ef469656aa04" class="Image Image--Normal"><figure><a href="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F7fb78c70-fa9e-4810-a2f5-915e98c4a3e8%2FUntitled.png?width=528&amp;table=block&amp;id=5ba60c15-9de8-4f81-8a46-ef469656aa04"><img src="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F7fb78c70-fa9e-4810-a2f5-915e98c4a3e8%2FUntitled.png?width=528&amp;table=block&amp;id=5ba60c15-9de8-4f81-8a46-ef469656aa04" style="width:528px"/></a><figcaption><span class="SemanticStringArray"></span></figcaption></figure></div><div id="https://www.notion.so/40d29742fc74444daeebd89a38656adf" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">对于</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">选课</strong></span><span class="SemanticString">表，其码是</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">（学号，课名）</strong></span><span class="SemanticString">，主属性是</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">学号</strong></span><span class="SemanticString">和</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">课名</strong></span><span class="SemanticString">，非主属性是</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">分数</strong></span><span class="SemanticString">，</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">学号</strong></span><span class="SemanticString">确定，并不能唯一确定</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">分数</strong></span><span class="SemanticString">，</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">课名</strong></span><span class="SemanticString">确定，也不能唯一确定</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">分数</strong></span><span class="SemanticString">，所以不存在非主属性</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">分数</strong></span><span class="SemanticString">对于码 </span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">（学号，课名）</strong></span><span class="SemanticString">的部分函数依赖，所以此表符合2NF的要求。</span></span></p></div><div id="https://www.notion.so/427ed5f280704e7eb6150f411166ded7" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">对于</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">学生</strong></span><span class="SemanticString">表，其码是</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">学号，</strong></span><span class="SemanticString">主属性是</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">学号</strong></span><span class="SemanticString">，非主属性是</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">姓名、系名</strong></span><span class="SemanticString">和</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">系主任</strong></span><span class="SemanticString">，因为码只有一个属性，所以不可能存在非主属性对于码 的部分函数依赖，所以此表符合2NF的要求。</span></span></p></div><h2 id="https://www.notion.so/16176415ef6444d18e80883de7749d18" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/16176415ef6444d18e80883de7749d18"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">2NF的缺陷</span></span></h2><ul class="BulletedListWrapper"><li id="https://www.notion.so/16dc3bd240ee4319b1257545106b8280" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">删除某个系中所有的学生记录，该系的信息仍然全部丢失。——无改进</span></span></li><li id="https://www.notion.so/b33de1228be64096b26455033ed7fbcc" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">插入一个尚无学生的新系的信息。因为学生表的码是学号，不能为空，所以此操作不被允许。——无改进</span></span></li></ul><h1 id="https://www.notion.so/be7590023d4c40bda277e1f1431afb3a" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/be7590023d4c40bda277e1f1431afb3a"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">三级范式（3NF）</span></span></h1><div id="https://www.notion.so/1810af8a0cad45abb37b2982c6a152f6" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">3NF在2NF的基础上，消除了非主属性对码的传递函数依赖。</span></span></p></div><div id="https://www.notion.so/84dcb1606c31408f8ecbcd1541b6c10c" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">上面的学生表中，码为学号，其中学号→系名，系名→ 系主任，因此系主任传递函数依赖于学号，于是我们应该将上述关系进一步拆分如下：</span></span></p></div><div id="https://www.notion.so/7d160a3520d14d849c15281053fad39a" class="Image Image--Normal"><figure><a href="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F6f263b21-1d24-47a8-89ec-029628a2c768%2FUntitled.png?width=576&amp;table=block&amp;id=7d160a35-20d1-4d84-9c15-281053fad39a"><img src="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F6f263b21-1d24-47a8-89ec-029628a2c768%2FUntitled.png?width=576&amp;table=block&amp;id=7d160a35-20d1-4d84-9c15-281053fad39a" style="width:576px"/></a><figcaption><span class="SemanticStringArray"></span></figcaption></figure></div><div id="https://www.notion.so/770434be718441628223e7bcc5cf909b" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">符合3NF要求的数据库设计，基本上解决了数据冗余过大，插入异常，修改异常，删除异常的问题。</strong></span></span></p></div><h1 id="https://www.notion.so/0cda23ea6a7d40d1a28deda24ff34370" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/0cda23ea6a7d40d1a28deda24ff34370"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">BC范式（BCNF）</span></span></h1><div id="https://www.notion.so/44cb8bad1a794e2b97d1813883228800" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">BCNF：</span></span></p></div><ul class="BulletedListWrapper"><li id="https://www.notion.so/00b35bd25796453f94a51f5e29863711" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">所有非主属性都完全函数依赖于每个候选键</span></span></li><li id="https://www.notion.so/fd7a17d8999643b3acf227f35d36aad5" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">所有主属性都完全函数依赖于每个不包含它的候选键</span></span></li><li id="https://www.notion.so/d2e9a235e65245ca9892c50feef4a82c" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">没有任何属性完全函数依赖于非候选键的任何一组属性</span></span></li></ul><h1 id="https://www.notion.so/376df4ab4ddd4a5799f75ea7c07db75a" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/376df4ab4ddd4a5799f75ea7c07db75a"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">参考链接</span></span></h1><div id="https://www.notion.so/d4899fa006af4ef099a914aad558a4af" class="Bookmark"><a href="https://zh.wikipedia.org/wiki/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A7%84%E8%8C%83%E5%8C%96"><h5 class="Bookmark__Title">数据库规范化 - 维基百科，自由的百科全书</h5><p class="Bookmark__Desc">数据库规范化，又称 正规化、 标准化，是 数据库 设计的一系列原理和技术，以减少数据库中数据冗余，增进数据的一致性。 关系模型的发明者 埃德加·科德最早提出这一概念，并于1970年代初定义了 第一范式、 第二范式和 第三范式的概念，还与Raymond F. Boyce于1974年共同定义了第三范式的改进范式-- BC范式 。 现在数据库设计最多满足3NF，普遍认为范式过高，虽然具有对数据关系更好的约束性，但也导致数据关系表增加而令数据库IO更易繁忙，原来交由数据库处理的关系约束现更多在数据库使用程序中完成。 范式如下（从最不规范到规范排序）：</p><p class="Bookmark__Link">https://zh.wikipedia.org/wiki/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A7%84%E8%8C%83%E5%8C%96</p></a></div><div id="https://www.notion.so/71976abf7acb43078824f06aea3a57ae" class="Bookmark"><a href="https://www.zhihu.com/question/24696366"><h5 class="Bookmark__Title">如何理解关系型数据库的常见设计范式？</h5><p class="Bookmark__Desc">2015-1-9 更新，回答了 @李德竹 的问题============2015-1-6 更新，补充了 BCNF ...</p><p class="Bookmark__Link">https://www.zhihu.com/question/24696366</p></a></div><div id="https://www.notion.so/e5c9c823799c4a0dafc35539f1e64140" class="Bookmark"><a href="https://zh.wikipedia.org/wiki/BC%E6%AD%A3%E8%A6%8F%E5%BD%A2%E5%BC%8F"><h5 class="Bookmark__Title">BC正規形式 - 维基百科，自由的百科全书</h5><p class="Bookmark__Desc">Boyce-Codd范式（英語： Boyce-Codd normal form，缩写 BCNF），是 数据库规范化的一种 正规形式。是在 第三范式的基础上加上稍微更严格约束，每个BCNF关系都满足 第三范式 。BCNF去除了属性间的不必要的函数依赖。 BCNF的定义是： 如果对于 关系模式R中存在的任意一个非平凡函数依赖X-&gt;A，都满足X是R的一个 超键 ，那么关系模式R就属于BCNF。 对上述定义，可以理解为：平凡函数依赖关系是指，如果属性集合X包含了属性集合A，那么就一定有X-&gt;A；超键是指能够唯一确定表中各行的属性集合，因此一个超键的最小化就是一个 候選鍵 ；BCNF是说，如果一个属性集合X能&quot;不平凡&quot;地推导出另一个属性集合A，而且X还不能唯一区分表的各行，那么这个表中一定包含了一些冗余信息。 BCNF与 第三范式的不同之处在于：第三范式中不允许 非主属性 被另一个非主属性决定，但第三范式允许主属性被非主属性决定；而在BCNF中，任何属性（包括非主属性和主属性）都不能被非主属性所决定。 任何一个BCNF必然满足： 所有非主属性都完全函数依赖于每个候选键 所有主属性都完全函数依赖于每个不包含它的候选键 没有任何属性完全函数依赖于非候选键的任何一组属性 关系模式R： 其中依赖关系如下： {Property_id#}　　　-&gt;{County_name,Lot#,Area}; {County_name,Lot#} -&gt;{Property_id#,Area}; {Area} 　　　　　　 -&gt;{County_name}; 很明显最后一个依赖违反了BC范式的要求，Area不是关系模式R的主键，而依赖于它的County_name是能够决定其他属性的主属性。故应当规范化为： Litt&#x27;s Tips: Normalization（页面存档备份，存于互联网档案馆） Rules Of Data Normalization Temporal Data &amp; the Relational Model Archive.is的存檔，存档日期2012-12-09 (1st ed.).</p><p class="Bookmark__Link">https://zh.wikipedia.org/wiki/BC%E6%AD%A3%E8%A6%8F%E5%BD%A2%E5%BC%8F</p></a></div></article>
+  <script src="https://utteranc.es/client.js"
+    repo="shaojunying/shaojunying.github.io"
+    issue-term="title"
+    label="Comment"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+  </script>
+  <footer class="Footer">
+  <div>&copy; Junying Shao&#39;s Blog 2019-2021</div>
+  <div>&centerdot;</div>
+  <div>Powered by <a href="https://github.com/dragonman225/notablog" target="_blank"
+      rel="noopener noreferrer">Notablog</a>.
+  </div>
+</footer>
+</body>
+
+</html>
