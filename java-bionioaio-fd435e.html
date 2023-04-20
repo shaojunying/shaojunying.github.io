@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Chrome, Firefox OS and Opera Status Bar Color -->
+<meta name="theme-color" content="#FFFFFF">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css">
+<link rel="stylesheet" type="text/css"
+  href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.19.0/themes/prism.min.css">
+<link rel="stylesheet" type="text/css" href="css/SourceSansPro.css">
+<link rel="stylesheet" type="text/css" href="css/theme.css">
+<link rel="stylesheet" type="text/css" href="css/notablog.css">
+<!-- Favicon -->
+
+  <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;📖&lt;/text&gt;&lt;/svg&gt;">
+
+<style>
+  :root {
+    font-size: 20px;
+  }
+</style>
+  <title>Java BIO、NIO、AIO&nbsp;|&nbsp;Junying Shao&#39;s Blog</title>
+  <meta property="og:type" content="blog">
+  <meta property="og:title" content="Java BIO、NIO、AIO">
+  
+  
+    <meta property="og:image" content="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;🏎️&lt;/text&gt;&lt;/svg&gt;">
+  
+  <style>
+    .DateTagBar {
+      margin-top: 1.0rem;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="Navbar">
+  <a href="index.html">
+    <div class="Navbar__Btn">
+      
+        <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;📖&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+      
+      <span>Home</span>
+    </div>
+  </a>
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <span class="Navbar__Delim">&centerdot;</span>
+      <a href="jvm-a02052.html">
+        <div class="Navbar__Btn">
+          
+            <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;🌞&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+          
+          <span>JVM学习</span>
+        </div>
+      </a>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <span class="Navbar__Delim">&centerdot;</span>
+      <a href="about.html">
+        <div class="Navbar__Btn">
+          
+            <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;😀&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+          
+          <span>About</span>
+        </div>
+      </a>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+</nav>
+  <header class="Header">
+    
+      <div class="Header__Cover">
+        <img src="https://www.notion.so/images/page-cover/woodcuts_1.jpg">
+      </div>
+    
+    <div class="Header__Spacer ">
+    </div>
+    
+      <div class="Header__Icon">
+        <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;🏎️&lt;/text&gt;&lt;/svg&gt;"></span>
+      </div>
+    
+    <h1 class="Header__Title">Java BIO、NIO、AIO</h1>
+    
+      <div class="DateTagBar">
+        
+          <span class="DateTagBar__Item DateTagBar__Date">Posted on Tue, Mar 1, 2022</span>
+        
+        
+          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--blue">
+            <a href="tag/Java.html">Java</a>
+          </span>
+        
+          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--purple">
+            <a href="tag/IO.html">IO</a>
+          </span>
+        
+      </div>
+    
+  </header>
+  <article id="https://www.notion.so/fd435e3ed6d841b4ba1dd7e2ab6bf18a" class="PageRoot"><ul id="https://www.notion.so/604b79a1777646b58fe0f50a8b9d72ca" class="ColorfulBlock ColorfulBlock--ColorGray TableOfContents"><li class="TableOfContents__Item"><a href="#https://www.notion.so/f6a658e68cf643baa7bceea7836f35a7"><div style="margin-left:0px"><span class="SemanticStringArray"><span class="SemanticString">Java中NIO的三大组件</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/14fe59203064403794e435318e7326c4"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">Buffer</strong></span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/e3452f4e31364bc1a366a67199f27cab"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">Channel（通道）</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/e96180c9232945f983ba14f76a7f05a2"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">Selector</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/348ac62937e24bde99111abfa7062d73"><div style="margin-left:0px"><span class="SemanticStringArray"><span class="SemanticString">阻塞模式IO（BIO）</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/afc3e1c1b94e42a391df90bb96f4b5d2"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">阻塞IO的瓶颈</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/e3e619225c7640b789c52b8d6c82480c"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">代码实现</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/f267564adf6e4694b9edccbbb6808739"><div style="margin-left:0px"><span class="SemanticStringArray"><span class="SemanticString">非阻塞IO（NIO）</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/6feee1421758445c83419db1f2f876d1"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">Selector在不同操作系统下的实现</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/6e2693b95693413598ba3aa9d79efa5c"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">代码实现</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/d424d6b6e36540ae845be114758bed96"><div style="margin-left:0px"><span class="SemanticStringArray"><span class="SemanticString">NIO.2 （AIO）异步IO</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/474c3bc5af8c4334a36638445ecd728c"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">底层实现</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/30608bf3d25345b38aab79e0a8ff38fe"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">Java异步IO的两种使用方式</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/dbc6374588094ef5a82beb19ed7f8915"><div style="margin-left:48px"><span class="SemanticStringArray"><span class="SemanticString">返回Future实例</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/afea9712c87f4069a50e5d5dbc283f25"><div style="margin-left:48px"><span class="SemanticStringArray"><span class="SemanticString">提供回调函数</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/479fb2ffe96b42fb93f28b5cc5687e71"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">Java异步IO的使用</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/ccede684ec854f379784d6bea4dc21cb"><div style="margin-left:48px"><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">AsynchronousFileChannel</strong></span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/ebd342e341094f73b4429788516b8e10"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">参考文献</span></span></div></a></li></ul><h1 id="https://www.notion.so/f6a658e68cf643baa7bceea7836f35a7" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/f6a658e68cf643baa7bceea7836f35a7"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">Java中NIO的三大组件</span></span></h1><div id="https://www.notion.so/117b5e1b11e34609ace00cc2a40b61be" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">Java NIO的三大组件分别是Buffer、Channel、Selector。</span></span></p></div><h2 id="https://www.notion.so/14fe59203064403794e435318e7326c4" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/14fe59203064403794e435318e7326c4"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">Buffer</strong></span></span></h2><div id="https://www.notion.so/2b8c0403ac9448a98d0c167e1cfe02cd" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">一个Buffer本质上是一块内存区域，我们可以将数据写入这块内存中；或从这块内存区域中读取数据。</span></span></p></div><div id="https://www.notion.so/a66d6659b3c04af08bccc9bf9cb5aec3" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">Buffer的核心实现是ByteBuffer，其余实现还包括ByteBuffer的一些包装类：IntBuffer、DoubleBuffer。在使用时，我们可以将Buffer理解为一个数组。ByteBuffer看作byte[], IntBuffer看作int[]……</span></span></p></div><h2 id="https://www.notion.so/e3452f4e31364bc1a366a67199f27cab" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/e3452f4e31364bc1a366a67199f27cab"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">Channel（通道）</span></span></h2><div id="https://www.notion.so/b6b03c22df154cdbb849146b0d0881eb" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">所有的NIO操作始于通道，通道是数据来源或数据写入的目的地。java.nio包中的实现包含以下四种：</span></span></p></div><ul class="BulletedListWrapper"><li id="https://www.notion.so/13591286c6dd4710bc6cb7420a2f04d6" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">FileChannel：文件通道，用于文件的读写</span></span></li><li id="https://www.notion.so/5e734c0eb5954160bf7f1c16c9daaeb1" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">DatagramChannel：用于UDP连接的接收和发送</span></span></li><li id="https://www.notion.so/4c17d27113494f0bb59312b2fd573a6b" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">SocketChannel：TCP的连接通道</span></span></li><li id="https://www.notion.so/657340d755b441228514dadb021bd51e" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">ServerSocketChannel：TCP的服务端，用于坚挺某个端口进来的请求。</span></span></li></ul><div id="https://www.notion.so/26901bcd01774fe582571e922fb49ab6" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">读操作的时候将Channel中的数据填充到Buffer中；写操作时将Buffer中的数据写入到Channel中。</span></span></p></div><div id="https://www.notion.so/5074467c7eda48a38c039ec9390ede95" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">FileChannel 是不支持非阻塞的，我们说NIO一般指的是网络IO。</span></span></p></div><h2 id="https://www.notion.so/e96180c9232945f983ba14f76a7f05a2" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/e96180c9232945f983ba14f76a7f05a2"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">Selector</span></span></h2><div id="https://www.notion.so/b16b7009499242ea94809f549fa0b966" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">Selector建立在非阻塞的基础上，用于实现一个线程管理多个Channel。我们常听说的多路复用在Java中指的就是Selector。</span></span></p></div><h1 id="https://www.notion.so/348ac62937e24bde99111abfa7062d73" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/348ac62937e24bde99111abfa7062d73"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">阻塞模式IO（BIO）</span></span></h1><h2 id="https://www.notion.so/afc3e1c1b94e42a391df90bb96f4b5d2" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/afc3e1c1b94e42a391df90bb96f4b5d2"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">阻塞IO的瓶颈</span></span></h2><ul class="BulletedListWrapper"><li id="https://www.notion.so/8b316552905546168ac4fd19b4f04669" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">为每个连接开一个线程代价很高。每个线程都需要一部分内存，如果连接数是几万几十万时，内存将会被迅速消耗；此外线程切换的开销非常大。</span></span></li><li id="https://www.notion.so/64c907a76f714b269655b31bf5fd4d87" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">阻塞操作会导致CPU的空转，降低CPU的使用效率。</span></span></li></ul><h2 id="https://www.notion.so/e3e619225c7640b789c52b8d6c82480c" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/e3e619225c7640b789c52b8d6c82480c"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">代码实现</span></span></h2><h3 id="https://www.notion.so/d8f453fccb6542bbb03ed7ff1c45c209" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/d8f453fccb6542bbb03ed7ff1c45c209"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">Server</span></span></h3><pre id="https://www.notion.so/db9d7d86ca174571a0a9cc20a5d5fc14" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token keyword">package</span> <span class="token namespace">bio</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">IOException</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>net<span class="token punctuation">.</span></span><span class="token class-name">InetSocketAddress</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>nio<span class="token punctuation">.</span></span><span class="token class-name">ByteBuffer</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>nio<span class="token punctuation">.</span>channels<span class="token punctuation">.</span></span><span class="token class-name">ServerSocketChannel</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>nio<span class="token punctuation">.</span>channels<span class="token punctuation">.</span></span><span class="token class-name">SocketChannel</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>nio<span class="token punctuation">.</span>charset<span class="token punctuation">.</span></span><span class="token class-name">StandardCharsets</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">Arrays</span></span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Server</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">{</span>
+        <span class="token class-name">ServerSocketChannel</span> serverSocketChannel <span class="token operator">=</span> <span class="token class-name">ServerSocketChannel</span><span class="token punctuation">.</span><span class="token keyword">open</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        serverSocketChannel<span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">InetSocketAddress</span><span class="token punctuation">(</span><span class="token number">8080</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token class-name">SocketChannel</span> socketChannel <span class="token operator">=</span> serverSocketChannel<span class="token punctuation">.</span><span class="token function">accept</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">new</span> <span class="token class-name">WorkerThread</span><span class="token punctuation">(</span>socketChannel<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">WorkerThread</span> <span class="token keyword">extends</span> <span class="token class-name">Thread</span> <span class="token punctuation">{</span>
+        <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">SocketChannel</span> socketChannel<span class="token punctuation">;</span>
+
+        <span class="token keyword">public</span> <span class="token class-name">WorkerThread</span><span class="token punctuation">(</span><span class="token class-name">SocketChannel</span> socketChannel<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>socketChannel <span class="token operator">=</span> socketChannel<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token annotation punctuation">@Override</span>
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token class-name">ByteBuffer</span> buffer <span class="token operator">=</span> <span class="token class-name">ByteBuffer</span><span class="token punctuation">.</span><span class="token function">allocate</span><span class="token punctuation">(</span><span class="token number">1024</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">try</span> <span class="token punctuation">{</span>
+                <span class="token comment">// 将请求数据读入 Buffer 中</span>
+                <span class="token keyword">int</span> num<span class="token punctuation">;</span>
+                <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>num <span class="token operator">=</span> socketChannel<span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span>buffer<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                    <span class="token comment">// 读取 Buffer 内容之前先 flip 一下</span>
+                    buffer<span class="token punctuation">.</span><span class="token function">flip</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+                    <span class="token comment">// 提取 Buffer 中的数据</span>
+                    <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> bytes <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token keyword">byte</span><span class="token punctuation">[</span>num<span class="token punctuation">]</span><span class="token punctuation">;</span>
+                    buffer<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>bytes<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+                    <span class="token class-name">String</span> re <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">(</span>bytes<span class="token punctuation">,</span> <span class="token class-name">StandardCharsets</span><span class="token punctuation">.</span><span class="token constant">UTF_8</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"收到请求："</span> <span class="token operator">+</span> re<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+                    <span class="token comment">// 回应客户端</span>
+                    <span class="token class-name">ByteBuffer</span> writeBuffer <span class="token operator">=</span> <span class="token class-name">ByteBuffer</span><span class="token punctuation">.</span><span class="token function">wrap</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token string">"我已经收到你的请求，你的请求内容是："</span> <span class="token operator">+</span> re<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getBytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    socketChannel<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>writeBuffer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+                    buffer<span class="token punctuation">.</span><span class="token function">clear</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+                socketChannel<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span></span></span></span></code></pre><h3 id="https://www.notion.so/9e2a95cc2d11443488400e5c5bf44cb4" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/9e2a95cc2d11443488400e5c5bf44cb4"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">Client</span></span></h3><pre id="https://www.notion.so/9876de3fe70c4205a42632c6a8637a6d" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token keyword">package</span> <span class="token namespace">bio</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">IOException</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>net<span class="token punctuation">.</span></span><span class="token class-name">InetSocketAddress</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>nio<span class="token punctuation">.</span></span><span class="token class-name">ByteBuffer</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>nio<span class="token punctuation">.</span></span><span class="token class-name">CharBuffer</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>nio<span class="token punctuation">.</span>channels<span class="token punctuation">.</span></span><span class="token class-name">SocketChannel</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">Arrays</span></span><span class="token punctuation">;</span>
+
+<span class="token comment">/**
+ * 客户端每秒向服务端发送一个Hello World
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Client</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">{</span>
+        <span class="token class-name">SocketChannel</span> socketChannel <span class="token operator">=</span> <span class="token class-name">SocketChannel</span><span class="token punctuation">.</span><span class="token keyword">open</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        socketChannel<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">InetSocketAddress</span><span class="token punctuation">(</span><span class="token string">"127.0.0.1"</span><span class="token punctuation">,</span> <span class="token number">8080</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// 发送请求</span>
+        <span class="token class-name">ByteBuffer</span> buffer <span class="token operator">=</span> <span class="token class-name">ByteBuffer</span><span class="token punctuation">.</span><span class="token function">wrap</span><span class="token punctuation">(</span><span class="token string">"1234567890"</span><span class="token punctuation">.</span><span class="token function">getBytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        socketChannel<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>buffer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// 读取响应</span>
+        <span class="token class-name">ByteBuffer</span> readBuffer <span class="token operator">=</span> <span class="token class-name">ByteBuffer</span><span class="token punctuation">.</span><span class="token function">allocate</span><span class="token punctuation">(</span><span class="token number">1024</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> num<span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>num <span class="token operator">=</span> socketChannel<span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span>readBuffer<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            readBuffer<span class="token punctuation">.</span><span class="token function">flip</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> re <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token keyword">byte</span><span class="token punctuation">[</span>num<span class="token punctuation">]</span><span class="token punctuation">;</span>
+            readBuffer<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>re<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token class-name">String</span> result <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">(</span>re<span class="token punctuation">,</span> <span class="token string">"UTF-8"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"返回值: "</span> <span class="token operator">+</span> result<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        socketChannel<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span></span></span></span></code></pre><div id="https://www.notion.so/d28f770ca86a46d593f634bf8958c3a2" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"></span></p></div><h1 id="https://www.notion.so/f267564adf6e4694b9edccbbb6808739" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/f267564adf6e4694b9edccbbb6808739"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">非阻塞IO（NIO）</span></span></h1><div id="https://www.notion.so/20544e9cfc5d48cfbe80ce03c54f3e3d" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">非阻塞IO的核心在于使用一个Selector来管理多个通道（Channel）。</span></span></p></div><ul class="BulletedListWrapper"><li id="https://www.notion.so/13a79a430a104d1297c7bf4ac7ad0f9a" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">将各个通道注册到Selector上，指定要监听的事件。</span></span></li><li id="https://www.notion.so/dc2df38c18aa440cb035fbaed20d4fa6" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">只使用一个线程来轮询这个Selector，看上面是否有通道准备好。</span></span><ul class="BulletedListWrapper"><li id="https://www.notion.so/ba10198fa1674c8fa84f066f461858b3" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">只有当通道准备好之后才真正地开始读写，避免为每个通道创建一个线程，提升效率。</span></span></li></ul></li></ul><h2 id="https://www.notion.so/6feee1421758445c83419db1f2f876d1" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/6feee1421758445c83419db1f2f876d1"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">Selector在不同操作系统下的实现</span></span></h2><div id="https://www.notion.so/963344896b624fca8272229b7c63b15f" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">NIO中的Selector是对底层操作系统实现的一个抽象，不同操作系统中的实现如下：</span></span></p></div><ul class="BulletedListWrapper"><li id="https://www.notion.so/025a3c310bde4f12afa32a679f3474be" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">Linux下的实现</span></span><ul class="BulletedListWrapper"><li id="https://www.notion.so/6b66681132024688b8e07f85a9389ebf" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">Select。在操作系统层面轮询，每次最多轮询1024个socket。</span></span></li><li id="https://www.notion.so/c2a053a035c24ec4a0a4fd1f2c7b4a90" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">Poll。Select的替代者，最大的区别就是poll不再限制socket的最大数量。</span></span></li><li id="https://www.notion.so/b1ba2e2fa7764298b11d6611e2243ec0" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">Select和Poll都有一个共同的问题。</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">它们只会告诉你有几个通道准备好了，但不会告诉你具体是哪几个通道，需要自己进行一次扫描。</strong></span><span class="SemanticString">时间复杂度为O(N)</span></span></li><li id="https://www.notion.so/71f76f3ddb414c9ea6e3be29e8e69353" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">Epoll。可以直接返回具体的准备好的通道。时间复杂度为O(1).</span></span></li></ul></li><li id="https://www.notion.so/295981756cc14e4a8fa3ebdaaf2b850b" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">Windows下的实现</span></span><ul class="BulletedListWrapper"><li id="https://www.notion.so/8fd90a9cf0734d6fb32025ef8d26d347" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">Select。Windows下的非阻塞IO使用Select。Windows中IOCP提供的异步IO是十分强大的。</span></span></li></ul></li></ul><div id="https://www.notion.so/b09ef091406e45b1bfe356f528998629" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">JVM就是一个屏蔽底层实现的平台，我们直接面向Selector编程就可以了。</span></span></p></div><h2 id="https://www.notion.so/6e2693b95693413598ba3aa9d79efa5c" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/6e2693b95693413598ba3aa9d79efa5c"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">代码实现</span></span></h2><pre id="https://www.notion.so/331e63380d9b4ea99e714fa8ea7c4fa0" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SelectorServer</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">{</span>
+        <span class="token class-name">Selector</span> selector <span class="token operator">=</span> <span class="token class-name">Selector</span><span class="token punctuation">.</span><span class="token keyword">open</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token class-name">ServerSocketChannel</span> server <span class="token operator">=</span> <span class="token class-name">ServerSocketChannel</span><span class="token punctuation">.</span><span class="token keyword">open</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        server<span class="token punctuation">.</span><span class="token function">socket</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">InetSocketAddress</span><span class="token punctuation">(</span><span class="token number">8080</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// 将其注册到 Selector 中，监听 OP_ACCEPT 事件</span>
+        server<span class="token punctuation">.</span><span class="token function">configureBlocking</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        server<span class="token punctuation">.</span><span class="token function">register</span><span class="token punctuation">(</span>selector<span class="token punctuation">,</span> <span class="token class-name">SelectionKey</span><span class="token punctuation">.</span><span class="token constant">OP_ACCEPT</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">int</span> readyChannels <span class="token operator">=</span> selector<span class="token punctuation">.</span><span class="token function">select</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>readyChannels <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">continue</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            <span class="token class-name">Set</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">SelectionKey</span><span class="token punctuation">></span></span> readyKeys <span class="token operator">=</span> selector<span class="token punctuation">.</span><span class="token function">selectedKeys</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// 遍历</span>
+            <span class="token class-name">Iterator</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">SelectionKey</span><span class="token punctuation">></span></span> iterator <span class="token operator">=</span> readyKeys<span class="token punctuation">.</span><span class="token function">iterator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">while</span> <span class="token punctuation">(</span>iterator<span class="token punctuation">.</span><span class="token function">hasNext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token class-name">SelectionKey</span> key <span class="token operator">=</span> iterator<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                iterator<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>key<span class="token punctuation">.</span><span class="token function">isAcceptable</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                    <span class="token comment">// 有已经接受的新的到服务端的连接</span>
+                    <span class="token class-name">SocketChannel</span> socketChannel <span class="token operator">=</span> server<span class="token punctuation">.</span><span class="token function">accept</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+                    <span class="token comment">// 有新的连接并不代表这个通道就有数据，</span>
+                    <span class="token comment">// 这里将这个新的 SocketChannel 注册到 Selector，监听 OP_READ 事件，等待数据</span>
+                    socketChannel<span class="token punctuation">.</span><span class="token function">configureBlocking</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    socketChannel<span class="token punctuation">.</span><span class="token function">register</span><span class="token punctuation">(</span>selector<span class="token punctuation">,</span> <span class="token class-name">SelectionKey</span><span class="token punctuation">.</span><span class="token constant">OP_READ</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>key<span class="token punctuation">.</span><span class="token function">isReadable</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                    <span class="token comment">// 有数据可读</span>
+                    <span class="token comment">// 上面一个 if 分支中注册了监听 OP_READ 事件的 SocketChannel</span>
+                    <span class="token class-name">SocketChannel</span> socketChannel <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">SocketChannel</span><span class="token punctuation">)</span> key<span class="token punctuation">.</span><span class="token function">channel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token class-name">ByteBuffer</span> readBuffer <span class="token operator">=</span> <span class="token class-name">ByteBuffer</span><span class="token punctuation">.</span><span class="token function">allocate</span><span class="token punctuation">(</span><span class="token number">1024</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token keyword">int</span> num <span class="token operator">=</span> socketChannel<span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span>readBuffer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token keyword">if</span> <span class="token punctuation">(</span>num <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                        <span class="token comment">// 处理进来的数据...</span>
+                        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"收到数据："</span> <span class="token operator">+</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">(</span>readBuffer<span class="token punctuation">.</span><span class="token function">array</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">trim</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                        <span class="token class-name">ByteBuffer</span> buffer <span class="token operator">=</span> <span class="token class-name">ByteBuffer</span><span class="token punctuation">.</span><span class="token function">wrap</span><span class="token punctuation">(</span><span class="token string">"返回给客户端的数据..."</span><span class="token punctuation">.</span><span class="token function">getBytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                        socketChannel<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>buffer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>num <span class="token operator">==</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                        <span class="token comment">// -1 代表连接已经关闭</span>
+                        socketChannel<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token punctuation">}</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></span></span></span></code></pre><h1 id="https://www.notion.so/d424d6b6e36540ae845be114758bed96" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/d424d6b6e36540ae845be114758bed96"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">NIO.2 （AIO）异步IO</span></span></h1><div id="https://www.notion.so/649653c8c6d74d8ca9d1b06f3f8c94b7" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">我们会在很多场景使用异步。通常我们会使用一个线程池执行异步任务。提交任务的线程将任务提交到线程池之后立马返回，不必等到任务真正完成。如果想知道任务的执行结果，通常是传递一个回调函数，任务结束后去调用这个函数。</span></span></p></div><div id="https://www.notion.so/d260475b87904490987c7f012e21d281" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">Java中的异步IO也是一样的，都是由一个线程池来负责执行任务，然后使用回调或自己去查询结果。</span></span></p></div><h2 id="https://www.notion.so/474c3bc5af8c4334a36638445ecd728c" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/474c3bc5af8c4334a36638445ecd728c"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">底层实现</span></span></h2><ul class="BulletedListWrapper"><li id="https://www.notion.so/61eff8b8481f4974bc667f58083cc137" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">Windows下使用IOCP来实现，操作系统管理线程池，性能非常好。</span></span></li><li id="https://www.notion.so/0435a190b15e49a19f1c94d33a7842b0" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">Linux下也有异步IO系统实现，但是限制较多且性能一般。因此JDK使用自建线程池的方式实现。</span></span></li></ul><h2 id="https://www.notion.so/30608bf3d25345b38aab79e0a8ff38fe" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/30608bf3d25345b38aab79e0a8ff38fe"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">Java异步IO的两种使用方式</span></span></h2><h3 id="https://www.notion.so/dbc6374588094ef5a82beb19ed7f8915" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/dbc6374588094ef5a82beb19ed7f8915"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">返回Future实例</span></span></h3><div id="https://www.notion.so/6e68fe88b46b4f2daecc436badedd7dd" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">Future提供如下的方法用于获取任务的执行情况：</span></span></p></div><ul class="BulletedListWrapper"><li id="https://www.notion.so/ef32ae15f3b64d6b9a96051e984372a8" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">future.isDone();</span></span><div id="https://www.notion.so/de764ec9b045483180a4f6a34ae1d06e" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">判断操作是否已经完成，包括了</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">正常完成、异常抛出、取消</strong></span></span></p></div></li><li id="https://www.notion.so/2f95c207bf5547b983ed4567e417c188" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">future.cancel(true);</span></span><div id="https://www.notion.so/1d40d6d6a42c4052adb027ca36e51418" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">取消操作，方式是中断。参数 true 说的是，即使这个任务正在执行，也会进行中断。</span></span></p></div></li><li id="https://www.notion.so/f997262102af4fe18c7fd2e2980a361e" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">future.isCancelled();</span></span><div id="https://www.notion.so/0440dc4e374a4119a681879aa0c7589a" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">是否被取消，只有在任务正常结束之前被取消，这个方法才会返回 true</span></span></p></div></li><li id="https://www.notion.so/5c8a85c981ad4563a35739975a4d461c" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">future.get();</span></span><div id="https://www.notion.so/c744373f1e3449228bac656192acc31f" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">这是我们的老朋友，获取执行结果，阻塞。</span></span></p></div></li><li id="https://www.notion.so/2073fc4c419c4144a16ad95cb884b206" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">future.get(10, TimeUnit.SECONDS);</span></span><div id="https://www.notion.so/28d7253676a44e7181113a92a9ef42da" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">如果上面的 get() 方法的阻塞你不满意，那就设置个超时时间。</span></span></p></div></li></ul><h3 id="https://www.notion.so/afea9712c87f4069a50e5d5dbc283f25" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/afea9712c87f4069a50e5d5dbc283f25"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">提供回调函数</span></span></h3><div id="https://www.notion.so/b216343d0da24e44b3e96a659bc3ad85" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">java.nio.channels.CompletionHandler 接口定义：</span></span></p></div><pre id="https://www.notion.so/bd9e97c420fd4811a68b0383f949c303" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token keyword">public</span> interfaceCompletionHandler<span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">V</span><span class="token punctuation">,</span><span class="token class-name">A</span><span class="token punctuation">></span></span> <span class="token punctuation">{</span>
+    <span class="token keyword">void</span> <span class="token function">completed</span><span class="token punctuation">(</span><span class="token class-name">V</span> result<span class="token punctuation">,</span> <span class="token class-name">A</span> attachment<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">void</span> <span class="token function">failed</span><span class="token punctuation">(</span><span class="token class-name">Throwable</span> exc<span class="token punctuation">,</span> <span class="token class-name">A</span> attachment<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></span></span></span></code></pre><blockquote id="https://www.notion.so/e480cb8e62564464820fcb3efa73d104" class="ColorfulBlock ColorfulBlock--ColorDefault Quote"><span class="SemanticStringArray"><span class="SemanticString">注意，参数上有个 attachment，虽然不常用，我们可以在各个支持的方法中传递这个参数值</span></span></blockquote><pre id="https://www.notion.so/8fbfe838d653456c8ff441267614ae52" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token class-name">AsynchronousServerSocketChannel</span> listener <span class="token operator">=</span> <span class="token class-name">AsynchronousServerSocketChannel</span><span class="token punctuation">.</span><span class="token keyword">open</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// accept 方法的第一个参数可以传递 attachment</span>
+listener<span class="token punctuation">.</span><span class="token function">accept</span><span class="token punctuation">(</span>attachment<span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">CompletionHandler</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">AsynchronousSocketChannel</span><span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token function">voidcompleted</span><span class="token punctuation">(</span>
+      <span class="token class-name">AsynchronousSocketChannel</span> client<span class="token punctuation">,</span> <span class="token class-name">Object</span> attachment<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token comment">//</span>
+      <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token function">voidfailed</span><span class="token punctuation">(</span><span class="token class-name">Throwable</span> exc<span class="token punctuation">,</span> <span class="token class-name">Object</span> attachment<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token comment">//</span>
+      <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span></span></span></code></pre><h2 id="https://www.notion.so/479fb2ffe96b42fb93f28b5cc5687e71" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/479fb2ffe96b42fb93f28b5cc5687e71"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">Java异步IO的使用</span></span></h2><div id="https://www.notion.so/64a7fcbf0846447ab726ae5a3709cbe4" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">Java异步IO的使用中我们需要关注三个类，分别</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">AsynchronousSocketChannel</strong></span><span class="SemanticString">
+，</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">AsynchronousServerSocketChannel</strong></span><span class="SemanticString">
+ 和 </span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">AsynchronousFileChannel</strong></span><span class="SemanticString">
+，只不过是在之前介绍的 FileChannel、SocketChannel 和 ServerSocketChannel 的类名上加了个前缀 </span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">Asynchronous</strong></span><span class="SemanticString">
+。</span></span></p></div><h3 id="https://www.notion.so/ccede684ec854f379784d6bea4dc21cb" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/ccede684ec854f379784d6bea4dc21cb"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">AsynchronousFileChannel</strong></span></span></h3><div id="https://www.notion.so/21ba6b852d95487e82fec97c1c3793fa" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">文件IO在所有操作系统中都不支持非阻塞模式，但是我们可以对文件IO采用异步IO方式来提高性能。</span></span></p></div><h1 id="https://www.notion.so/ebd342e341094f73b4429788516b8e10" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/ebd342e341094f73b4429788516b8e10"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">参考文献</span></span></h1><div id="https://www.notion.so/148cb1f481134f3e974e57cf63d26db5" class="Bookmark"><a href="https://javadoop.com/post/nio-and-aio"><h5 class="Bookmark__Title">Java 非阻塞 IO 和异步 IO</h5><p class="Bookmark__Desc">上一篇文章介绍了 Java NIO 中 Buffer、Channel 和 Selector 的基本操作，主要是一些接口操作，比较简单。 本文将介绍 非阻塞 IO 和 异步 IO，也就是大家耳熟能详的 NIO 和 AIO。很多初学者可能分不清楚异步和非阻塞的区别，只是在各种场合能听到 异步非阻塞 这个词。 本文会先介绍并演示阻塞模式，然后引入非阻塞模式来对阻塞模式进行优化，最后再介绍 JDK7 引入的异步 IO，由于网上关于异步 IO 的介绍相对较少，所以这部分内容我会介绍得具体一些。 希望看完本文，读者可以对非阻塞 IO 和异步 IO 的迷雾看得更清晰些，或者为初学者解开一丝丝疑惑也是好的。 我们已经介绍过使用 Java NIO 包组成一个简单的 客户端-服务端 网络通讯所需要的 ServerSocketChannel、SocketChannel 和 Buffer，我们这里整合一下它们，给出一个完整的可运行的例子： public class Server { public static void main(String[] args) throws IOException</p><p class="Bookmark__Link">https://javadoop.com/post/nio-and-aio</p></a></div><div id="https://www.notion.so/5158c9b09f3245f0946ca68ce2e69802" class="Bookmark"><a href="https://javadoop.com/post/nio-and-aio"><h5 class="Bookmark__Title">Java 非阻塞 IO 和异步 IO</h5><p class="Bookmark__Desc">上一篇文章介绍了 Java NIO 中 Buffer、Channel 和 Selector 的基本操作，主要是一些接口操作，比较简单。 本文将介绍 非阻塞 IO 和 异步 IO，也就是大家耳熟能详的 NIO 和 AIO。很多初学者可能分不清楚异步和非阻塞的区别，只是在各种场合能听到 异步非阻塞 这个词。 本文会先介绍并演示阻塞模式，然后引入非阻塞模式来对阻塞模式进行优化，最后再介绍 JDK7 引入的异步 IO，由于网上关于异步 IO 的介绍相对较少，所以这部分内容我会介绍得具体一些。 希望看完本文，读者可以对非阻塞 IO 和异步 IO 的迷雾看得更清晰些，或者为初学者解开一丝丝疑惑也是好的。 我们已经介绍过使用 Java NIO 包组成一个简单的 客户端-服务端 网络通讯所需要的 ServerSocketChannel、SocketChannel 和 Buffer，我们这里整合一下它们，给出一个完整的可运行的例子： public class Server { public static void main(String[] args) throws IOException</p><p class="Bookmark__Link">https://javadoop.com/post/nio-and-aio</p></a></div><div id="https://www.notion.so/0154818c9d704ed89f700ad8245583a3" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"></span></p></div></article>
+  <script src="https://utteranc.es/client.js"
+    repo="shaojunying/shaojunying.github.io"
+    issue-term="title"
+    label="Comment"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+  </script>
+  <footer class="Footer">
+  <div>&copy; Junying Shao&#39;s Blog 2022</div>
+  <div>&centerdot;</div>
+  <div>Powered by <a href="https://github.com/dragonman225/notablog" target="_blank"
+      rel="noopener noreferrer">Notablog</a>.
+  </div>
+</footer>
+</body>
+
+</html>

@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Chrome, Firefox OS and Opera Status Bar Color -->
+<meta name="theme-color" content="#FFFFFF">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css">
+<link rel="stylesheet" type="text/css"
+  href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.19.0/themes/prism.min.css">
+<link rel="stylesheet" type="text/css" href="css/SourceSansPro.css">
+<link rel="stylesheet" type="text/css" href="css/theme.css">
+<link rel="stylesheet" type="text/css" href="css/notablog.css">
+<!-- Favicon -->
+
+  <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;📖&lt;/text&gt;&lt;/svg&gt;">
+
+<style>
+  :root {
+    font-size: 20px;
+  }
+</style>
+  <title>命令行编译运行Java项目&nbsp;|&nbsp;Junying Shao&#39;s Blog</title>
+  <meta property="og:type" content="blog">
+  <meta property="og:title" content="命令行编译运行Java项目">
+  
+  
+    <meta property="og:image" content="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;📒&lt;/text&gt;&lt;/svg&gt;">
+  
+  <style>
+    .DateTagBar {
+      margin-top: 1.0rem;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="Navbar">
+  <a href="index.html">
+    <div class="Navbar__Btn">
+      
+        <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;📖&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+      
+      <span>Home</span>
+    </div>
+  </a>
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <span class="Navbar__Delim">&centerdot;</span>
+      <a href="jvm-a02052.html">
+        <div class="Navbar__Btn">
+          
+            <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;🌞&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+          
+          <span>JVM学习</span>
+        </div>
+      </a>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <span class="Navbar__Delim">&centerdot;</span>
+      <a href="about.html">
+        <div class="Navbar__Btn">
+          
+            <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;😀&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+          
+          <span>About</span>
+        </div>
+      </a>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+</nav>
+  <header class="Header">
+    
+    <div class="Header__Spacer Header__Spacer--NoCover">
+    </div>
+    
+      <div class="Header__Icon">
+        <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;📒&lt;/text&gt;&lt;/svg&gt;"></span>
+      </div>
+    
+    <h1 class="Header__Title">命令行编译运行Java项目</h1>
+    
+  </header>
+  <article id="https://www.notion.so/6644e3ad18df41f990932bcf62294e82" class="PageRoot"><ul id="https://www.notion.so/0dc72532e0a44307baf03c4e4ef7c88d" class="ColorfulBlock ColorfulBlock--ColorGray TableOfContents"><li class="TableOfContents__Item"><a href="#https://www.notion.so/e611cc8d5f9b487eb74f8c20f97581a3"><div style="margin-left:0px"><span class="SemanticStringArray"><span class="SemanticString">示例文件结构</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/4dad6aa01db14917ad0b6a8196814d3a"><div style="margin-left:0px"><span class="SemanticStringArray"><span class="SemanticString">编译为class文件并运行</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/1ff88f79b0b049be883eb66714fbbc53"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">将src下的Java文件编译到out文件夹下</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/4bd857511e0949429a23f14b2dfdadc1"><div style="margin-left:48px"><span class="SemanticStringArray"><span class="SemanticString">创建out目录</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/817a0a302dc84d9b93865a3248a9da82"><div style="margin-left:48px"><span class="SemanticStringArray"><span class="SemanticString">执行javac命令</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/f2efdcdf3552440eb762fd9e7b88f751"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">运行out下的class文件</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/1bf0c8ee39a944a38ee719f11dbe40ce"><div style="margin-left:48px"><span class="SemanticStringArray"><span class="SemanticString">在out目录下运行</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/c73680b5abfd4f23a76463a14bf4b9b9"><div style="margin-left:48px"><span class="SemanticStringArray"><span class="SemanticString">在项目根目录下运行</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/b8c8d87a1c7d4793a70d3e9bcd40c0a7"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">编译为jar文件并运行</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/54b885c5aef043ebb5a48971debeba76"><div style="margin-left:48px"><span class="SemanticStringArray"><span class="SemanticString">将src下的Java代码编译到jar文件夹下</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/3cf882693f8e4193993819e877ef3dbd"><div style="margin-left:72px"><span class="SemanticStringArray"><span class="SemanticString">编译并不指定Main class</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/be261785a5e44a8da636ee11389b3ef1"><div style="margin-left:72px"><span class="SemanticStringArray"><span class="SemanticString">编译并在命令行指定Main class</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/4ea41c753f63443fb1bc409bdcf60f21"><div style="margin-left:72px"><span class="SemanticStringArray"><span class="SemanticString">编译并在文件中指定Main class</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/afcaa375f42347d2a6ee8e6c9e66cc68"><div style="margin-left:48px"><span class="SemanticStringArray"><span class="SemanticString">运行jar中的class文件（jar中包含启动类和不包含启动类）</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/6ac9727970514481ac7614696ded68c9"><div style="margin-left:72px"><span class="SemanticStringArray"><span class="SemanticString">运行包含Main class信息的jar文件</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/46af35456fe2417087cb8a05ea697986"><div style="margin-left:72px"><span class="SemanticStringArray"><span class="SemanticString">运行不包含Main class信息的jar文件，或者要覆盖jar中的启动类</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/48b21fd96ab546e1be1754b342a5f814"><div style="margin-left:48px"><span class="SemanticStringArray"><span class="SemanticString">使用maven打包运行</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/137c84a7b9824208b38f4c9b3634ece6"><div style="margin-left:72px"><span class="SemanticStringArray"><span class="SemanticString">初始化maven项目</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/eb9bf2e897cd40dcb2907cb52df27d64"><div style="margin-left:72px"><span class="SemanticStringArray"><span class="SemanticString">指定项目的Main class（可选）</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/7cc054ce5a654cdca49c702b9e4ea3c3"><div style="margin-left:72px"><span class="SemanticStringArray"><span class="SemanticString">打包</span></span></div></a></li></ul><h1 id="https://www.notion.so/e611cc8d5f9b487eb74f8c20f97581a3" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/e611cc8d5f9b487eb74f8c20f97581a3"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">示例文件结构</span></span></h1><div id="https://www.notion.so/bdf5e9ebe32a48019ac1af027cdbe54c" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">首先假设项目的结构如下所示</span></span></p></div><pre id="https://www.notion.so/c4635be30ea446459d2072b0559dbf07" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span>JavaLearning
+<span class="token operator">--</span> src
+<span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span> Main<span class="token punctuation">.</span>java
+<span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span> utils
+<span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span> Helper<span class="token punctuation">.</span>java</span></span></span></code></pre><div id="https://www.notion.so/71129f70f1354195a1c7af58a3644241" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">各个文件的内容如下</span></span></p></div><pre id="https://www.notion.so/a24192bfb4274028bcb3802c17f18925" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token comment">// src/Main.java</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">utils<span class="token punctuation">.</span></span><span class="token class-name">Helper</span></span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Main</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">Helper</span> helper <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Helper</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>helper<span class="token punctuation">.</span><span class="token function">sayHello</span><span class="token punctuation">(</span><span class="token string">"world"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span></span></span></span></code></pre><pre id="https://www.notion.so/f95c7ec9fde945fdbb1e42dffe4ce633" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token comment">// src/utils/Helper.java</span>
+<span class="token keyword">package</span> <span class="token namespace">utils</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Helper</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">sayHello</span><span class="token punctuation">(</span><span class="token class-name">String</span> name<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token string">"hello "</span> <span class="token operator">+</span> name<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span></span></span></span></code></pre><h1 id="https://www.notion.so/4dad6aa01db14917ad0b6a8196814d3a" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/4dad6aa01db14917ad0b6a8196814d3a"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">编译为class文件并运行</span></span></h1><h2 id="https://www.notion.so/1ff88f79b0b049be883eb66714fbbc53" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/1ff88f79b0b049be883eb66714fbbc53"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">将src下的Java文件编译到out文件夹下</span></span></h2><h3 id="https://www.notion.so/4bd857511e0949429a23f14b2dfdadc1" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/4bd857511e0949429a23f14b2dfdadc1"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">创建out目录</span></span></h3><div id="https://www.notion.so/2d27d7534ff447bcb38d8ed4471226a3" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">假设我们要将文件保存在与src同级的out目录下，那么我们首先下面命令创建out目录:</span></span></p></div><pre id="https://www.notion.so/fa401cea778a4ba79db624d149ddbb41" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span>JavaLearning$ <span class="token function">mkdir</span> out</span></span></span></code></pre><div id="https://www.notion.so/981071fcb8704b25b1cb2b0291160fa3" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">创建out目录之后，项目的结构如下所示：</span></span></p></div><pre id="https://www.notion.so/9f2e082c6448420eab3d67ae8bc0dc8c" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span>JavaLearning
+-- src
+------ Main.java
+------ utils
+------------ Helper.java
+-- out // 新创建的out目录，此时为空</span></span></span></code></pre><h3 id="https://www.notion.so/817a0a302dc84d9b93865a3248a9da82" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/817a0a302dc84d9b93865a3248a9da82"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">执行javac命令</span></span></h3><div id="https://www.notion.so/35618fe9272745af82fd90f64690a2fd" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">之后在项目根目录下执行javac命令</span></span></p></div><pre id="https://www.notion.so/b76927f861c34ce1ab089e862bc68b8e" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token parameter variable">-d</span> 制定了class文件的保存路径，这里保存在了out目录下。
+src/**/*.java 表示编译src下的所有Java文件
+javac <span class="token parameter variable">-d</span> out src/**/*.java</span></span></span></code></pre><div id="https://www.notion.so/90a833d1184f46a199d655fc64c4edd0" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">编译后的项目目录如下所示</span></span></p></div><pre id="https://www.notion.so/725f2c4cd06b4a898bde88d344f5f83b" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span>JavaLearning
+-- src
+------ Main.java
+------ utils
+------------ Helper.java
+-- out
+------ Main.class // 新编译生成的class文件
+------ utils // 新编译生成的class文件
+------------ Helper.class // 新编译生成的class文件</span></span></span></code></pre><h2 id="https://www.notion.so/f2efdcdf3552440eb762fd9e7b88f751" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/f2efdcdf3552440eb762fd9e7b88f751"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">运行out下的class文件</span></span></h2><div id="https://www.notion.so/817186ac579947f4b6f55494e95e8abd" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">由于默认情况下java命令只会将当前目录添加为classpath，所以有两种方式可以执行class文件。</span></span></p></div><h3 id="https://www.notion.so/1bf0c8ee39a944a38ee719f11dbe40ce" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/1bf0c8ee39a944a38ee719f11dbe40ce"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">在out目录下运行</span></span></h3><div id="https://www.notion.so/88e235ca08424d5a93221c3b3da03ecc" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">执行如下命令：</span></span></p></div><pre id="https://www.notion.so/47d0343170ab400fa306bf2dad9eb802" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span>JavaLearning/out$ <span class="token function">java</span> Main // 这里的Main指main函数所在类在包中的路径</span></span></span></code></pre><div id="https://www.notion.so/933c7f7a8dfe491f919facba4277cbd8" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">输出如下：</span></span></p></div><pre id="https://www.notion.so/5844910672b943ba94589cdbab618d1f" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span>hello world</span></span></span></code></pre><h3 id="https://www.notion.so/c73680b5abfd4f23a76463a14bf4b9b9" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/c73680b5abfd4f23a76463a14bf4b9b9"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">在项目根目录下运行</span></span></h3><div id="https://www.notion.so/776f185e0718450f9d441eb0f84efc57" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">在项目下运行的话，就需要将out目录添加到classpath下。于是执行如下代码:</span></span></p></div><pre id="https://www.notion.so/97b0c40ff80d4bbcb9a1a70fa157e69a" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token function">java</span> <span class="token parameter variable">-cp</span> out Main //这里的-cp命令将out目录添加到了classpath中</span></span></span></code></pre><div id="https://www.notion.so/414191bc6cc14a9c8565e4cb44b4377b" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">输出如下：</span></span></p></div><pre id="https://www.notion.so/c1775ebed5e74c75b3d9bc6c14abe385" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span>hello world</span></span></span></code></pre><h1 id="https://www.notion.so/b8c8d87a1c7d4793a70d3e9bcd40c0a7" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/b8c8d87a1c7d4793a70d3e9bcd40c0a7"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">编译为jar文件并运行</span></span></h1><div id="https://www.notion.so/412b00e8efd54d33bbd0408a41a3d8f9" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">编译jar文件之前需要首先生成class文件，这里假设class文件已经被生成，并被保存在out目录下</span></span></p></div><h2 id="https://www.notion.so/54b885c5aef043ebb5a48971debeba76" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/54b885c5aef043ebb5a48971debeba76"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">将src下的Java代码编译到jar文件夹下</span></span></h2><h3 id="https://www.notion.so/3cf882693f8e4193993819e877ef3dbd" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/3cf882693f8e4193993819e877ef3dbd"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">编译并不指定Main class</span></span></h3><pre id="https://www.notion.so/07db3cb2bc5c4bf0b0c79f97b24e6f66" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token comment"># cf 中表示创建jar文件 f用来指定jar的文件名</span>
+<span class="token comment"># -C 指定class文件所在的目录</span>
+<span class="token comment"># . 这里表示打包整个out目录下的文件</span>
+JavaLearning$ jar cf test.jar <span class="token parameter variable">-C</span> out/ <span class="token builtin class-name">.</span></span></span></span></code></pre><h3 id="https://www.notion.so/be261785a5e44a8da636ee11389b3ef1" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/be261785a5e44a8da636ee11389b3ef1"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">编译并在命令行指定Main class</span></span></h3><pre id="https://www.notion.so/75a39d6e041f478a9c2d1cbe0e3cdd79" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token comment"># cfe中的e表示会在命令行中指定入口 Main就是jar文件的入口</span>
+JavaLearning$ jar cfe test.jar Main <span class="token parameter variable">-C</span> out <span class="token builtin class-name">.</span></span></span></span></code></pre><h3 id="https://www.notion.so/4ea41c753f63443fb1bc409bdcf60f21" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/4ea41c753f63443fb1bc409bdcf60f21"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">编译并在文件中指定Main class</span></span></h3><div id="https://www.notion.so/88c5de0168374b2ca19f63d82b0a9954" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">首先需要创建一个文件保存manifest信息，这里将文件名指定为manifest.txt，其内容如下</span></span></p></div><pre id="https://www.notion.so/3a5e462c8878436aae56aa339b69480e" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token comment"># manifest.txt 最后要以一个空行结尾，否则JVM将忽略该文件</span>
+Main-Class: Main
+</span></span></span></code></pre><div id="https://www.notion.so/5e510b0ec03f4a068c26e4bb6ba6c328" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">之后执行如下命令，即可创建可执行的jar文件</span></span></p></div><pre id="https://www.notion.so/b83545213d084ef0a459e55f277681f6" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token comment"># cfm中的m表示要指定manifest文件</span>
+JavaLearning$ jar cfm test.jar manifest.txt <span class="token parameter variable">-C</span> out <span class="token builtin class-name">.</span></span></span></span></code></pre><h2 id="https://www.notion.so/afcaa375f42347d2a6ee8e6c9e66cc68" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/afcaa375f42347d2a6ee8e6c9e66cc68"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">运行jar中的class文件（jar中包含启动类和不包含启动类）</span></span></h2><h3 id="https://www.notion.so/6ac9727970514481ac7614696ded68c9" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/6ac9727970514481ac7614696ded68c9"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">运行包含Main class信息的jar文件</span></span></h3><pre id="https://www.notion.so/9b90f9ef4ee74491b2d4fb907fcc9bda" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token function">java</span> <span class="token parameter variable">-jar</span> test.jar // 这里的test.jar是要启动的jar文件名</span></span></span></code></pre><h3 id="https://www.notion.so/46af35456fe2417087cb8a05ea697986" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/46af35456fe2417087cb8a05ea697986"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">运行不包含Main class信息的jar文件，或者要覆盖jar中的启动类</span></span></h3><pre id="https://www.notion.so/f56c7015fdc8459ea24c3bd2da207bd9" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token function">java</span> <span class="token parameter variable">-cp</span> test.jar Main <span class="token comment"># 这里test.jar表示要启动的jar文件名、Main则是启动类的路径</span></span></span></span></code></pre><h1 id="https://www.notion.so/48b21fd96ab546e1be1754b342a5f814" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/48b21fd96ab546e1be1754b342a5f814"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">使用maven打包运行</span></span></h1><h2 id="https://www.notion.so/137c84a7b9824208b38f4c9b3634ece6" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/137c84a7b9824208b38f4c9b3634ece6"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">初始化maven项目</span></span></h2><div id="https://www.notion.so/6189445909a84e549df306c8ac4a00aa" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">直接在项目根目录下添加pom.xml文件即可。文件内容参考 </span><span class="SemanticString"><span class="SemanticString__Fragment SemanticString__Fragment--Resource"><a href="abfd862957164a2b9c6e781556dba19f.html"><span class="SemanticStringArray"><span class="SemanticString">maven的pom.xml的默认格式</span></span></a></span></span><span class="SemanticString"> </span></span></p></div><h2 id="https://www.notion.so/eb9bf2e897cd40dcb2907cb52df27d64" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/eb9bf2e897cd40dcb2907cb52df27d64"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">指定项目的Main class（可选）</span></span></h2><div id="https://www.notion.so/91d24a3812ef47498a84ec0e22e95258" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">在pom.xml的project.build.plugins下添加如下代码</span></span></p></div><pre id="https://www.notion.so/d4133b9275d6422f871e10104123735c" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token comment">&lt;!-- 指定jar文件的启动类--></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>plugin</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.apache.maven.plugins<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>maven-jar-plugin<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>configuration</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>archive</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>manifest</span><span class="token punctuation">></span></span>
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>mainClass</span><span class="token punctuation">></span></span>Main<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>mainClass</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>manifest</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>archive</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>configuration</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>plugin</span><span class="token punctuation">></span></span></span></span></span></code></pre><h2 id="https://www.notion.so/7cc054ce5a654cdca49c702b9e4ea3c3" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/7cc054ce5a654cdca49c702b9e4ea3c3"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">打包</span></span></h2><div id="https://www.notion.so/1b4d790f42da443190a16d91529b57bb" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">运行 </span><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">mvn package</code></span><span class="SemanticString"> 即可，之后生成target/project-1.0.jar文件</span></span></p></div></article>
+  <script src="https://utteranc.es/client.js"
+    repo="shaojunying/shaojunying.github.io"
+    issue-term="title"
+    label="Comment"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+  </script>
+  <footer class="Footer">
+  <div>&copy; Junying Shao&#39;s Blog 2022</div>
+  <div>&centerdot;</div>
+  <div>Powered by <a href="https://github.com/dragonman225/notablog" target="_blank"
+      rel="noopener noreferrer">Notablog</a>.
+  </div>
+</footer>
+</body>
+
+</html>

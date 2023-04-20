@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Chrome, Firefox OS and Opera Status Bar Color -->
+<meta name="theme-color" content="#FFFFFF">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css">
+<link rel="stylesheet" type="text/css"
+  href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.19.0/themes/prism.min.css">
+<link rel="stylesheet" type="text/css" href="css/SourceSansPro.css">
+<link rel="stylesheet" type="text/css" href="css/theme.css">
+<link rel="stylesheet" type="text/css" href="css/notablog.css">
+<!-- Favicon -->
+
+  <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;📖&lt;/text&gt;&lt;/svg&gt;">
+
+<style>
+  :root {
+    font-size: 20px;
+  }
+</style>
+  <title>为什么”0.1 * 3 == 0.3&#34;为false &nbsp;|&nbsp;Junying Shao&#39;s Blog</title>
+  <meta property="og:type" content="blog">
+  <meta property="og:title" content="为什么”0.1 * 3 == 0.3&#34;为false ">
+  
+  
+    <meta property="og:image" content="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;🚲&lt;/text&gt;&lt;/svg&gt;">
+  
+  <style>
+    .DateTagBar {
+      margin-top: 1.0rem;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="Navbar">
+  <a href="index.html">
+    <div class="Navbar__Btn">
+      
+        <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;📖&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+      
+      <span>Home</span>
+    </div>
+  </a>
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <span class="Navbar__Delim">&centerdot;</span>
+      <a href="jvm-a02052.html">
+        <div class="Navbar__Btn">
+          
+            <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;🌞&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+          
+          <span>JVM学习</span>
+        </div>
+      </a>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <span class="Navbar__Delim">&centerdot;</span>
+      <a href="about.html">
+        <div class="Navbar__Btn">
+          
+            <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;😀&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+          
+          <span>About</span>
+        </div>
+      </a>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+</nav>
+  <header class="Header">
+    
+      <div class="Header__Cover">
+        <img src="https://www.notion.so/images/page-cover/met_william_morris_1877_willow.jpg">
+      </div>
+    
+    <div class="Header__Spacer ">
+    </div>
+    
+      <div class="Header__Icon">
+        <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;🚲&lt;/text&gt;&lt;/svg&gt;"></span>
+      </div>
+    
+    <h1 class="Header__Title">为什么”0.1 * 3 == 0.3&#34;为false </h1>
+    
+      <div class="DateTagBar">
+        
+          <span class="DateTagBar__Item DateTagBar__Date">Posted on Thu, Jan 6, 2022</span>
+        
+        
+          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--purple">
+            <a href="tag/计算机组成.html">计算机组成</a>
+          </span>
+        
+          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--blue">
+            <a href="tag/Java.html">Java</a>
+          </span>
+        
+      </div>
+    
+  </header>
+  <article id="https://www.notion.so/adf46085005e4196a7edecfa4d874e97" class="PageRoot PageRoot--FullWidth"><ul id="https://www.notion.so/76e47d7f996441c4a442092740f5c713" class="ColorfulBlock ColorfulBlock--ColorGray TableOfContents"><li class="TableOfContents__Item"><a href="#https://www.notion.so/18fe10f4553f41faaacdcc488c78a141"><div style="margin-left:0px"><span class="SemanticStringArray"><span class="SemanticString">问题描述</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/383ff3df82ed499b882f91f211d424ff"><div style="margin-left:0px"><span class="SemanticStringArray"><span class="SemanticString">问题分析</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/4197424ce3bd4df49193133c695128e0"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">二进制</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/84c5e6d6f16a4eea8bd6608ba120501c"><div style="margin-left:0px"><span class="SemanticStringArray"><span class="SemanticString">计算机中的浮点数表示</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/fc34eff3c99b4457ba6728e6a7bcf0ee"><div style="margin-left:0px"><span class="SemanticStringArray"><span class="SemanticString">为什么会出现上面程序的结果</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/df0c25f110d9494090945b90e10a7192"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">举例</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/4a06371b9b174f188fdf025c2f2548aa"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">0.2</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/fd4902f80ed34557a4bdaf03cccf50c1"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">0.3</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/58018f9cd7e04ac29ecc5f76f2a2af14"><div style="margin-left:0px"><span class="SemanticStringArray"><span class="SemanticString">参考资料</span></span></div></a></li></ul><h1 id="https://www.notion.so/18fe10f4553f41faaacdcc488c78a141" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/18fe10f4553f41faaacdcc488c78a141"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">问题描述</span></span></h1><div id="https://www.notion.so/41b7f89482f6462eb83567fdd6a79455" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">在Java中运行如下代码:</span></span></p></div><pre id="https://www.notion.so/854296fcc6514ab9b7e4072e52edec7f" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Main</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"0.1 * 1 == 0.1: "</span> <span class="token operator">+</span> <span class="token punctuation">(</span><span class="token number">0.1</span> <span class="token operator">*</span> <span class="token number">1</span> <span class="token operator">==</span> <span class="token number">0.1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"0.1 * 2 == 0.2: "</span> <span class="token operator">+</span> <span class="token punctuation">(</span><span class="token number">0.1</span> <span class="token operator">*</span> <span class="token number">2</span> <span class="token operator">==</span> <span class="token number">0.2</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"0.1 * 3 == 0.3: "</span> <span class="token operator">+</span> <span class="token punctuation">(</span><span class="token number">0.1</span> <span class="token operator">*</span> <span class="token number">3</span> <span class="token operator">==</span> <span class="token number">0.3</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"0.1 * 4 == 0.4: "</span> <span class="token operator">+</span> <span class="token punctuation">(</span><span class="token number">0.1</span> <span class="token operator">*</span> <span class="token number">4</span> <span class="token operator">==</span> <span class="token number">0.4</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"0.1 * 5 == 0.5: "</span> <span class="token operator">+</span> <span class="token punctuation">(</span><span class="token number">0.1</span> <span class="token operator">*</span> <span class="token number">5</span> <span class="token operator">==</span> <span class="token number">0.5</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"0.1 * 6 == 0.6: "</span> <span class="token operator">+</span> <span class="token punctuation">(</span><span class="token number">0.1</span> <span class="token operator">*</span> <span class="token number">6</span> <span class="token operator">==</span> <span class="token number">0.6</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"0.1 * 7 == 0.7: "</span> <span class="token operator">+</span> <span class="token punctuation">(</span><span class="token number">0.1</span> <span class="token operator">*</span> <span class="token number">7</span> <span class="token operator">==</span> <span class="token number">0.7</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"0.1 * 8 == 0.8: "</span> <span class="token operator">+</span> <span class="token punctuation">(</span><span class="token number">0.1</span> <span class="token operator">*</span> <span class="token number">8</span> <span class="token operator">==</span> <span class="token number">0.8</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"0.1 * 9 == 0.9: "</span> <span class="token operator">+</span> <span class="token punctuation">(</span><span class="token number">0.1</span> <span class="token operator">*</span> <span class="token number">9</span> <span class="token operator">==</span> <span class="token number">0.9</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></span></span></span></code></pre><div id="https://www.notion.so/66ea110b7b564f168ef02c3480ed160d" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">得到的结果为：</span></span></p></div><pre id="https://www.notion.so/1db714a37e7c47b98f278734cae8b688" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token number">0.1</span> <span class="token operator">*</span> <span class="token number">1</span> <span class="token operator">==</span> <span class="token number">0.1</span><span class="token operator">:</span> <span class="token boolean">true</span>
+<span class="token number">0.1</span> <span class="token operator">*</span> <span class="token number">2</span> <span class="token operator">==</span> <span class="token number">0.2</span><span class="token operator">:</span> <span class="token boolean">true</span>
+<span class="token number">0.1</span> <span class="token operator">*</span> <span class="token number">3</span> <span class="token operator">==</span> <span class="token number">0.3</span><span class="token operator">:</span> <span class="token boolean">false</span>
+<span class="token number">0.1</span> <span class="token operator">*</span> <span class="token number">4</span> <span class="token operator">==</span> <span class="token number">0.4</span><span class="token operator">:</span> <span class="token boolean">true</span>
+<span class="token number">0.1</span> <span class="token operator">*</span> <span class="token number">5</span> <span class="token operator">==</span> <span class="token number">0.5</span><span class="token operator">:</span> <span class="token boolean">true</span>
+<span class="token number">0.1</span> <span class="token operator">*</span> <span class="token number">6</span> <span class="token operator">==</span> <span class="token number">0.6</span><span class="token operator">:</span> <span class="token boolean">false</span>
+<span class="token number">0.1</span> <span class="token operator">*</span> <span class="token number">7</span> <span class="token operator">==</span> <span class="token number">0.7</span><span class="token operator">:</span> <span class="token boolean">false</span>
+<span class="token number">0.1</span> <span class="token operator">*</span> <span class="token number">8</span> <span class="token operator">==</span> <span class="token number">0.8</span><span class="token operator">:</span> <span class="token boolean">true</span>
+<span class="token number">0.1</span> <span class="token operator">*</span> <span class="token number">9</span> <span class="token operator">==</span> <span class="token number">0.9</span><span class="token operator">:</span> <span class="token boolean">true</span></span></span></span></code></pre><div id="https://www.notion.so/fe4d597b9b8a4660b61f49d90a3e4ce7" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">可以看到</span><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">0.1 * 2 == 0.2</code></span><span class="SemanticString">结果为</span><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">true</code></span><span class="SemanticString">, </span><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">0.1 * 3 == 0.3</code></span><span class="SemanticString">为</span><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">false</code></span><span class="SemanticString">，那么该如何解释这种现象呢？</span></span></p></div><h1 id="https://www.notion.so/383ff3df82ed499b882f91f211d424ff" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/383ff3df82ed499b882f91f211d424ff"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">问题分析</span></span></h1><h3 id="https://www.notion.so/4197424ce3bd4df49193133c695128e0" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/4197424ce3bd4df49193133c695128e0"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">二进制</span></span></h3><div id="https://www.notion.so/0892707af50a4daabf699ee25f700279" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">在分析问题之前，我们需要先了解浮点数在计算机中是如何表示的。现实世界中我们一般用10进制数，但是计算机中为2进制。二进制表示法的示意图如下所示（</span><span class="SemanticString"><em class="SemanticString__Fragment SemanticString__Fragment--Italic">图来自csapp</em></span><span class="SemanticString">）</span></span></p></div><div id="https://www.notion.so/f4595ef3be7641d19e6eeb36b73de6ac" class="Image Image--PageWidth"><figure><a href="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F1f0dccc9-98e7-4f56-ab1d-7374a8c37ca6%2FUntitled.png?width=1124&amp;table=block&amp;id=f4595ef3-be76-41d1-9e6e-eb36b73de6ac"><img src="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F1f0dccc9-98e7-4f56-ab1d-7374a8c37ca6%2FUntitled.png?width=1124&amp;table=block&amp;id=f4595ef3-be76-41d1-9e6e-eb36b73de6ac" style="width:100%"/></a><figcaption><span class="SemanticStringArray"></span></figcaption></figure></div><div id="https://www.notion.so/6cea96cd7d22461e9894e1e75852f675" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">像0.5(1/2)、0.25(1/4)这种10进制数字可以使用2进制准确表示，但是像0.1这种数字就无法在2进制中准确表示，使用有限位数来存储二进制的话将损失精度。</span></span></p></div><h2 id="https://www.notion.so/84c5e6d6f16a4eea8bd6608ba120501c" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/84c5e6d6f16a4eea8bd6608ba120501c"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">计算机中的浮点数表示</span></span></h2><div id="https://www.notion.so/38662116135941208aa8c953c36abacc" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">(参考csapp)</span></span></p></div><div id="https://www.notion.so/096fb281e8b242608950524d418cedd9" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">计算机中表示浮点数遵循IEEE标准，用</span><span class="SemanticString"><span class="SemanticString__Fragment SemanticString__Fragment--Math" data-latex="V = (-1)^s * M * 2 ^ E"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo>=</mo><mo stretchy="false">(</mo><mo>−</mo><mn>1</mn><msup><mo stretchy="false">)</mo><mi>s</mi></msup><mo>∗</mo><mi>M</mi><mo>∗</mo><msup><mn>2</mn><mi>E</mi></msup></mrow><annotation encoding="application/x-tex">V = (-1)^s * M * 2 ^ E</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.22222em;">V</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">−</span><span class="mord">1</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">s</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">M</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8413309999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.05764em;">E</span></span></span></span></span></span></span></span></span></span></span></span></span><span class="SemanticString">的形式来表示一个数：</span></span></p></div><ul class="BulletedListWrapper"><li id="https://www.notion.so/2aa98bd4b35e447ba46714e5d029600d" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">符号：s表示该数是正数还是负数；</span></span></li><li id="https://www.notion.so/8b01010cea374bfc91264a4eda4df244" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">尾数：M是一个二进制小数；</span></span></li><li id="https://www.notion.so/850c0eb5f8c6498f97abd433668a3535" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">阶码：E的作用是对浮点数加权。</span></span></li></ul><div id="https://www.notion.so/ed95ee4c880c430fb88fda5df26b66a7" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">在计算机中，浮点数通过如下的方式存储：</span><span class="SemanticString"><em class="SemanticString__Fragment SemanticString__Fragment--Italic">（图来自csapp）</em></span></span></p></div><div id="https://www.notion.so/46503316894f420ea1c01c3bfd2c72ae" class="Image Image--PageWidth"><figure><a href="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F4fb9b7e6-8ce8-495a-a35d-b1d492104338%2FUntitled.png?width=1542&amp;table=block&amp;id=46503316-894f-420e-a1c0-1c3bfd2c72ae"><img src="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F4fb9b7e6-8ce8-495a-a35d-b1d492104338%2FUntitled.png?width=1542&amp;table=block&amp;id=46503316-894f-420e-a1c0-1c3bfd2c72ae" style="width:100%"/></a><figcaption><span class="SemanticStringArray"></span></figcaption></figure></div><div id="https://www.notion.so/43559e75da89422cb7ef34ca51e9f33a" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">Java中的浮点数默认为双精度浮点数double，所以这里以双精度浮点数为例。</span></span></p></div><ul class="BulletedListWrapper"><li id="https://www.notion.so/ce811c2a477b438db22269ce476acc00" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">最高位（第63位）存储符号位</span><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">s</code></span><span class="SemanticString">。1表示该数为</span><span class="SemanticString"><mark class="SemanticString__Fragment SemanticString__Fragment--HighlightedBg SemanticString__Fragment--BgYellow">负数</mark></span><span class="SemanticString">；0表示该数为</span><span class="SemanticString"><mark class="SemanticString__Fragment SemanticString__Fragment--HighlightedBg SemanticString__Fragment--BgYellow">正数</mark></span><span class="SemanticString">。</span></span></li><li id="https://www.notion.so/4d8fc55a15c2478795beb675594dcc69" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">[52-62]这11位存储阶数E，这里的阶数的范围为[1, 2046]，在参与计算之前需要先减去1023，最终E - 1023的取值范围是[-1022, 1023]。</span></span></li><li id="https://www.notion.so/fffed5b0f8a44b6dafbeca2cd2b293d8" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">[0-51]这52位存储尾数M，浮点数整数部分的省略，所以应该在参与运算时对尾数加1</span></span></li></ul><div id="https://www.notion.so/2451ef14e5ba4166aeddf38635a814bc" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">于是可以通过如下方式计算double的值</span></span></p></div><p id="https://www.notion.so/6d45012dc82a4754a5f4bf26c7485dc2" class="Equation" data-latex="V = (-1)^s * (1 + M) * 2^{E - 1023}"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo>=</mo><mo stretchy="false">(</mo><mo>−</mo><mn>1</mn><msup><mo stretchy="false">)</mo><mi>s</mi></msup><mo>∗</mo><mo stretchy="false">(</mo><mn>1</mn><mo>+</mo><mi>M</mi><mo stretchy="false">)</mo><mo>∗</mo><msup><mn>2</mn><mrow><mi>E</mi><mo>−</mo><mn>1023</mn></mrow></msup></mrow><annotation encoding="application/x-tex">V = (-1)^s * (1 + M) * 2^{E - 1023}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.22222em;">V</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">−</span><span class="mord">1</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7143919999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">s</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">M</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.891331em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.891331em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.05764em;">E</span><span class="mbin mtight">−</span><span class="mord mtight">1</span><span class="mord mtight">0</span><span class="mord mtight">2</span><span class="mord mtight">3</span></span></span></span></span></span></span></span></span></span></span></span></span></p><h2 id="https://www.notion.so/fc34eff3c99b4457ba6728e6a7bcf0ee" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/fc34eff3c99b4457ba6728e6a7bcf0ee"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">为什么会出现上面程序的结果</span></span></h2><div id="https://www.notion.so/087ab0361a7f43ff9c4e03ee93e4bc07" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">0.1 * i</code></span><span class="SemanticString">是在对一个精度丢失的0.1做乘法，只是在有些情况下恰好相乘之后与</span><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">0.i</code></span><span class="SemanticString">相等，但是有些情况会将0.1丢失的精度扩大，从而不会相等。</span></span></p></div><h3 id="https://www.notion.so/df0c25f110d9494090945b90e10a7192" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/df0c25f110d9494090945b90e10a7192"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">举例</span></span></h3><blockquote id="https://www.notion.so/df574f1585c84a0fb578a62540a26563" class="ColorfulBlock ColorfulBlock--ColorDefault Quote"><span class="SemanticStringArray"><span class="SemanticString"><a class="SemanticString__Fragment SemanticString__Fragment--Link" href="https://tooltt.com/floatconverter/">https://tooltt.com/floatconverter/</a></span><span class="SemanticString"> 网页可以查看浮点数的二进制表示</span></span></blockquote><blockquote id="https://www.notion.so/af3c36c74f4c4d12817c9e86d44b4d0b" class="ColorfulBlock ColorfulBlock--ColorDefault Quote"><span class="SemanticStringArray"><span class="SemanticString"><a class="SemanticString__Fragment SemanticString__Fragment--Link" href="https://www.osgeo.cn/app/s2841">https://www.osgeo.cn/app/s2841</a></span><span class="SemanticString"> 可以做二进制乘法</span></span></blockquote><div id="https://www.notion.so/0ddb7fc43af74a61b1ea7165283e4b5c" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">0.1的浮点数表示为 0 01111111011 1001100110011001100110011001100110011001100110011010</span></span></p></div><h3 id="https://www.notion.so/4a06371b9b174f188fdf025c2f2548aa" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/4a06371b9b174f188fdf025c2f2548aa"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">0.2</span></span></h3><ul class="BulletedListWrapper"><li id="https://www.notion.so/f0746164599e47b3a3b1efe7a5fe12b8" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">0.1的尾数部分头部添加1结果为11001100110011001100110011001100110011001100110011010，</span></span></li><li id="https://www.notion.so/edc55c9ad4014848b1956393675fa332" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">将该数字乘以二进制数字10，得到110011001100110011001100110011001100110011001100110100，可以看到只是在原来尾数的末尾添加了0，于是0.1*2的结果在计算机中应表示为0 01111111100 1001100110011001100110011001100110011001100110011010，0.2的浮点数表示也为0 01111111100 1001100110011001100110011001100110011001100110011010，两者是一样的，所以相等。</span></span></li></ul><h3 id="https://www.notion.so/fd4902f80ed34557a4bdaf03cccf50c1" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/fd4902f80ed34557a4bdaf03cccf50c1"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">0.3</span></span></h3><ul class="BulletedListWrapper"><li id="https://www.notion.so/df3d187b762649f78af26cfd59d59aab" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">0.1的尾数部分头部添加1结果为11001100110011001100110011001100110011001100110011010，</span></span></li><li id="https://www.notion.so/c4d2fb79f3ff49bda2d1c2779dcc7dbc" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">将该数字乘以二进制数字11，得到1001100110011001100110011001100110011001100110011010000，0.1*3的结果在计算机中表示为0 0111111110 10011001100110011001100110011001100110011001100110100，0.3的浮点数表示为0 01111111101 0011001100110011001100110011001100110011001100110011，可以看到两者并不相等。</span></span></li></ul><h1 id="https://www.notion.so/58018f9cd7e04ac29ecc5f76f2a2af14" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/58018f9cd7e04ac29ecc5f76f2a2af14"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">参考资料</span></span></h1><div id="https://www.notion.so/9d6427b0ed344c1897a9ad54e60258f0" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">《深入理解计算机系统》</span></span></p></div><div id="https://www.notion.so/40e0bc7faf1044ceae4eb3727413d7bd" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><a class="SemanticString__Fragment SemanticString__Fragment--Link" href="https://tooltt.com/floatconverter/">https://tooltt.com/floatconverter/</a></span><span class="SemanticString"> 查看浮点数的二进制表示</span></span></p></div><div id="https://www.notion.so/b065108b26834bba8f322a0ffd6dface" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><a class="SemanticString__Fragment SemanticString__Fragment--Link" href="https://www.osgeo.cn/app/s2841">https://www.osgeo.cn/app/s2841</a></span><span class="SemanticString"> 做二进制乘法</span></span></p></div><div id="https://www.notion.so/e15eec76f0e941cbae0246dcb7d4064d" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><a class="SemanticString__Fragment SemanticString__Fragment--Link" href="https://bbs.byr.cn/#!article/Java/66146">https://bbs.byr.cn/#!article/Java/66146</a></span></span></p></div></article>
+  <script src="https://utteranc.es/client.js"
+    repo="shaojunying/shaojunying.github.io"
+    issue-term="title"
+    label="Comment"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+  </script>
+  <footer class="Footer">
+  <div>&copy; Junying Shao&#39;s Blog 2022</div>
+  <div>&centerdot;</div>
+  <div>Powered by <a href="https://github.com/dragonman225/notablog" target="_blank"
+      rel="noopener noreferrer">Notablog</a>.
+  </div>
+</footer>
+</body>
+
+</html>

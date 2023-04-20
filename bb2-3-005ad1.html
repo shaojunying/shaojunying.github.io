@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Chrome, Firefox OS and Opera Status Bar Color -->
+<meta name="theme-color" content="#FFFFFF">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css">
+<link rel="stylesheet" type="text/css"
+  href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.19.0/themes/prism.min.css">
+<link rel="stylesheet" type="text/css" href="css/SourceSansPro.css">
+<link rel="stylesheet" type="text/css" href="css/theme.css">
+<link rel="stylesheet" type="text/css" href="css/notablog.css">
+<!-- Favicon -->
+
+  <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;📖&lt;/text&gt;&lt;/svg&gt;">
+
+<style>
+  :root {
+    font-size: 20px;
+  }
+</style>
+  <title>B树、B+树、2-3树、红黑树&nbsp;|&nbsp;Junying Shao&#39;s Blog</title>
+  <meta property="og:type" content="blog">
+  <meta property="og:title" content="B树、B+树、2-3树、红黑树">
+  
+  
+    <meta property="og:image" content="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;👒&lt;/text&gt;&lt;/svg&gt;">
+  
+  <style>
+    .DateTagBar {
+      margin-top: 1.0rem;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="Navbar">
+  <a href="index.html">
+    <div class="Navbar__Btn">
+      
+        <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;📖&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+      
+      <span>Home</span>
+    </div>
+  </a>
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <span class="Navbar__Delim">&centerdot;</span>
+      <a href="jvm-a02052.html">
+        <div class="Navbar__Btn">
+          
+            <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;🌞&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+          
+          <span>JVM学习</span>
+        </div>
+      </a>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <span class="Navbar__Delim">&centerdot;</span>
+      <a href="about.html">
+        <div class="Navbar__Btn">
+          
+            <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;😀&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+          
+          <span>About</span>
+        </div>
+      </a>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+</nav>
+  <header class="Header">
+    
+      <div class="Header__Cover">
+        <img src="https://www.notion.so/images/page-cover/gradients_11.jpg">
+      </div>
+    
+    <div class="Header__Spacer ">
+    </div>
+    
+      <div class="Header__Icon">
+        <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;👒&lt;/text&gt;&lt;/svg&gt;"></span>
+      </div>
+    
+    <h1 class="Header__Title">B树、B+树、2-3树、红黑树</h1>
+    
+      <div class="DateTagBar">
+        
+          <span class="DateTagBar__Item DateTagBar__Date">Posted on Tue, Apr 12, 2022</span>
+        
+        
+          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--green">
+            <a href="tag/数据结构.html">数据结构</a>
+          </span>
+        
+      </div>
+    
+  </header>
+  <article id="https://www.notion.so/005ad16c336d419c968b9d98018ff92e" class="PageRoot"><ul id="https://www.notion.so/19ad8d8feb1643018f02807379d9313b" class="ColorfulBlock ColorfulBlock--ColorGray TableOfContents"><li class="TableOfContents__Item"><a href="#https://www.notion.so/e442dc4925c94a55a4e9c24aaea8aa92"><div style="margin-left:0px"><span class="SemanticStringArray"><span class="SemanticString">B树</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/edac69530f014ded8f83728603c0f07a"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">概述</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/a427f0772b1f4fcb91ca3d3f978de639"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">应用场景</strong></span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/717b0ba6286d45e7bc133af533f9fbfc"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">特性</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/b2b991b53f6f4173a43ef8ab1703b0cf"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">B树的一个示意图</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/94d9049bda4540f9bcb38aa114e438da"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">B树的插入过程</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/78a2472ae7764dffb88962ac7b2a3976"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">B数的查找过程</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/bc528fb8602a4cc39fbcc4183228f318"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">B数的删除过程</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/71fc9fc2287d4da28e6ff04fe6e4696c"><div style="margin-left:0px"><span class="SemanticStringArray"><span class="SemanticString">B+树</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/98010bdab49942b98bd1ddcb69d4b4dc"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">B+树与B树的区别为：</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/ad9413ca69ee41f1a3b6d0e34b9f7ade"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">B+树的优势</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/d4e2ea123664459ea72f7d84397cefa4"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">B树的优势</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/ed69c22e6c064bb387132c8f1196b766"><div style="margin-left:0px"><span class="SemanticStringArray"><span class="SemanticString">2-3树</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/a4e4cc851e8647db97c7c97c766f6113"><div style="margin-left:0px"><span class="SemanticStringArray"><span class="SemanticString">红黑树</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/d9655668e1954dba898fea9ac4e1d0a0"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">为什么一般选择红黑树作为查找排序树的实现？</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/d8884aaf97b54897a524aa3ec4cb0dd0"><div style="margin-left:0px"><span class="SemanticStringArray"><span class="SemanticString">参考资料</span></span></div></a></li></ul><h1 id="https://www.notion.so/e442dc4925c94a55a4e9c24aaea8aa92" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/e442dc4925c94a55a4e9c24aaea8aa92"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">B树</span></span></h1><h2 id="https://www.notion.so/edac69530f014ded8f83728603c0f07a" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/edac69530f014ded8f83728603c0f07a"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">概述</span></span></h2><div id="https://www.notion.so/0e4b1641f596444195190264db3591fa" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">我们通常使用二叉搜索树来保存有序的数据，而B树就是泛化的二叉搜索树，也可以被称为N叉排序树。</span></span></p></div><h2 id="https://www.notion.so/a427f0772b1f4fcb91ca3d3f978de639" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/a427f0772b1f4fcb91ca3d3f978de639"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">应用场景</strong></span></span></h2><div id="https://www.notion.so/63cb07f13cde4e3eb30458f07e606624" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">B树可以只使用4到5个指向小块数据的引用，即可支持在含有数百亿或更多元素的符号表中进行查找、插入和删除操作。</span></span></p></div><div id="https://www.notion.so/7ada7abd784744e6bb3e2520f49e7802" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">适用于读写相对大的数据块的存储系统。（DB、文件系统）</span></span></p></div><h2 id="https://www.notion.so/717b0ba6286d45e7bc133af533f9fbfc" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/717b0ba6286d45e7bc133af533f9fbfc"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">特性</span></span></h2><ul class="BulletedListWrapper"><li id="https://www.notion.so/c542b715d9974e3fa6120e333ea0d164" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">B树的子节点数量被允许有一定的范围。</span></span><ul class="BulletedListWrapper"><li id="https://www.notion.so/483d708f79ef4ef6bc33c05711941b5d" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">一方面，不用像其他平衡查找树那样频繁调整保持平衡；</span></span></li><li id="https://www.notion.so/bfee1d9ae06447f79d1823eaaa052bd7" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">另一方面，节点未被完全填充，浪费空间。</span></span></li></ul></li><li id="https://www.notion.so/62abf2115be34dcbb5e46a00a303a726" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">所有叶子节点处于同一层；</span></span></li><li id="https://www.notion.so/67b4ab3eb8374aec8ffc57c39d6535e1" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">B树的非页非根节点的子节点数范围是</span><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">[m / 2, m]</code></span><span class="SemanticString">。</span></span></li><li id="https://www.notion.so/1d9ee363c1d249dcbbb34e0bf842aa03" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">如果根不是叶子节点，那么其至少有2个子节点，之多也是m个子节点。</span></span></li><li id="https://www.notion.so/9833b18514a541cc85f357b6112bea84" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">根节点到所有叶子节点的路径相同。</span></span></li></ul><h2 id="https://www.notion.so/b2b991b53f6f4173a43ef8ab1703b0cf" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/b2b991b53f6f4173a43ef8ab1703b0cf"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">B树的一个示意图</span></span></h2><div id="https://www.notion.so/a15ce99270ca483ca7f79f9707e7af41" class="Image Image--PageWidth"><figure><a href="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fbd7451c2-ed91-4d02-bc75-4cd319d4e66f%2FUntitled.png?width=800&amp;table=block&amp;id=a15ce992-70ca-483c-a7f7-9f9707e7af41"><img src="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fbd7451c2-ed91-4d02-bc75-4cd319d4e66f%2FUntitled.png?width=800&amp;table=block&amp;id=a15ce992-70ca-483c-a7f7-9f9707e7af41" style="width:100%"/></a><figcaption><span class="SemanticStringArray"></span></figcaption></figure></div><div id="https://www.notion.so/c85580a275514b6f898c788c317c005d" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"></span></p></div><h2 id="https://www.notion.so/94d9049bda4540f9bcb38aa114e438da" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/94d9049bda4540f9bcb38aa114e438da"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">B树的插入过程</span></span></h2><div id="https://www.notion.so/a0583865cfaa4321878038acb04770ba" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">详见B树维基百科</span></span></p></div><div id="https://www.notion.so/a3958993a56740cd83a00e69a7b13fd5" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">新节点一定会被插入到B树的叶子节点上。</span></span></p></div><ol class="NumberedListWrapper"><li id="https://www.notion.so/e4b4c50cee404bc29e0035cc9f6f0820" class="NumberedList" value="1"><span class="SemanticStringArray"><span class="SemanticString">从上到下找到适合节点插入的叶子节点，并执行插入操作。</span></span><ol class="NumberedListWrapper"><li id="https://www.notion.so/e7ee57a69dc944a68151e0d9ccdff329" class="NumberedList" value="1"><span class="SemanticStringArray"><span class="SemanticString">如果插入之后叶子节点的元素数没有超过最大数量，直接返回；</span></span></li><li id="https://www.notion.so/fbfcb44889584592b8f6fa811fc4c1ae" class="NumberedList" value="2"><span class="SemanticStringArray"><span class="SemanticString">否则超过最大数量，则需要拆分节点</span></span><ol class="NumberedListWrapper"><li id="https://www.notion.so/f94608d8d67445a2825c6213585b5aa6" class="NumberedList" value="1"><span class="SemanticStringArray"><span class="SemanticString">找到节点中元素的中位数；</span></span></li><li id="https://www.notion.so/f318c808d0c549f8a138917906ae6f83" class="NumberedList" value="2"><span class="SemanticStringArray"><span class="SemanticString">中位数左边的元素构成一个节点；</span></span></li><li id="https://www.notion.so/0fbec142d9de4790b0f9ce745804cbbd" class="NumberedList" value="3"><span class="SemanticStringArray"><span class="SemanticString">中位数右边的元素构成一个节点；</span></span></li><li id="https://www.notion.so/43c4887e3bc741c59d3832c078a9d81b" class="NumberedList" value="4"><span class="SemanticStringArray"><span class="SemanticString">中位数插入到父节点中的合适位置，并将新创建的节点作为其左右两个子节点。</span></span><ol class="NumberedListWrapper"><li id="https://www.notion.so/a810eea7505941aa8001a7e9d4fafa0e" class="NumberedList" value="1"><span class="SemanticStringArray"><span class="SemanticString">如果父节点的元素数没有超过最大数量，直接返回；</span></span></li><li id="https://www.notion.so/ae6a368edcd941f2a2a6f5c8df8d13ac" class="NumberedList" value="2"><span class="SemanticStringArray"><span class="SemanticString">否则超过最大数量，则需要拆分父节点节点，重复此过程</span></span></li></ol></li></ol></li></ol></li><li id="https://www.notion.so/159f7992bfd147e3bdc637df66354466" class="NumberedList" value="2"><span class="SemanticStringArray"><span class="SemanticString">直到根节点被拆分，停止此过程。</span></span></li></ol><h2 id="https://www.notion.so/78a2472ae7764dffb88962ac7b2a3976" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/78a2472ae7764dffb88962ac7b2a3976"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">B数的查找过程</span></span></h2><ol class="NumberedListWrapper"><li id="https://www.notion.so/be95bf983a894e7d83ca344b8abc2590" class="NumberedList" value="1"><span class="SemanticStringArray"><span class="SemanticString">在根节点中顺序查找或二分查找，找到则直接返回；</span></span></li><li id="https://www.notion.so/70c7ca71b9434956ad6fe17679fc6567" class="NumberedList" value="2"><span class="SemanticStringArray"><span class="SemanticString">否则定位到相应子节点，继续查找。</span></span></li></ol><h2 id="https://www.notion.so/bc528fb8602a4cc39fbcc4183228f318" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/bc528fb8602a4cc39fbcc4183228f318"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">B数的删除过程</span></span></h2><ol class="NumberedListWrapper"><li id="https://www.notion.so/b81dae6e54314b4abffe3a39bf772aa8" class="NumberedList" value="1"><span class="SemanticStringArray"><span class="SemanticString">如果要删除的元素在叶子节点上，直接删除即可；</span></span></li><li id="https://www.notion.so/6a8d10498a1043c7a1dd736c14beef80" class="NumberedList" value="2"><span class="SemanticStringArray"><span class="SemanticString">否则在非叶子节点上：</span></span><ol class="NumberedListWrapper"><li id="https://www.notion.so/d3e419c51f814f5d88ce6a010c25d7d4" class="NumberedList" value="1"><span class="SemanticStringArray"><span class="SemanticString">选择左侧子树最右边的节点的最右边元素（前驱）</span></span></li><li id="https://www.notion.so/fb665f24bc1b43559d6d4e61b5d1e3d5" class="NumberedList" value="2"><span class="SemanticStringArray"><span class="SemanticString">或者右侧子树最左边的节点的最左边元素（后驱）代替原来的元素，作为新的分割点；</span></span></li></ol></li></ol><div id="https://www.notion.so/53a86f1edf4c4e8f94c165906b54afac" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">因为叶子节点中元素的删除，所以可能导致叶子节点中元素数量过少。</span></span></p></div><ul class="BulletedListWrapper"><li id="https://www.notion.so/d4bdf13d9f3e45b394086f555a8059d1" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">如果右兄弟存在多余元素，则使用右兄弟最左侧节点作为共同父节点，原来父节点转移到当前叶子节点上；</span></span></li><li id="https://www.notion.so/01182da9aadc41f1837defdebe79f9c4" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">如果左兄弟存在多余元素，则同上；</span></span></li><li id="https://www.notion.so/6bb7e8052f0642beb8376d4177a0cf9a" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">否则说明左右兄弟都不存在多余元素，则将其与左（或右）兄弟、共同父节点合并，构成一个新节点。</span></span><ul class="BulletedListWrapper"><li id="https://www.notion.so/a23793c607f5494293c58750991e688e" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">这导致了父节点少了一个元素，所以需要重复上面的判断。</span></span></li></ul></li></ul><h1 id="https://www.notion.so/71fc9fc2287d4da28e6ff04fe6e4696c" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/71fc9fc2287d4da28e6ff04fe6e4696c"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">B+树</span></span></h1><div id="https://www.notion.so/c13ce153473b45fa8415abd66c24a9ff" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">B+树是B树的变形，</span></span></p></div><h2 id="https://www.notion.so/98010bdab49942b98bd1ddcb69d4b4dc" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/98010bdab49942b98bd1ddcb69d4b4dc"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">B+树与B树的区别为：</span></span></h2><ol class="NumberedListWrapper"><li id="https://www.notion.so/d5667256bb774628b50f668d397701aa" class="NumberedList" value="1"><span class="SemanticStringArray"><span class="SemanticString">非叶子节点不存具体数据信息，B+树的数据都存放在叶子节点上。</span></span></li><li id="https://www.notion.so/a443c30ae07e4bc6a9388c5a979d62d3" class="NumberedList" value="2"><span class="SemanticStringArray"><span class="SemanticString">所有叶子节点被链表连接。</span></span></li></ol><h2 id="https://www.notion.so/ad9413ca69ee41f1a3b6d0e34b9f7ade" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/ad9413ca69ee41f1a3b6d0e34b9f7ade"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">B+树的优势</span></span></h2><ol class="NumberedListWrapper"><li id="https://www.notion.so/0f419663b89848b1b36a18cc0ea30648" class="NumberedList" value="1"><span class="SemanticStringArray"><span class="SemanticString">非叶子节点不存具体数据信息，所以</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">可以在同一页内放入更多的key</strong></span><span class="SemanticString">；</span></span></li><li id="https://www.notion.so/4f9daa4644eb43cd921641e3bf193ce2" class="NumberedList" value="2"><span class="SemanticStringArray"><span class="SemanticString">所有叶子节点被链表连接，</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">便于范围查询</strong></span><span class="SemanticString">。</span></span></li></ol><h2 id="https://www.notion.so/d4e2ea123664459ea72f7d84397cefa4" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/d4e2ea123664459ea72f7d84397cefa4"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">B树的优势</span></span></h2><ul class="BulletedListWrapper"><li id="https://www.notion.so/1e34c8bd690d45df9533bab045e64e5c" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">非叶子节点也会保存数据，所以如果频繁访问靠近根的节点，则平均访问速度较B+树快。</span></span></li></ul><h1 id="https://www.notion.so/ed69c22e6c064bb387132c8f1196b766" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/ed69c22e6c064bb387132c8f1196b766"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">2-3树</span></span></h1><div id="https://www.notion.so/01bc79b63b9b41b18dfdc649e17a1e3a" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">2-3树是阶为3的B树，也即三叉树。</span></span></p></div><div id="https://www.notion.so/baa72ad8f2fb42bba590eda207df3345" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">与之类似2-3-4树是阶为4的B树，也即四叉树。</span></span></p></div><div id="https://www.notion.so/895f68b54a8743a19b0305295ad2b792" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">两者都保留了B树的特性：</span></span></p></div><ul class="BulletedListWrapper"><li id="https://www.notion.so/f916ea4d775043cbbd8b19feff7be153" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">牺牲绝对平衡，避免频繁的旋转来保持平衡。</span></span></li></ul><h1 id="https://www.notion.so/a4e4cc851e8647db97c7c97c766f6113" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/a4e4cc851e8647db97c7c97c766f6113"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">红黑树</span></span></h1><ul class="BulletedListWrapper"><li id="https://www.notion.so/94b18810b193466b819f6c75ff083a25" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">在维基百科中，红黑树与2-3-4树（也即四叉树）对应。</span></span></li><li id="https://www.notion.so/ddd890b9352a4360b14aeb3240cc2743" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">在《算法（第四版）》中，红黑树与2-3树（也即三叉树）对应。</span></span></li></ul><div id="https://www.notion.so/723bf460570b45f88c710e1a3138888a" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">两种实现都是使用黑节点保存2节点，使用红节点+黑节点来保存3节点或4节点。</span></span></p></div><div id="https://www.notion.so/09236b9bb3a646c7871cb7b082101a2b" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">相比与2-3-4树，与2-3树对应的红黑树在维护平衡时需要考虑的情况数要少一些，更容易实现。</span></span></p></div><h2 id="https://www.notion.so/d9655668e1954dba898fea9ac4e1d0a0" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/d9655668e1954dba898fea9ac4e1d0a0"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">为什么一般选择红黑树作为查找排序树的实现？</span></span></h2><div id="https://www.notion.so/a193231abcb4404d83c680a8570b074f" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">红黑树牺牲了部分平衡性，换来了插入和删除时只需要少量的旋转操作，整体性能要优于AVL树。</span></span></p></div><h1 id="https://www.notion.so/d8884aaf97b54897a524aa3ec4cb0dd0" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/d8884aaf97b54897a524aa3ec4cb0dd0"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">参考资料</span></span></h1><div id="https://www.notion.so/f855ed1d7a964b39940ee38eaea99de1" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">B树和B+树各自的优势：</span><span class="SemanticString"><a class="SemanticString__Fragment SemanticString__Fragment--Link" href="https://stackoverflow.com/questions/870218/what-are-the-differences-between-b-trees-and-b-trees">https://stackoverflow.com/questions/870218/what-are-the-differences-between-b-trees-and-b-trees</a></span></span></p></div><div id="https://www.notion.so/7af43200386140369f09259681cba9a5" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">B树维基百科：</span><span class="SemanticString"><a class="SemanticString__Fragment SemanticString__Fragment--Link" href="https://zh.wikipedia.org/wiki/B%E6%A0%91">https://zh.wikipedia.org/wiki/B树</a></span></span></p></div><div id="https://www.notion.so/1b4140db9a724c72bedc5fb5e250bcbc" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">B树的打印：</span><span class="SemanticString"><a class="SemanticString__Fragment SemanticString__Fragment--Link" href="http://ysangkok.github.io/js-clrs-btree/btree.html">http://ysangkok.github.io/js-clrs-btree/btree.html</a></span></span></p></div><div id="https://www.notion.so/79ad37bbcc334b018a5b312c4972da7d" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">经典算法和数据结构的动画展示：</span><span class="SemanticString"><a class="SemanticString__Fragment SemanticString__Fragment--Link" href="https://www.cs.usfca.edu/~galles/visualization/Algorithms.html">https://www.cs.usfca.edu/~galles/visualization/Algorithms.html</a></span></span></p></div><div id="https://www.notion.so/32355dcbd8c64700bfb91b57f2005acd" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">《算法（第四版）》：红黑树与2-3树</span></span></p></div><div id="https://www.notion.so/9c31569aa14d431887c4d953675eaae8" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">2-3-4树：</span><span class="SemanticString"><a class="SemanticString__Fragment SemanticString__Fragment--Link" href="https://zh.wikipedia.org/wiki/2-3-4%E6%A0%91">https://zh.wikipedia.org/wiki/2-3-4树</a></span></span></p></div><div id="https://www.notion.so/2564a15b2f2341fdbcd4596dca18e777" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">2-3树：</span><span class="SemanticString"><a class="SemanticString__Fragment SemanticString__Fragment--Link" href="https://zh.wikipedia.org/wiki/2-3%E6%A0%91">https://zh.wikipedia.org/wiki/2-3树</a></span></span></p></div><div id="https://www.notion.so/9729bc58e26641dba3828f885de22097" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"></span></p></div></article>
+  <script src="https://utteranc.es/client.js"
+    repo="shaojunying/shaojunying.github.io"
+    issue-term="title"
+    label="Comment"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+  </script>
+  <footer class="Footer">
+  <div>&copy; Junying Shao&#39;s Blog 2022</div>
+  <div>&centerdot;</div>
+  <div>Powered by <a href="https://github.com/dragonman225/notablog" target="_blank"
+      rel="noopener noreferrer">Notablog</a>.
+  </div>
+</footer>
+</body>
+
+</html>

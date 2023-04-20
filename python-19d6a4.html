@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Chrome, Firefox OS and Opera Status Bar Color -->
+<meta name="theme-color" content="#FFFFFF">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css">
+<link rel="stylesheet" type="text/css"
+  href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.19.0/themes/prism.min.css">
+<link rel="stylesheet" type="text/css" href="css/SourceSansPro.css">
+<link rel="stylesheet" type="text/css" href="css/theme.css">
+<link rel="stylesheet" type="text/css" href="css/notablog.css">
+<!-- Favicon -->
+
+  <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;📖&lt;/text&gt;&lt;/svg&gt;">
+
+<style>
+  :root {
+    font-size: 20px;
+  }
+</style>
+  <title>Python的跨目录引用&nbsp;|&nbsp;Junying Shao&#39;s Blog</title>
+  <meta property="og:type" content="blog">
+  <meta property="og:title" content="Python的跨目录引用">
+  
+  
+    <meta property="og:image" content="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;🪠&lt;/text&gt;&lt;/svg&gt;">
+  
+  <style>
+    .DateTagBar {
+      margin-top: 1.0rem;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="Navbar">
+  <a href="index.html">
+    <div class="Navbar__Btn">
+      
+        <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;📖&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+      
+      <span>Home</span>
+    </div>
+  </a>
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <span class="Navbar__Delim">&centerdot;</span>
+      <a href="jvm-a02052.html">
+        <div class="Navbar__Btn">
+          
+            <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;🌞&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+          
+          <span>JVM学习</span>
+        </div>
+      </a>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <span class="Navbar__Delim">&centerdot;</span>
+      <a href="about.html">
+        <div class="Navbar__Btn">
+          
+            <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;😀&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+          
+          <span>About</span>
+        </div>
+      </a>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+</nav>
+  <header class="Header">
+    
+    <div class="Header__Spacer Header__Spacer--NoCover">
+    </div>
+    
+      <div class="Header__Icon">
+        <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;🪠&lt;/text&gt;&lt;/svg&gt;"></span>
+      </div>
+    
+    <h1 class="Header__Title">Python的跨目录引用</h1>
+    
+      <div class="DateTagBar">
+        
+        
+          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--blue">
+            <a href="tag/Python.html">Python</a>
+          </span>
+        
+          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--pink">
+            <a href="tag/实践.html">实践</a>
+          </span>
+        
+      </div>
+    
+  </header>
+  <article id="https://www.notion.so/19d6a4d4a49c4de297d6e3b026e52807" class="PageRoot"><h1 id="https://www.notion.so/94092c6fc630453aa208907cfcd6d210" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/94092c6fc630453aa208907cfcd6d210"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">区分Python中的一些概念</span></span></h1><ul class="BulletedListWrapper"><li id="https://www.notion.so/1caa034abb1e43fca92e1f9e26ff347a" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">一个以.py结尾的文件就是一个python module</span></span></li><li id="https://www.notion.so/84a6af8a78804380ac185605048b4202" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">任意一个文件夹，只要其中包含python module，就可以叫做python package.（Python2的话，该文件夹内还需要包含一个__init__.py文件）</span></span></li><li id="https://www.notion.so/2914b966caf940a88f6e9a6f1dfa0915" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">我们既可以import package，也可以import module，以及module下的函数、类等等</span></span></li></ul><h1 id="https://www.notion.so/eed3690ae1c34fe19cedaedfd1bdf836" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/eed3690ae1c34fe19cedaedfd1bdf836"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">Python引用自定义python文件的情况</span></span></h1><div id="https://www.notion.so/87a7c9d4990f4d1490240c95c76b9322" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">Python的包引用可以分为如下四种情况：</span></span></p></div><ul class="BulletedListWrapper"><li id="https://www.notion.so/3217f0bd04264a7aae926fa9fa7dd07f" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">utils和main位于同级目录下</span></span></li></ul><pre id="https://www.notion.so/1845701967ef4b5c90010bddb8a21f58" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span>.
+--main.py
+--utils.py</span></span></span></code></pre><ul class="BulletedListWrapper"><li id="https://www.notion.so/ff151cb906b3477eae42b64e0021cb9f" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">utils位于main下同级目录下的子目录内</span></span></li></ul><pre id="https://www.notion.so/5b646fc131064380821b68b40f375b5d" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span>.
+--main.py
+--dir/
+----utils.py</span></span></span></code></pre><ul class="BulletedListWrapper"><li id="https://www.notion.so/c58453c155194cacaeef5cf75bd3dc77" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">utils位于main的父目录内</span></span></li></ul><pre id="https://www.notion.so/4c3e7b6093334cf19006a09fa42a11ea" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span>.
+--utils.py
+--dir/
+----main.py</span></span></span></code></pre><ul class="BulletedListWrapper"><li id="https://www.notion.so/d22db0e1367045a4a2bf5874179da509" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">utils和main处于不同的目录下</span></span></li></ul><pre id="https://www.notion.so/fcd050d7c41b4b8ab3b697d86d6c8086" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span>.
+--dir1/
+----utils.py
+--dir2/
+----main.py</span></span></span></code></pre><h2 id="https://www.notion.so/0f21b19e5d3d4d149ff431b995fdea98" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/0f21b19e5d3d4d149ff431b995fdea98"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">情况1</span></span></h2><div id="https://www.notion.so/e2075a6c8fd14b8ab4ecb1328ef974d9" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">utils和main位于同级目录下</span></span></p></div><pre id="https://www.notion.so/7edefdce35774e21b41b30f9312ef7c2" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span>.
+--main.py
+--utils.py</span></span></span></code></pre><pre id="https://www.notion.so/291256e16af6463e9cd03062f4d978cd" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token comment"># utils.py</span>
+<span class="token keyword">def</span> <span class="token function">say_hello</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> <span class="token string">"hello "</span> <span class="token operator">+</span> name</span></span></span></code></pre><pre id="https://www.notion.so/3e620018525543f391599ce4edb567e7" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token comment"># main.py</span>
+<span class="token keyword">import</span> utils
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>utils<span class="token punctuation">.</span>say_hello<span class="token punctuation">(</span><span class="token string">"world"</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span></span></code></pre><div id="https://www.notion.so/4e964675fb044bfda8fea30b906b24d4" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">直接在根目录下执行下面命令即可</span></span></p></div><pre id="https://www.notion.so/40d111d898774b019a80c8b62955b5e4" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span>python3 main.py</span></span></span></code></pre><div id="https://www.notion.so/8d9c336193444e02807a1145f0f3f990" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">输出如下</span></span></p></div><pre id="https://www.notion.so/66f7c1e169474bcdb1531a7b4bdf872f" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span>hello world</span></span></span></code></pre><h2 id="https://www.notion.so/18afd0ee0bdf49feafd18a06068bdaa9" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/18afd0ee0bdf49feafd18a06068bdaa9"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">情况2</span></span></h2><div id="https://www.notion.so/f93021abb5804824973bfcdba274076e" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">utils位于main下同级目录下的子目录内</span></span></p></div><pre id="https://www.notion.so/ff49ea7fde6e469aad35b7a94cfe9812" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span>.
+--main.py
+--dir/
+----utils.py</span></span></span></code></pre><pre id="https://www.notion.so/e687ec3786a041dc8efb9ce94610610e" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token comment"># main.py</span>
+<span class="token keyword">from</span> <span class="token builtin">dir</span> <span class="token keyword">import</span> utils
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>utils<span class="token punctuation">.</span>say_hello<span class="token punctuation">(</span><span class="token string">"world"</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span></span></code></pre><pre id="https://www.notion.so/fca4a983271c4ed2bcc65dc887f9e09c" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token comment"># dir/utils.py</span>
+<span class="token keyword">def</span> <span class="token function">say_hello</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> <span class="token string">"hello "</span> <span class="token operator">+</span> name</span></span></span></code></pre><div id="https://www.notion.so/67f128b427e247b2b477ba0ea700c8e8" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">在根目录下执行下面的命令：</span></span></p></div><pre id="https://www.notion.so/dce19af144b94548a3501ecf30dd0fdc" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span>python3 main<span class="token punctuation">.</span>py</span></span></span></code></pre><div id="https://www.notion.so/d54ebb2649204f8aaffc38d6141015e8" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">即可得到下面的输出</span></span></p></div><pre id="https://www.notion.so/e196d48b4d804f62b2aaeb9ba607846b" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span>hello world</span></span></span></code></pre><h2 id="https://www.notion.so/2a05658938f6471d94f61f56ec1173d4" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/2a05658938f6471d94f61f56ec1173d4"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">情况3</span></span></h2><div id="https://www.notion.so/77d8237f53cb4f05b3221bcb5ed9558f" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">utils位于main的父目录内</span></span></p></div><pre id="https://www.notion.so/29e0fb67fa214ae79a52d8af8d1e3e25" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span>.
+--utils.py
+--dir/
+----main.py</span></span></span></code></pre><h3 id="https://www.notion.so/815fb15c42f6428786d9a2878fc8fff3" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/815fb15c42f6428786d9a2878fc8fff3"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">追加pythonpath</span></span></h3><div id="https://www.notion.so/8c014057b20742b4b9d652060789bce4" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">这种情况有些特殊。一般默认情况下只有main函数所在的目录会被添加到pythonpath，但是这里的utils.py在main.py的父目录中，所以我们需要将这个父目录也添加到pythonpath中。代码如下。</span></span></p></div><pre id="https://www.notion.so/536f7dddbab946e4b144bdf5242b1eef" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token comment"># dir/main.py</span>
+<span class="token keyword">import</span> sys
+<span class="token keyword">from</span> os <span class="token keyword">import</span> path
+<span class="token comment"># 这里相当于把相对路径 .. 添加到pythonpath中</span>
+sys<span class="token punctuation">.</span>path<span class="token punctuation">.</span>append<span class="token punctuation">(</span>path<span class="token punctuation">.</span>dirname<span class="token punctuation">(</span>path<span class="token punctuation">.</span>dirname<span class="token punctuation">(</span>path<span class="token punctuation">.</span>abspath<span class="token punctuation">(</span>__file__<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">import</span> utils
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>utils<span class="token punctuation">.</span>say_hello<span class="token punctuation">(</span><span class="token string">"world"</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span></span></code></pre><pre id="https://www.notion.so/b675150ef225439fb876367e54fedbb6" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token keyword">def</span> <span class="token function">say_hello</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> <span class="token string">"hello "</span> <span class="token operator">+</span> name</span></span></span></code></pre><div id="https://www.notion.so/e58bac0fe2b54e87b38c88fa47415d8f" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">之后在根目录下执行如下命令：</span></span></p></div><pre id="https://www.notion.so/94cebecbf01b4289848f39335081346c" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span>python3 <span class="token builtin">dir</span><span class="token operator">/</span>main<span class="token punctuation">.</span>py</span></span></span></code></pre><div id="https://www.notion.so/199a4430052443bcae0523aec9ed0d95" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">输出如下：</span></span></p></div><pre id="https://www.notion.so/df1c64e817a3461297e9aafd740853f1" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span>hello world</span></span></span></code></pre><h3 id="https://www.notion.so/093a4c3713c54bb4890b666a332bebb1" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/093a4c3713c54bb4890b666a332bebb1"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">另一种解决办法（使用python -m命令）</span></span></h3><div id="https://www.notion.so/3eaf9037808d4c4f9743332e8f471c4d" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">执行如下命令（这里就不需要追加pythonpath）</span></span></p></div><pre id="https://www.notion.so/c2447be5dc364395832bda1afa8faf22" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span>python3 <span class="token operator">-</span>m <span class="token builtin">dir</span><span class="token punctuation">.</span>main</span></span></span></code></pre><div id="https://www.notion.so/d5d26e94a585401e967e997d241b0826" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">也可以看到hello world的输出</span></span></p></div><h2 id="https://www.notion.so/4ca4820b06cd42988cc500f39d73054d" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/4ca4820b06cd42988cc500f39d73054d"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">情况4</span></span></h2><div id="https://www.notion.so/78fcd59eb424449bb6a20138cbb710e7" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">utils和main处于不同的目录下</span></span></p></div><pre id="https://www.notion.so/2b5e11e2aa4349e6814d6f159d8eb745" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span>.
+--dir1/
+----utils.py
+--dir2/
+----main.py</span></span></span></code></pre><div id="https://www.notion.so/3b7bccdccd5040949a0314bbf1c36255" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">这种情况的解决办法与情况3相同，参考情况3即可。</span></span></p></div></article>
+  <script src="https://utteranc.es/client.js"
+    repo="shaojunying/shaojunying.github.io"
+    issue-term="title"
+    label="Comment"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+  </script>
+  <footer class="Footer">
+  <div>&copy; Junying Shao&#39;s Blog 2022</div>
+  <div>&centerdot;</div>
+  <div>Powered by <a href="https://github.com/dragonman225/notablog" target="_blank"
+      rel="noopener noreferrer">Notablog</a>.
+  </div>
+</footer>
+</body>
+
+</html>
