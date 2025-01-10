@@ -8,45 +8,47 @@
         body {
             background: #f0f2f5;
             font-family: "Microsoft YaHei", sans-serif;
+            margin: 0;
+            padding: 0;
         }
         
         .song-card {
             background: white;
             border: none;
-            padding: 25px;
-            margin: 20px auto;
-            max-width: 800px;
+            padding: 5px;
+            margin: 5px auto;
+            width: 95%;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
         
         .song-info {
-            margin-bottom: 20px;
+            margin-bottom: 5px;
             text-align: center;
             color: #1a73e8;
         }
         
         .lyrics {
-            font-size: 20px;
+            font-size: 24px;
             line-height: 2;
             white-space: pre-line;
-            letter-spacing: 8px;
+            letter-spacing: 4px;
             color: #3c4043;
             text-align: center;
         }
         
         .lyrics div {
-            margin: 12px 0;
+            margin: 3px 0;
         }
         
         .block-char {
             display: inline-block;
-            width: 16px;
-            height: 16px;
-            line-height: 16px;
+            width: 12px;
+            height: 12px;
+            line-height: 12px;
             background-color: #ccd9f1;
             border: none;
-            margin: 0 1px;
+            margin: 0 2px;
             vertical-align: middle;
             font-size: 12px;
         }
@@ -56,36 +58,34 @@
         }
         
         .guess-form {
-            margin-top: 15px;
-            margin-left: auto;
-            margin-right: auto;
-            padding: 12px;
+            margin: 5px 10px;
+            padding: 5px;
             background: #e8f0fe;
             border-radius: 12px;
-            max-width: 800px;
+            width: auto;
             display: flex;
             align-items: center;
-            justify-content: flex-start;
-            padding-left: 30px;
-            padding-right: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
         }
         
         .input-group {
             display: flex;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: center;
             white-space: nowrap;
-            flex: 1;
+            flex-wrap: wrap;
+            gap: 10px;
         }
         
         .input-group input {
-            width: 300px;
+            width: 200px;
             padding: 12px;
             font-size: 16px;
             border: 2px solid #1a73e8;
             border-radius: 8px;
             transition: all 0.3s;
-            margin: 0 10px;
         }
         
         .input-group input:focus {
@@ -121,31 +121,34 @@
         }
         
         .game-stats {
-            padding: 15px;
+            padding: 5px 10px;
             background: #e8f0fe;
             border-radius: 8px;
             font-size: 16px;
             color: #1a73e8;
-            margin-right: 20px;
+            margin-right: 10px;
             white-space: nowrap;
         }
         
         .stats-header {
             text-align: center;
-            padding: 15px;
+            padding: 5px;
             background: #1a73e8;
-            margin: 0 auto 20px;
+            margin: 0 auto 5px;
             border-radius: 0 0 12px 12px;
             color: white;
             font-size: 18px;
-            max-width: 800px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            width: 100%;
         }
         
         .control-buttons {
             text-align: center;
-            margin: 20px auto;
-            max-width: 800px;
+            margin: 5px auto;
+            width: 95%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
         }
         
         .control-btn {
@@ -156,7 +159,10 @@
             border-radius: 8px;
             cursor: pointer;
             font-size: 16px;
-            margin: 0 10px;
+            margin: 5px;
+            flex: 1;
+            min-width: 120px;
+            max-width: 200px;
             transition: all 0.3s;
         }
         
@@ -174,15 +180,13 @@
         }
         
         .wrong-chars {
-            margin-top: 12px;
-            padding: 10px;
+            margin: 5px 10px;
+            padding: 5px;
             background: #fff;
             border-radius: 8px;
             color: #d93025;
             text-align: center;
-            margin-left: auto;
-            margin-right: auto;
-            max-width: 800px;
+            width: auto;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
         
@@ -190,14 +194,45 @@
             display: inline-block;
             margin: 0 2px;
             font-size: 16px;
-            width: 16px;
-            height: 16px;
-            line-height: 16px;
+            width: 12px;
+            height: 12px;
+            line-height: 12px;
             background: #fce8e6;
             border-radius: 4px;
             border: none;
             text-align: center;
             color: #d93025;
+        }
+        
+        @media screen and (max-width: 600px) {
+            .lyrics {
+                font-size: 20px;
+                letter-spacing: 2px;
+            }
+            
+            .song-info {
+                font-size: 14px;
+            }
+            
+            .control-btn {
+                padding: 10px 16px;
+                font-size: 14px;
+            }
+            
+            .input-group label {
+                font-size: 14px;
+            }
+            
+            .input-group input {
+                width: 150px;
+                padding: 8px;
+                font-size: 14px;
+            }
+            
+            .submit-btn {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
         }
     </style>
 </head>
