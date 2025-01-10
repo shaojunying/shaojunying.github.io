@@ -176,13 +176,14 @@
         .wrong-chars {
             margin-top: 12px;
             padding: 10px;
-            background: #fce8e6;
+            background: #fff;
             border-radius: 8px;
             color: #d93025;
             text-align: center;
             margin-left: auto;
             margin-right: auto;
             max-width: 800px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
         
         .wrong-char {
@@ -192,10 +193,11 @@
             width: 16px;
             height: 16px;
             line-height: 16px;
-            background: #fff;
+            background: #fce8e6;
             border-radius: 4px;
-            border: 1px solid #d93025;
+            border: none;
             text-align: center;
+            color: #d93025;
         }
     </style>
 </head>
@@ -288,7 +290,10 @@
         // 切换显示已完成歌曲列表
         function toggleCompletedSongs() {
             const container = document.getElementById('completedSongs');
+            const button = document.querySelector('.toggle-completed');
             container.style.display = container.style.display === 'none' ? 'block' : 'none';
+            button.textContent = container.style.display === 'none' ? 
+                '查看已猜出的歌曲' : '隐藏已猜出的歌曲';
         }
 
         // 更新猜测次数显示
