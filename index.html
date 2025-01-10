@@ -1,18 +1,534 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh">
 <head>
-    <title>美味佳肴</title>
-    <meta property="og:title" content="探索美味佳肴" />
-    <meta property="og:description" content="深入了解各种美食文化和食谱" />
-    <meta property="og:image" content="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2Fdae3756f-aa25-442f-99a5-496940aa5fcd%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1709443752&t=35584d246adcf9a60311c1cdca6d7c70" />
-    <!-- 其他头部信息 -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>猜歌词游戏</title>
+    <style>
+        body {
+            background: #f0f2f5;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+        
+        .song-card {
+            background: white;
+            border: none;
+            padding: 25px;
+            margin: 20px auto;
+            max-width: 800px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        
+        .song-info {
+            margin-bottom: 20px;
+            text-align: center;
+            color: #1a73e8;
+        }
+        
+        .lyrics {
+            font-size: 20px;
+            line-height: 2;
+            white-space: pre-line;
+            letter-spacing: 8px;
+            color: #3c4043;
+            text-align: center;
+        }
+        
+        .lyrics div {
+            margin: 12px 0;
+        }
+        
+        .block-char {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            line-height: 16px;
+            background-color: #ccd9f1;
+            border: none;
+            margin: 0 1px;
+            vertical-align: middle;
+            font-size: 12px;
+        }
+        
+        .song-info .block-char {
+            background-color: #ccd9f1;
+        }
+        
+        .guess-form {
+            margin-top: 15px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 12px;
+            background: #e8f0fe;
+            border-radius: 12px;
+            max-width: 800px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding-left: 30px;
+            padding-right: 30px;
+        }
+        
+        .input-group {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            white-space: nowrap;
+            flex: 1;
+        }
+        
+        .input-group input {
+            width: 300px;
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid #1a73e8;
+            border-radius: 8px;
+            transition: all 0.3s;
+            margin: 0 10px;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: #1967d2;
+            box-shadow: 0 0 0 3px rgba(26,115,232,0.2);
+        }
+        
+        .submit-btn {
+            background: #1a73e8;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+            margin-left: 10px;
+        }
+        
+        .submit-btn:hover {
+            background: #1557b0;
+            transform: translateY(-1px);
+        }
+        
+        .guessed-char {
+            color: #1e8e3e;
+            font-weight: bold;
+        }
+        
+        .unguessed-char {
+            color: #d93025;
+        }
+        
+        .game-stats {
+            padding: 15px;
+            background: #e8f0fe;
+            border-radius: 8px;
+            font-size: 16px;
+            color: #1a73e8;
+            margin-right: 20px;
+            white-space: nowrap;
+        }
+        
+        .stats-header {
+            text-align: center;
+            padding: 15px;
+            background: #1a73e8;
+            margin: 0 auto 20px;
+            border-radius: 0 0 12px 12px;
+            color: white;
+            font-size: 18px;
+            max-width: 800px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        
+        .control-buttons {
+            text-align: center;
+            margin: 20px auto;
+            max-width: 800px;
+        }
+        
+        .control-btn {
+            background: #1a73e8;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 0 10px;
+            transition: all 0.3s;
+        }
+        
+        .control-btn:hover {
+            background: #1557b0;
+            transform: translateY(-1px);
+        }
+        
+        .toggle-completed {
+            background: #34a853;
+        }
+        
+        .toggle-completed:hover {
+            background: #2d8745;
+        }
+        
+        .wrong-chars {
+            margin-top: 12px;
+            padding: 10px;
+            background: #fce8e6;
+            border-radius: 8px;
+            color: #d93025;
+            text-align: center;
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 800px;
+        }
+        
+        .wrong-char {
+            display: inline-block;
+            margin: 0 2px;
+            font-size: 16px;
+            width: 16px;
+            height: 16px;
+            line-height: 16px;
+            background: #fff;
+            border-radius: 4px;
+            border: 1px solid #d93025;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <!-- 网页内容 -->
+    <div id="messageBox" class="message-box"></div>
+    <div class="stats-header">
+        已猜出：<span id="completedCount">0</span> / <span id="totalCount">0</span> 首
+    </div>
+    
+    <div class="control-buttons">
+        <button class="control-btn toggle-completed" onclick="toggleCompletedSongs()">查看已猜出的歌曲</button>
+        <button class="control-btn" onclick="restartGame()">换一首歌</button>
+        <button class="control-btn" onclick="giveUp()" id="giveUpBtn">放弃本局</button>
+    </div>
+    
+    <form class="guess-form" id="guessForm">
+        <div class="game-stats">
+            已猜测次数：<span id="guessCount">0</span>
+        </div>
+        <div class="input-group">
+            <label for="guessInput">输入要猜的字：</label>
+            <input type="text" 
+                   id="guessInput" 
+                   name="guessInput" 
+                   placeholder="可以输入多个字..."
+                   oninput="checkInput()">
+            <button type="submit" class="submit-btn" id="submitBtn" disabled>提交</button>
+        </div>
+    </form>
+    
+    <div class="wrong-chars" id="wrongCharsContainer">
+        猜错的字：<span id="wrongChars"></span>
+    </div>
+    
+    <div class="completed-songs" id="completedSongs">
+        <h3>已猜出的歌曲</h3>
+        <ul class="song-list" id="completedSongsList"></ul>
+    </div>
 
-    <h1>1111</h1>
+    <div class="song-card">
+        <div class="song-info">
+            <h2>歌曲名：<span id="songName">■■■■■■</span></h2>
+            <h3>歌手：<span id="artist">■■■</span></h3>
+        </div>
+        <div class="lyrics" id="lyrics">
+            <div>■■■■■■■■</div>
+            <div>■■■■■■</div>
+            <div>■■■■■</div>
+            <div>■■■■■</div>
+            <div>■■■■■■</div>
+        </div>
+    </div>
+
+    <!-- 在主脚本之前引入歌曲数据 -->
+    <script src="songs.js"></script>
+    <script>
+        // 存储正确的歌词
+        let lyrics = [];
+        let songName = "";
+        let artistName = "";  // 新增歌手变量
+        let isGameOver = false;
+
+        // 存储显示状态的数组（初始全部为 null）
+        let displayLyrics = [];
+
+        let guessCount = 0;  // 添加猜测次数计数器
+
+        let wrongGuesses = new Set();  // 存储猜错的字
+
+        // 本地存储键名
+        const COMPLETED_SONGS_KEY = 'completedSongs';
+        
+        // 从本地存储获取已完成的歌曲
+        let completedSongs = JSON.parse(localStorage.getItem(COMPLETED_SONGS_KEY) || '[]');
+        
+        // 更新统计信息
+        function updateStats() {
+            document.getElementById('completedCount').textContent = completedSongs.length;
+            document.getElementById('totalCount').textContent = songDatabase.length;
+        }
+        
+        // 更新已完成歌曲列表
+        function updateCompletedSongsList() {
+            const list = document.getElementById('completedSongsList');
+            list.innerHTML = completedSongs.map(song => 
+                `<li>${song.name} - ${song.artist}</li>`
+            ).join('');
+        }
+        
+        // 切换显示已完成歌曲列表
+        function toggleCompletedSongs() {
+            const container = document.getElementById('completedSongs');
+            container.style.display = container.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // 更新猜测次数显示
+        function updateGuessCount() {
+            document.getElementById('guessCount').textContent = guessCount;
+        }
+
+        // 更新显示
+        function updateDisplay(showAll = false) {
+            const lyricsDiv = document.getElementById('lyrics');
+            lyricsDiv.innerHTML = lyrics.map((line, lineIndex) => {
+                const lineText = [...line].map((char, charIndex) => {
+                    if (showAll) {
+                        return displayLyrics[lineIndex][charIndex] === char ?
+                            `<span class="guessed-char">${char}</span>` :
+                            `<span class="unguessed-char">${char}</span>`;
+                    }
+                    return displayLyrics[lineIndex][charIndex] || (char === ' ' ? ' ' : '<span class="block-char">&nbsp;</span>');
+                }).join('');
+                return `<div>${lineText}</div>`;
+            }).join('');
+
+            // 更新歌名显示
+            const songNameSpan = document.getElementById('songName');
+            const artistSpan = document.getElementById('artist');
+
+            if (showAll) {
+                // 显示歌名
+                songNameSpan.innerHTML = [...songName].map(char => {
+                    const isGuessed = displayLyrics.some(line => 
+                        line.some(displayChar => displayChar === char)
+                    );
+                    return isGuessed ?
+                        `<span class="guessed-char">${char}</span>` :
+                        `<span class="unguessed-char">${char}</span>`;
+                }).join('');
+
+                // 显示歌手名
+                artistSpan.innerHTML = [...artistName].map(char => {
+                    const isGuessed = displayLyrics.some(line => 
+                        line.some(displayChar => displayChar === char)
+                    );
+                    return isGuessed ?
+                        `<span class="guessed-char">${char}</span>` :
+                        `<span class="unguessed-char">${char}</span>`;
+                }).join('');
+            } else {
+                // 按照实际字符生成方块
+                songNameSpan.innerHTML = [...songName].map(char => 
+                    char === ' ' ? ' ' : '<span class="block-char">&nbsp;</span>'
+                ).join('');
+                artistSpan.innerHTML = [...artistName].map(char => 
+                    char === ' ' ? ' ' : '<span class="block-char">&nbsp;</span>'
+                ).join('');
+            }
+        }
+
+        // 检查是否猜出歌名
+        function checkSongName() {
+            return [...songName].every(char => 
+                displayLyrics.some(line => 
+                    line.some(displayChar => displayChar === char)
+                )
+            );
+        }
+
+        // 处理表单提交
+        document.getElementById('guessForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (isGameOver) {
+                showMessage('游戏已结束，正在开始新游戏...', 'warning');
+                return;
+            }
+
+            const guessText = document.getElementById('guessInput').value.trim();
+            if (!guessText) {
+                showMessage('请输入要猜的字！', 'error');
+                return;
+            }
+
+            // 增加猜测次数并更新显示
+            guessCount++;
+            updateGuessCount();
+
+            // 将输入的文本分割成字符数组并去重
+            const guessChars = [...new Set([...guessText])];
+            let foundAny = false;
+
+            // 对每个输入的字符进行检查
+            guessChars.forEach(guessChar => {
+                let found = false;
+                // 检查每一行歌词
+                lyrics.forEach((line, lineIndex) => {
+                    [...line].forEach((char, charIndex) => {
+                        if (char === guessChar) {
+                            displayLyrics[lineIndex][charIndex] = char;
+                            found = true;
+                            foundAny = true;
+                        }
+                    });
+                });
+
+                if (!found) {
+                    wrongGuesses.add(guessChar);  // 添加猜错的字
+                }
+            });
+
+            if (foundAny) {
+                updateDisplay();
+                showMessage('猜对了！', 'success');
+                
+                if (checkSongName()) {
+                    handleGameOver();
+                }
+            } else {
+                showMessage('没有找到这些字！', 'error');
+            }
+            
+            updateWrongChars();  // 更新猜错字的显示
+            document.getElementById('guessInput').value = '';
+            checkInput();
+        });
+
+        // 检查输入并控制按钮状态
+        function checkInput() {
+            const input = document.getElementById('guessInput');
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = !input.value.trim();
+        }
+
+        // 放弃当前游戏
+        function giveUp() {
+            if (!isGameOver) {
+                isGameOver = true;
+                updateDisplay(true);
+                document.getElementById('giveUpBtn').disabled = true;
+                document.getElementById('giveUpBtn').style.display = 'none';  // 隐藏放弃按钮
+                document.getElementById('nextGameBtn').style.display = 'inline-block';  // 显示下一局按钮
+                showMessage('已显示完整答案', 'warning');
+            }
+        }
+
+        // 开始下一局
+        function startNextGame() {
+            initializeGame();
+            document.getElementById('giveUpBtn').disabled = false;
+            document.getElementById('giveUpBtn').style.display = 'inline-block';  // 显示放弃按钮
+            document.getElementById('nextGameBtn').style.display = 'none';  // 隐藏下一局按钮
+            showMessage('已开始新游戏', 'success');
+        }
+
+        // 显示消息的函数
+        function showMessage(message, type = 'success') {
+            const messageBox = document.getElementById('messageBox');
+            messageBox.textContent = message;
+            messageBox.className = `message-box message-${type} show-message`;
+            
+            setTimeout(() => {
+                messageBox.className = 'message-box';
+            }, 3000);
+        }
+
+        // 随机选择一首歌
+        function selectRandomSong() {
+            const randomIndex = Math.floor(Math.random() * songDatabase.length);
+            return songDatabase[randomIndex];
+        }
+
+        // 初始化游戏
+        function initializeGame() {
+            // 重置游戏状态
+            isGameOver = false;
+            guessCount = 0;
+            
+            // 选择新歌
+            const selectedSong = selectRandomSong();
+            lyrics = selectedSong.lyrics;
+            songName = selectedSong.name;
+            artistName = selectedSong.artist;
+            
+            // 重置显示状态数组
+            displayLyrics = lyrics.map(line => Array(line.length).fill(null));
+            
+            // 更新显示
+            updateDisplay();
+            updateGuessCount();
+            checkInput();
+            wrongGuesses.clear();
+            updateWrongChars();
+        }
+
+        // 重新开始游戏（换歌）
+        function restartGame() {
+            initializeGame();
+            document.getElementById('giveUpBtn').disabled = false;
+            document.getElementById('giveUpBtn').style.display = 'inline-block';
+            document.getElementById('nextGameBtn').style.display = 'none';
+            showMessage('已切换到新歌曲', 'success');
+        }
+
+        // 修改原有的游戏结束处理
+        function handleGameOver() {
+            isGameOver = true;
+            showMessage('恭喜你猜出了歌名！', 'success');
+            updateDisplay(true);
+            document.getElementById('giveUpBtn').disabled = true;
+            document.getElementById('giveUpBtn').style.display = 'none';  // 隐藏放弃按钮
+            document.getElementById('nextGameBtn').style.display = 'inline-block';  // 显示下一局按钮
+            
+            // 添加到已完成列表
+            const currentSong = { name: songName, artist: artistName };
+            if (!completedSongs.some(song => song.name === currentSong.name)) {
+                completedSongs.push(currentSong);
+                localStorage.setItem(COMPLETED_SONGS_KEY, JSON.stringify(completedSongs));
+                updateStats();
+                updateCompletedSongsList();
+            }
+        }
+
+        // 更新猜错字的显示
+        function updateWrongChars() {
+            const wrongCharsSpan = document.getElementById('wrongChars');
+            if (wrongGuesses.size > 0) {
+                wrongCharsSpan.innerHTML = Array.from(wrongGuesses)
+                    .map(char => `<span class="wrong-char">${char}</span>`)
+                    .join('');
+                document.getElementById('wrongCharsContainer').style.display = 'block';
+            } else {
+                document.getElementById('wrongCharsContainer').style.display = 'none';
+            }
+        }
+
+        // 初始化游戏
+        initializeGame();
+
+        // 初始化时更新统计和列表
+        updateStats();
+        updateCompletedSongsList();
+        document.getElementById('completedSongs').style.display = 'none';
+    </script>
 </body>
-</html>
-
-
-
+</html> 
