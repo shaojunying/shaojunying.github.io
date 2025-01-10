@@ -470,6 +470,9 @@
             songName = selectedSong.name;
             artistName = selectedSong.artist;
             
+            // 在控制台记录当前歌曲信息（仅供调试）
+            console.log(`当前歌曲：${songName} - ${artistName}`);
+            
             // 重置显示状态数组
             displayLyrics = lyrics.map(line => Array(line.length).fill(null));
             
@@ -497,7 +500,6 @@
             updateDisplay(true);
             document.getElementById('giveUpBtn').disabled = true;
             document.getElementById('giveUpBtn').style.display = 'none';  // 隐藏放弃按钮
-            document.getElementById('nextGameBtn').style.display = 'inline-block';  // 显示下一局按钮
             
             // 添加到已完成列表
             const currentSong = { name: songName, artist: artistName };
@@ -506,6 +508,8 @@
                 localStorage.setItem(COMPLETED_SONGS_KEY, JSON.stringify(completedSongs));
                 updateStats();
                 updateCompletedSongsList();
+                // 显示已完成歌曲列表
+                document.getElementById('completedSongs').style.display = 'block';
             }
         }
 
