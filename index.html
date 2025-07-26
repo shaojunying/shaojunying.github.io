@@ -286,9 +286,33 @@
         </div>
     </div>
 
-    <!-- 在主脚本之前引入歌曲数据 -->
-    <script src="songs.js"></script>
     <script>
+        // 加载歌曲数据
+        let songDatabase = [];
+        
+        fetch('songs.csv')
+            .then(response => response.text())
+            .then(csv => {
+                // 解析 CSV
+                const lines = csv.split('\n').slice(1); // 跳过标题行
+                songDatabase = lines.map(line => {
+                    const [name, artist, lyrics] = line.split(',');
+                    return {
+                        name,
+                        artist,
+                        lyrics: lyrics.replace(/^"|"$/g, '').split('|')
+                    };
+                });
+                // 初始化游戏
+                initializeGame();
+                updateStats();
+                updateCompletedSongsList();
+                document.getElementById('completedSongs').style.display = 'none';
+            })
+            .catch(error => {
+                console.error('Error loading songs:', error);
+            });
+
         // 存储正确的歌词
         let lyrics = [];
         let songName = "";
